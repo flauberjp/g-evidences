@@ -18,6 +18,7 @@ import org.eclipse.jgit.transport.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -38,6 +39,8 @@ import java.util.stream.Stream;
  * @author dominik.stadler at gmx.at
  */
 public class Hello implements RequestHandler<Map<String,String>, String> {
+    static String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
+
     public static void main(String[] args){
         System.out.println(LocalDateTime.now());
         String repoName = "<a_repo_name>"; // e.g. "xxxx" or "contributions-cal"
@@ -58,7 +61,7 @@ public class Hello implements RequestHandler<Map<String,String>, String> {
         boolean result;
         try {
             github = github + repoName + ".git";
-            String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
+
             CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(username, password);
             Git git;
 
@@ -74,9 +77,9 @@ public class Hello implements RequestHandler<Map<String,String>, String> {
                     .setCredentialsProvider(credentialsProvider).setURI(github).call();
             // Gera evidencia no evidencias
 
-            FileOutputStream fos = new FileOutputStream(dir + "/evidencias", true);
-            fos.write((dataEHoraExecucao + "\r\n").getBytes());
-            fos.close();
+            String fileNameWithItsPath = dir + "/index.html";
+            updateEvidenceFile(fileNameWithItsPath);
+
             git.add().addFilepattern(".").call();
             git.commit().setMessage(dataEHoraExecucao).call();
             git.push().setCredentialsProvider(credentialsProvider).call();
@@ -86,6 +89,23 @@ public class Hello implements RequestHandler<Map<String,String>, String> {
             result = false;
         }
         return result;
+    }
+
+    private static void updateEvidenceFile(String fileNameWithItsPath) {
+        Path filePath = Paths.get(fileNameWithItsPath);
+        try {
+            Stream<String> lines = Files.lines(filePath, Charset.forName("UTF-8"));
+            List<String> replacedLine = lines
+                    .map(line ->
+                        line.replace("<tbody>", "<tbody><tr><td>" + dataEHoraExecucao + "</td></tr>")
+                    )
+                    .collect(Collectors.toList());
+            Files.write(filePath, replacedLine, Charset.forName("UTF-8"));
+            lines.close();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
     private static void deleteDirectoryStream(Path path) throws IOException {
