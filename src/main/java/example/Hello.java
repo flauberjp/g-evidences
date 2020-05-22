@@ -43,12 +43,12 @@ import java.util.stream.Stream;
 public class Hello implements RequestHandler<Map<String,String>, String> {
     public static void main(String[] args){
         System.out.println(LocalDateTime.now());
-        String repoName = "<a_repo_name>"; // e.g. "xxxx" or "contributions-cal"
-        String github = "<a_git_hub_account_link>"; // e.g. "https://github.com/flauberjp/"
-        String username = "<git_hub_user>"; // e.g. flauberjp
-        String password = "<git_hub_password>"; // e.g. passw0rd
-        String githubname = "<my_github_name>"; // e.g. My github name
-        String githubemail = "<my_github_email>"; // e.g. email@domain.com
+        String repoName = "my-git-usage-evidences"; // e.g. "xxxx" or "contributions-cal"
+        String github = "https://github.com/jiyose12/"; // e.g. "https://github.com/flauberjp/"
+        String username = "jiyose12"; // e.g. flauberjp
+        String password = "7532ea969c7fe7c5b82bba8f6341ff08b0e9a7a6"; // e.g. passw0rd
+        String githubname = "José Raimundo Fernandes Filho"; // e.g. My github name
+        String githubemail = "jiyose@outlook.com"; // e.g. email@domain.com
         if(args.length == 6) {
             repoName = args[0];
             github = args[1];
