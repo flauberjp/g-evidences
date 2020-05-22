@@ -60,7 +60,6 @@ public class Hello implements RequestHandler<Map<String,String>, String> {
         System.out.println(geraEvidenciaDeUsoDoGit(repoName, github, username, password, githubname, githubemail));
         System.out.println(LocalDateTime.now());
     }
-
     public static boolean geraEvidenciaDeUsoDoGit(String repoName, String github, String username, String password,  String githubname,  String githubemail) {
         String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
         boolean result;
