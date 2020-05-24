@@ -46,7 +46,7 @@ public class Hello implements RequestHandler<Map<String,String>, String> {
         String repoName = "my-git-usage-evidences"; // e.g. "xxxx" or "contributions-cal"
         String github = "https://github.com/jiyose12/"; // e.g. "https://github.com/flauberjp/"
         String username = "jiyose12"; // e.g. flauberjp
-        String password = "7532ea969c7fe7c5b82bba8f6341ff08b0e9a7a6"; // e.g. passw0rd
+        String password = "4574253d58c0ed4a0e188b5c5b905744cea73f05"; // e.g. passw0rd
         String githubname = "José Raimundo Fernandes Filho"; // e.g. My github name
         String githubemail = "jiyose@outlook.com"; // e.g. email@domain.com
         if(args.length == 6) {
