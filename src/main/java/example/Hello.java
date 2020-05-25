@@ -1,37 +1,20 @@
 package example;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.errors.UnsupportedCredentialItem;
-import org.eclipse.jgit.lib.BaseRepositoryBuilder;
-import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
-import org.eclipse.jgit.lib.UserConfig;
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.eclipse.jgit.transport.*;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.Formatter;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,7 +23,7 @@ import java.util.stream.Stream;
  *
  * @author dominik.stadler at gmx.at
  */
-public class Hello implements RequestHandler<Map<String,String>, String> {
+public class Hello {
     public static void main(String[] args){
         System.out.println(LocalDateTime.now());
         String repoName = "<a_repo_name>"; // e.g. "xxxx" or "my-git-usage-evidences"
@@ -123,28 +106,5 @@ public class Hello implements RequestHandler<Map<String,String>, String> {
                 .sorted(Comparator.reverseOrder())
                 .map(Path::toFile)
                 .forEach(File::delete);
-    }
-
-    // Handler value: example.Handler
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    @Override
-    public String handleRequest(Map<String,String> event, Context context)
-    {
-        String repoName = System.getenv("repoName");
-        String github = System.getenv("github");
-        String username = System.getenv("username");
-        String password = System.getenv("password");
-        String githubname = System.getenv("githubname");
-        String githubemail = System.getenv("githubemail");
-
-        LambdaLogger logger = context.getLogger();
-        String response = geraEvidenciaDeUsoDoGit(repoName, github, username, password, githubname, githubemail) ? "200 OK" : "500 Bad Request";
-        // log execution details
-        logger.log("ENVIRONMENT VARIABLES: " + gson.toJson(System.getenv()));
-        logger.log("CONTEXT: " + gson.toJson(context));
-        // process event
-        logger.log("EVENT: " + gson.toJson(event));
-        logger.log("EVENT TYPE: " + event.getClass().toString());
-        return response;
     }
 }
