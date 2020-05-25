@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Generator {
+
     public static void main(String[] args){
         System.out.println(LocalDateTime.now());
         String repoName = "<a_repo_name>"; // e.g. "xxxx" or "my-git-usage-evidences"
@@ -38,6 +39,7 @@ public class Generator {
         System.out.println(geraEvidenciaDeUsoDoGit(repoName, github, username, password, githubname, githubemail));
         System.out.println(LocalDateTime.now());
     }
+
     public static boolean geraEvidenciaDeUsoDoGit(String repoName, String github, String username, String password,  String githubname,  String githubemail) {
         String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
         boolean result;
@@ -48,14 +50,8 @@ public class Generator {
 
             Git git;
 
-            // Get the temporary directory and print it.
-            String tempDir = System.getProperty("java.io.tmpdir");
+            String dir = getDirOndeRepositorioRemotoSeraClonado(repoName);
 
-            String dir = tempDir + "/" + repoName;
-            Path path = Paths.get(dir);
-            if(Files.exists(path)) {
-                deleteDirectoryStream(path);
-            }
             git = Git.cloneRepository().setDirectory(new File(dir))
                     .setCredentialsProvider(credentialsProvider).setURI(github).call();
 
@@ -79,13 +75,30 @@ public class Generator {
         return result;
     }
 
+    private static String getDirOndeRepositorioRemotoSeraClonado(String repoName) throws IOException {
+        String dir = System.getProperty("java.io.tmpdir");
+        dir += "/" + repoName;
+        Path path = Paths.get(dir);
+        deletaDirDoRepositorioCasoExista(path);
+        return dir;
+    }
+
+    private static void deletaDirDoRepositorioCasoExista(Path path) throws IOException {
+        if(Files.exists(path)) {
+            Files.walk(path)
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+        }
+    }
+
     private static void updateEvidenceFile(String fileNameWithItsPath, String dataEHoraExecucao) {
         Path filePath = Paths.get(fileNameWithItsPath);
         try {
             Stream<String> lines = Files.lines(filePath, Charset.forName("UTF-8"));
             List<String> replacedLine = lines
                     .map(line ->
-                        line.replace("<tbody>", "<tbody><tr><td>" + dataEHoraExecucao + "</td></tr>")
+                            line.replace("<tbody>", "<tbody><tr><td>" + dataEHoraExecucao + "</td></tr>")
                     )
                     .collect(Collectors.toList());
             Files.write(filePath, replacedLine, Charset.forName("UTF-8"));
@@ -94,12 +107,5 @@ public class Generator {
 
             e.printStackTrace();
         }
-    }
-
-    private static void deleteDirectoryStream(Path path) throws IOException {
-        Files.walk(path)
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
     }
 }
