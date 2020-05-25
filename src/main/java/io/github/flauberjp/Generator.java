@@ -21,43 +21,32 @@ import java.util.stream.Stream;
 public class Generator {
 
     public static void main(String[] args){
-        System.out.println(LocalDateTime.now());
-        String repoName = "<a_repo_name>"; // e.g. "xxxx" or "my-git-usage-evidences"
-        String github = "<a_git_hub_account_link>"; // e.g. "https://github.com/flauberjp/"
-        String username = "<git_hub_user>"; // e.g. flauberjp
-        String password = "<git_hub_password>"; // e.g. passw0rd
-        String githubname = "<my_github_name>"; // e.g. My github name
-        String githubemail = "<my_github_email>"; // e.g. email@domain.com
-        if(args.length == 6) {
-            repoName = args[0];
-            github = args[1];
-            username = args[2];
-            password = args[3];
-            githubname = args[4];
-            githubemail = args[5];
-        }
-        System.out.println(geraEvidenciaDeUsoDoGit(repoName, github, username, password, githubname, githubemail));
-        System.out.println(LocalDateTime.now());
+        System.out.println("Programa iniciado às: " + LocalDateTime.now());
+
+        UserGithubInfo userGithubInfo = new UserGithubInfo(args);
+        System.out.println(geraEvidenciaDeUsoDoGit(userGithubInfo));
+
+        System.out.println("Programa finalizado às: " + LocalDateTime.now());
     }
 
-    public static boolean geraEvidenciaDeUsoDoGit(String repoName, String github, String username, String password,  String githubname,  String githubemail) {
+    public static boolean geraEvidenciaDeUsoDoGit(UserGithubInfo userGithubInfo) {
         String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
         boolean result;
         try {
-            github = github + repoName + ".git";
 
-            CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(username, password);
+            CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(
+                    userGithubInfo.getUsername(), userGithubInfo.getPassword());
 
             Git git;
 
-            String dir = getDirOndeRepositorioRemotoSeraClonado(repoName);
+            String dir = getDirOndeRepositorioRemotoSeraClonado(userGithubInfo.getRepoName());
 
             git = Git.cloneRepository().setDirectory(new File(dir))
-                    .setCredentialsProvider(credentialsProvider).setURI(github).call();
+                    .setCredentialsProvider(credentialsProvider).setURI(userGithubInfo.getRepoNameFullPath()).call();
 
             StoredConfig config = git.getRepository().getConfig();
-            config.setString("user", null, "name", githubname);
-            config.setString("user", null, "email", githubemail); //NOI18N
+            config.setString("user", null, "name", userGithubInfo.getGithubName());
+            config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
             config.save();
 
             // Gera evidencia em index.html
