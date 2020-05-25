@@ -1,4 +1,4 @@
-package example;
+package io.github.flauberjp;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
@@ -18,12 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Simple snippet which shows how to open an existing repository
- *
- * @author dominik.stadler at gmx.at
- */
-public class Hello {
+public class Generator {
     public static void main(String[] args){
         System.out.println(LocalDateTime.now());
         String repoName = "<a_repo_name>"; // e.g. "xxxx" or "my-git-usage-evidences"
