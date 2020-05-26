@@ -35,6 +35,12 @@
             <version>1.18.10</version><!--$NO-MVN-MAN-VER$-->
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.kohsuke/github-api -->
+        <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>1.111</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
