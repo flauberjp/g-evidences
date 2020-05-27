@@ -1,8 +1,9 @@
 # my-git-usage-evidences
 
 ## Referências
-- https://github-api.kohsuke.org/
-
+- GitHub API for Java (https://github-api.kohsuke.org/);
+- Reading from config.properties file Maven project (https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project); and
+- How to load an external properties file from a maven java project (https://stackoverflow.com/questions/34712885/how-to-load-an-external-properties-file-from-a-maven-java-project).
 
 ## License
 The MIT License (MIT)
