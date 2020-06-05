@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 public class Util {
@@ -82,5 +83,39 @@ public class Util {
     } catch (IOException | ClassNotFoundException ex) {
         ex.printStackTrace();
     }
+  }
+
+  /**
+   *
+   * @param resource e.g.: "initialProjectTemplate/index.html"
+   * @param file e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
+   * @throws IOException
+   */
+  public static void convertResourceToFile(String resource, String file)
+      throws IOException {
+    byte[] buffer = new byte[UserGithubProjectCreator.class.getResourceAsStream(resource).available()];
+    UserGithubProjectCreator.class.getResourceAsStream(resource).read(buffer);
+    File targetFile = new File(file);
+    OutputStream outStream = new FileOutputStream(targetFile);
+    outStream.write(buffer);
+  }
+
+  /**
+   * Code reused from: http://www.java2s.com/Tutorial/Java/0140__Collections/CreatePropertiesfromStringarray.htm
+   */
+  public static Properties createProperties( String[] values )
+      throws IllegalArgumentException
+  {
+    if( values.length % 2 != 0 )
+      throw new IllegalArgumentException( "One value is missing.");
+
+    Properties props = new Properties();
+
+    for( int i = 0; i < values.length; i += 2 )
+    {
+      props.setProperty( values[i], values[i+1] );
+    }
+
+    return props;
   }
 }
