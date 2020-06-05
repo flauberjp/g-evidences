@@ -20,11 +20,10 @@ import java.util.stream.Stream;
 
 public class EvidenceGenerator {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         System.out.println("Programa iniciado às: " + LocalDateTime.now());
 
-        UserGithubInfo userGithubInfo = new UserGithubInfo(args);
-        System.out.println(geraEvidenciaDeUsoDoGit(userGithubInfo));
+        System.out.println(geraEvidenciaDeUsoDoGit(UserGithubInfo.get()));
 
         System.out.println("Programa finalizado às: " + LocalDateTime.now());
     }
@@ -64,7 +63,7 @@ public class EvidenceGenerator {
         return result;
     }
 
-    private static String getDirOndeRepositorioRemotoSeraClonado(String repoName) throws IOException {
+    public static String getDirOndeRepositorioRemotoSeraClonado(String repoName) throws IOException {
         String dir = System.getProperty("java.io.tmpdir");
         dir += "/" + repoName;
         Path path = Paths.get(dir);

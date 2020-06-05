@@ -116,8 +116,14 @@ public class FormSignUp extends JFrame {
 					String githubname = txtGithubName.getText();
 					String githubemail = txtGithubEmail.getText();
 
-					String [] args = new String[] {repoName, username, password, githubname, githubemail};
-					UserGithubInfo user = new UserGithubInfo(args);
+					String [] args = new String[] {
+							"repoName", repoName,
+							"login", username,
+							"password", password,
+							"githubName", githubname,
+							"githubEmail", githubemail
+					};
+					UserGithubInfo user = UserGithubInfo.get(Util.createProperties(args));
 
 					Util.WriteObjectToFile(user);
 			        System.out.println(LocalDateTime.now());
