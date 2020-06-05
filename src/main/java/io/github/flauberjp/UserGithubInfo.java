@@ -1,11 +1,18 @@
 package io.github.flauberjp;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
-public class UserGithubInfo {
+@ToString
+public class UserGithubInfo implements Serializable{
+	//default serialVersion id
+    private static final long serialVersionUID = 1L;
+    
     private String repoName = ""; // e.g. "my-git-usage-evidences"
     private String username = ""; // e.g. flauberjp
     private String password = ""; // e.g. passw0rd
