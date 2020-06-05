@@ -1,5 +1,7 @@
 package io.github.flauberjp;
 
+import static io.github.flauberjp.Util.isRunningFromJar;
+
 import java.util.Properties;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GitHub;
@@ -10,8 +12,8 @@ import java.net.URISyntaxException;
 
 public class UserGithubProjectCreator {
     public static void main(String[] args) throws IOException, URISyntaxException {
-        Properties properties = new Properties();
-        properties.load(UserGithubProjectCreator.class.getResourceAsStream(".github"));
+        Properties properties = Util.getProperties();
+
         GitHub github = GitHubBuilder
                 .fromProperties(properties)
                 .build();
