@@ -1,13 +1,14 @@
-package example.forms;
+package io.github.flauberjp.forms;
 
-import java.awt.BorderLayout;
+import io.github.flauberjp.EvidenceGenerator;
+import io.github.flauberjp.FileHandling;
+import io.github.flauberjp.UserGithubInfo;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import example.Hello;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -22,7 +23,6 @@ public class FormSignUp extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtRepoName;
-	private JTextField txtGithub;
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
 	private JLabel lblGithubName;
@@ -68,68 +68,60 @@ public class FormSignUp extends JFrame {
 		lblRepoName.setBounds(35, 69, 111, 14);
 		contentPane.add(lblRepoName);
 		
-		JLabel lblGithub = new JLabel("Github");
-		lblGithub.setBounds(35, 107, 111, 14);
-		contentPane.add(lblGithub);
-		
-		txtGithub = new JTextField();
-		txtGithub.setText("e.g. \"https://github.com/flauberjp/\"");
-		txtGithub.setColumns(10);
-		txtGithub.setBounds(156, 104, 293, 20);
-		contentPane.add(txtGithub);
-		
 		JLabel lblUsername = new JLabel("Nome de Usu\u00E1rio");
-		lblUsername.setBounds(35, 143, 111, 14);
+		lblUsername.setBounds(35, 111, 111, 14);
 		contentPane.add(lblUsername);
 		
 		txtUsername = new JTextField();
 		txtUsername.setText("e.g. flauberjp");
 		txtUsername.setColumns(10);
-		txtUsername.setBounds(156, 140, 293, 20);
+		txtUsername.setBounds(156, 108, 293, 20);
 		contentPane.add(txtUsername);
 		
 		passwordField = new JPasswordField();
 		passwordField.setToolTipText("e.g. passw0rd");
-		passwordField.setBounds(156, 181, 293, 20);
+		passwordField.setBounds(156, 153, 293, 20);
 		contentPane.add(passwordField);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(35, 184, 111, 14);
+		lblPassword.setBounds(35, 156, 111, 14);
 		contentPane.add(lblPassword);
 		
 		lblGithubName = new JLabel("Nome do Github");
-		lblGithubName.setBounds(35, 223, 111, 14);
+		lblGithubName.setBounds(35, 198, 111, 14);
 		contentPane.add(lblGithubName);
 		
 		txtGithubName = new JTextField();
 		txtGithubName.setText("e.g. My github name");
 		txtGithubName.setColumns(10);
-		txtGithubName.setBounds(156, 220, 293, 20);
+		txtGithubName.setBounds(156, 195, 293, 20);
 		contentPane.add(txtGithubName);
 		
 		lblGithubEmail = new JLabel("Email do Github");
-		lblGithubEmail.setBounds(35, 261, 111, 14);
+		lblGithubEmail.setBounds(35, 239, 111, 14);
 		contentPane.add(lblGithubEmail);
 		
 		txtGithubEmail = new JTextField();
 		txtGithubEmail.setText("e.g. My github email");
 		txtGithubEmail.setColumns(10);
-		txtGithubEmail.setBounds(156, 258, 293, 20);
+		txtGithubEmail.setBounds(156, 236, 293, 20);
 		contentPane.add(txtGithubEmail);
 		
 		JButton btnConfirm = new JButton("Confirmar");
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-					
 					String repoName = txtRepoName.getText();
-			        String github = txtGithub.getText();
-			        String username = txtUsername.getText();
-			        String password = new String(passwordField.getPassword());
-			        String githubname = txtGithubName.getText();
-			        String githubemail = txtGithubEmail.getText();
-			        
-			        Hello.geraEvidenciaDeUsoDoGit(repoName, github, username, password, githubname, githubemail);
+					String username = txtUsername.getText();
+					String password = new String(passwordField.getPassword());
+					String githubname = txtGithubName.getText();
+					String githubemail = txtGithubEmail.getText();
+
+					String [] args = new String[] {repoName, username, password, githubname, githubemail};
+					UserGithubInfo user = new UserGithubInfo(args);
+
+//					EvidenceGenerator.geraEvidenciaDeUsoDoGit(user);
+					FileHandling.WriteObjectToFile(user);
 			        System.out.println(LocalDateTime.now());
 			        
 			        JOptionPane.showMessageDialog (null, "Cadastrado com Sucesso");
@@ -141,10 +133,10 @@ public class FormSignUp extends JFrame {
 				}
 			}
 		});
-		btnConfirm.setBounds(224, 297, 89, 23);
+		btnConfirm.setBounds(217, 297, 89, 23);
 		contentPane.add(btnConfirm);
 		
-		JLabel lblTitle = new JLabel("Dados da Conta do Github");
+		JLabel lblTitle = new JLabel("Dados do seu Github");
 		lblTitle.setBounds(192, 23, 203, 14);
 		contentPane.add(lblTitle);
 	}
