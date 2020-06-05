@@ -1,8 +1,7 @@
 package io.github.flauberjp.forms;
 
-import io.github.flauberjp.EvidenceGenerator;
-import io.github.flauberjp.FileHandling;
 import io.github.flauberjp.UserGithubInfo;
+import io.github.flauberjp.Util;
 
 import java.awt.EventQueue;
 
@@ -120,11 +119,13 @@ public class FormSignUp extends JFrame {
 					String [] args = new String[] {repoName, username, password, githubname, githubemail};
 					UserGithubInfo user = new UserGithubInfo(args);
 
-//					EvidenceGenerator.geraEvidenciaDeUsoDoGit(user);
-					FileHandling.WriteObjectToFile(user);
+					Util.WriteObjectToFile(user);
 			        System.out.println(LocalDateTime.now());
 			        
 			        JOptionPane.showMessageDialog (null, "Cadastrado com Sucesso");
+			        
+			        FormGitProjects formGitProjects = new FormGitProjects();
+			        formGitProjects.setVisible(true);
 			        
 					dispose(); //fecha a janela
 				}
