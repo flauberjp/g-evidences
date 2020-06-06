@@ -1,6 +1,8 @@
 [![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master)
 # my-git-usage-evidences
 
+## Ajuda Voluntária
+Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
 ## Referências
 - [GitHub API for Java](https://github-api.kohsuke.org/)
 - [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
