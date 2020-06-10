@@ -30,7 +30,7 @@ public class Util {
     Properties properties = new Properties();
 
     InputStream inputStream;
-    if(isRunningFromJar()) {
+    if (isRunningFromJar()) {
       String filePath = new File(".").getCanonicalPath() + "/" + GITHUB_INFORMATION_FILE;
       File file = new File(filePath);
       if (!file.exists()) {
@@ -44,56 +44,56 @@ public class Util {
 
     return properties;
   }
-  
+
   public static void WriteObjectToFile(Object userObj) {
-      try {
+    try {
 
-          FileOutputStream fileOut = new FileOutputStream("User.txt");
-          ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-          objectOut.writeObject(userObj);
-          objectOut.close();
-          System.out.println("The Object  was succesfully written to a file");
-          
-          ReadObjectToFile();
+      FileOutputStream fileOut = new FileOutputStream("User.txt");
+      ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+      objectOut.writeObject(userObj);
+      objectOut.close();
+      System.out.println("The Object  was succesfully written to a file");
 
-      } catch (Exception ex) {
-          ex.printStackTrace();
-      }
-		
+      ReadObjectToFile();
+
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+
   }
-  
+
   public static void ReadObjectToFile() {
-	  String inputFile = "User.txt";
-		try (
-            ObjectInputStream objectInput
-                = new ObjectInputStream(new FileInputStream(inputFile));
-        ){
+    String inputFile = "User.txt";
+    try (
+        ObjectInputStream objectInput
+            = new ObjectInputStream(new FileInputStream(inputFile));
+    ) {
 
-        while (true) {
-            UserGithubInfo user = (UserGithubInfo) objectInput.readObject();
+      while (true) {
+        UserGithubInfo user = (UserGithubInfo) objectInput.readObject();
 
-            System.out.print(user.getGithub() + "\t");
-            System.out.print(user.getGithubName() + "\t");
-            System.out.print(user.getGithubEmail() + "\t");
-            System.out.println(user.getUsername());
-        }
+        System.out.print(user.getGithub() + "\t");
+        System.out.print(user.getGithubName() + "\t");
+        System.out.print(user.getGithubEmail() + "\t");
+        System.out.println(user.getUsername());
+      }
 
     } catch (EOFException eof) {
-        System.out.println("Reached end of file");
+      System.out.println("Reached end of file");
     } catch (IOException | ClassNotFoundException ex) {
-        ex.printStackTrace();
+      ex.printStackTrace();
     }
   }
 
   /**
-   *
    * @param resource e.g.: "initialProjectTemplate/index.html"
-   * @param file e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
+   * @param file     e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
    * @throws IOException
    */
   public static void convertResourceToFile(String resource, String file)
       throws IOException {
-    byte[] buffer = new byte[UserGithubProjectCreator.class.getResourceAsStream(resource).available()];
+    byte[] buffer = new byte[UserGithubProjectCreator.class.getResourceAsStream(resource)
+        .available()];
     UserGithubProjectCreator.class.getResourceAsStream(resource).read(buffer);
     File targetFile = new File(file);
     OutputStream outStream = new FileOutputStream(targetFile);
@@ -103,17 +103,16 @@ public class Util {
   /**
    * Code reused from: http://www.java2s.com/Tutorial/Java/0140__Collections/CreatePropertiesfromStringarray.htm
    */
-  public static Properties createProperties( String[] values )
-      throws IllegalArgumentException
-  {
-    if( values.length % 2 != 0 )
-      throw new IllegalArgumentException( "One value is missing.");
+  public static Properties createProperties(String[] values)
+      throws IllegalArgumentException {
+    if (values.length % 2 != 0) {
+      throw new IllegalArgumentException("One value is missing.");
+    }
 
     Properties props = new Properties();
 
-    for( int i = 0; i < values.length; i += 2 )
-    {
-      props.setProperty( values[i], values[i+1] );
+    for (int i = 0; i < values.length; i += 2) {
+      props.setProperty(values[i], values[i + 1]);
     }
 
     return props;
