@@ -14,54 +14,57 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 public class UserGithubProjectCreator {
-    public static void main(String[] args) throws IOException, URISyntaxException {
-        System.out.println("Programa iniciado às: " + LocalDateTime.now());
 
-        System.out.println(criaProjetoInicialNoGithub(UserGithubInfo.get()));
+  public static void main(String[] args) throws IOException, URISyntaxException {
+    System.out.println("Programa iniciado às: " + LocalDateTime.now());
 
-        System.out.println("Programa finalizado às: " + LocalDateTime.now());
+    System.out.println(criaProjetoInicialNoGithub(UserGithubInfo.get()));
+
+    System.out.println("Programa finalizado às: " + LocalDateTime.now());
+  }
+
+  public static boolean criaProjetoInicialNoGithub(UserGithubInfo userGithubInfo) {
+    String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
+    boolean result;
+    try {
+      GitHub github = GitHubBuilder
+          .fromProperties(userGithubInfo.getProperties())
+          .build();
+
+      GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
+      repo.private_(true);
+      repo.create();
+
+      CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(
+          userGithubInfo.getUsername(), userGithubInfo.getPassword());
+
+      Git git;
+
+      String dir = EvidenceGenerator
+          .getDirOndeRepositorioRemotoSeraClonado(userGithubInfo.getRepoName());
+
+      git = Git.cloneRepository().setDirectory(new File(dir))
+          .setCredentialsProvider(credentialsProvider).setURI(userGithubInfo.getRepoNameFullPath())
+          .call();
+
+      StoredConfig config = git.getRepository().getConfig();
+      config.setString("user", null, "name", userGithubInfo.getGithubName());
+      config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
+      config.save();
+
+      // Copia arquivos iniciais
+      Util.convertResourceToFile("initialProjectTemplate/index.html", dir + "/index.html");
+      Util.convertResourceToFile("initialProjectTemplate/README.md", dir + "/README.md");
+
+      git.add().addFilepattern(".").call();
+      git.commit().setMessage("Initial setup").call();
+      git.push().setCredentialsProvider(credentialsProvider).call();
+
+      result = true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      result = false;
     }
-
-    public static boolean criaProjetoInicialNoGithub(UserGithubInfo userGithubInfo) {
-        String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
-        boolean result;
-        try {
-            GitHub github = GitHubBuilder
-                .fromProperties(userGithubInfo.getProperties())
-                .build();
-
-            GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
-            repo.private_(true);
-            repo.create();
-
-            CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(
-                userGithubInfo.getUsername(), userGithubInfo.getPassword());
-
-            Git git;
-
-            String dir = EvidenceGenerator.getDirOndeRepositorioRemotoSeraClonado(userGithubInfo.getRepoName());
-
-            git = Git.cloneRepository().setDirectory(new File(dir))
-                .setCredentialsProvider(credentialsProvider).setURI(userGithubInfo.getRepoNameFullPath()).call();
-
-            StoredConfig config = git.getRepository().getConfig();
-            config.setString("user", null, "name", userGithubInfo.getGithubName());
-            config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
-            config.save();
-
-            // Copia arquivos iniciais
-            Util.convertResourceToFile("initialProjectTemplate/index.html", dir + "/index.html");
-            Util.convertResourceToFile("initialProjectTemplate/README.md", dir + "/README.md");
-
-            git.add().addFilepattern(".").call();
-            git.commit().setMessage("Initial setup").call();
-            git.push().setCredentialsProvider(credentialsProvider).call();
-
-            result = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            result = false;
-        }
-        return result;
-    }
+    return result;
+  }
 }
