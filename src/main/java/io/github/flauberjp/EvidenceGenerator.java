@@ -48,8 +48,8 @@ public class EvidenceGenerator {
       config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
       config.save();
 
-      // Gera evidencia em index.html
-      String fileNameWithItsPath = dir + "/index.html";
+      // Gera evidencia em template_index.html
+      String fileNameWithItsPath = dir + "/template_index.html";
       updateEvidenceFile(fileNameWithItsPath, dataEHoraExecucao);
 
       git.add().addFilepattern(".").call();

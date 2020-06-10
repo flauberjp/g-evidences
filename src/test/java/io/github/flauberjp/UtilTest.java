@@ -11,12 +11,12 @@ class UtilTest {
 
   @Test
   void convertIndexHtmlResourceToFileTest() throws IOException {
-    convertResourceToFileTest("index.html");
+    convertResourceToFileTest("template_index.html");
   }
 
   @Test
   void convertReadmeMdResourceToFileTest() throws IOException {
-    convertResourceToFileTest("README.md");
+    convertResourceToFileTest("template_README.md");
   }
 
   private void convertResourceToFileTest(String filename) throws IOException {
