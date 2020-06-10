@@ -86,7 +86,7 @@ public class Util {
   }
 
   /**
-   * @param resource e.g.: "initialProjectTemplate/index.html"
+   * @param resource e.g.: "initialProjectTemplate/template_index.html"
    * @param file     e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
    * @throws IOException
    */

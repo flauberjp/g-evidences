@@ -52,9 +52,9 @@ public class UserGithubProjectCreator {
       config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
       config.save();
 
-      // Copia arquivos iniciais
-      Util.convertResourceToFile("initialProjectTemplate/index.html", dir + "/index.html");
-      Util.convertResourceToFile("initialProjectTemplate/README.md", dir + "/README.md");
+      // Copia arquivos iniciais usando templates
+      Util.convertResourceToFile("initialProjectTemplate/template_index.html", dir + "/index.html");
+      Util.convertResourceToFile("initialProjectTemplate/template_README.md", dir + "/README.md");
 
       git.add().addFilepattern(".").call();
       git.commit().setMessage("Initial setup").call();
