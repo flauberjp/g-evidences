@@ -45,10 +45,7 @@ class UtilTest {
   }
 
   private void convertResourceToFileTest(String filename) throws IOException {
-    Path tmpFolder = Files.createTempDirectory("tmp");
-    System.out.println(tmpFolder);
-
-    String randomFilename = System.getProperty("java.io.tmpdir") +
+    String randomFilename = Files.createTempDirectory("tmp").toString() + "/" +
         String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
     Util.convertResourceToFile("initialProjectTemplate/" + filename, randomFilename);
     assertTrue(new File(randomFilename).exists());
