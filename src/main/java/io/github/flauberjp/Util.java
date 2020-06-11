@@ -92,9 +92,9 @@ public class Util {
    */
   public static void convertResourceToFile(String resource, String file)
       throws IOException {
-    byte[] buffer = new byte[UserGithubProjectCreator.class.getResourceAsStream(resource)
-        .available()];
-    UserGithubProjectCreator.class.getResourceAsStream(resource).read(buffer);
+    InputStream resourceAsStream = UserGithubProjectCreator.class.getResourceAsStream(resource);
+    byte[] buffer = new byte[resourceAsStream.available()];
+    resourceAsStream.read(buffer);
     File targetFile = new File(file);
     OutputStream outStream = new FileOutputStream(targetFile);
     outStream.write(buffer);
