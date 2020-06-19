@@ -27,9 +27,7 @@ public class UserGithubProjectCreator {
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
     boolean result;
     try {
-      GitHub github = GitHubBuilder
-          .fromProperties(userGithubInfo.getProperties())
-          .build();
+      GitHub github = GitHub.connectUsingPassword(userGithubInfo.getUsername(), userGithubInfo.getPassword());
 
       GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
       repo.private_(true);

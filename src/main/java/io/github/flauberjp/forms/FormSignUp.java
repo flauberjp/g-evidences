@@ -5,7 +5,7 @@ import io.github.flauberjp.Util;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDateTime;
+import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import lombok.SneakyThrows;
+import org.kohsuke.github.GHCompare.User;
 
 public class FormSignUp extends JFrame {
 
@@ -44,7 +46,7 @@ public class FormSignUp extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 525, 370);
     contentPane = new JPanel();
-    contentPane.setToolTipText("e.g. passw0rd");
+    contentPane.setToolTipText("");
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     setContentPane(contentPane);
     contentPane.setLayout(null);
@@ -54,13 +56,14 @@ public class FormSignUp extends JFrame {
     contentPane.add(lblUsername);
 
     txtUsername = new JTextField();
-    txtUsername.setText("e.g. flauberjp");
+    txtUsername.setText("mygitusageevicencesapp");
     txtUsername.setColumns(10);
     txtUsername.setBounds(156, 108, 293, 20);
     contentPane.add(txtUsername);
 
     passwordField = new JPasswordField();
     passwordField.setToolTipText("e.g. passw0rd");
+    passwordField.setText("44dbb46ec17d03c3545a4301370565c45e870ce3");
     passwordField.setBounds(156, 153, 293, 20);
     contentPane.add(passwordField);
 
@@ -72,22 +75,16 @@ public class FormSignUp extends JFrame {
     btnConfirm.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          String username = txtUsername.getText();
-          String password = new String(passwordField.getPassword());
-
-          String[] args = new String[]{
-              "repoName", "<MUDAR_REPO_NAME>",
-              "login", username,
-              "password", password,
-              "githubName", "<MUDAR_GITHUB_NAME>",
-              "githubEmail", "<MUDAR_GITHUB_EMAIL"
-          };
-          UserGithubInfo user = UserGithubInfo.get(Util.createProperties(args));
-
-          Util.WriteObjectToFile(user);
-          System.out.println(LocalDateTime.now());
-
-          JOptionPane.showMessageDialog(null, "Cadastrado com Sucesso");
+          if(UserGithubInfo.validarCredenciais(txtUsername.getText(), String.valueOf(passwordField.getPassword()))) {
+            try {
+              Util.SavePropertiesToFile(UserGithubInfo.get().toProperties(), UserGithubInfo.PROPERTIES_FILE);
+              JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!");
+            } catch (Exception ex) {
+              JOptionPane.showMessageDialog(contentPane, "Credenciais válidas, mas houve problemas ao ler propriedades. Exception: " + ex.getMessage());
+            }
+          } else {
+            JOptionPane.showMessageDialog(contentPane, "Credenciais inválidas");
+          }
 
           FormGitProjects formGitProjects = new FormGitProjects();
           formGitProjects.setVisible(true);
@@ -100,21 +97,6 @@ public class FormSignUp extends JFrame {
     });
     btnConfirm.setBounds(217, 297, 89, 23);
     contentPane.add(btnConfirm);
-
-    /***/
-    JButton btnValidacao = new JButton("Validar Credenciais");
-    btnValidacao.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        if(UserGithubInfo.validarCredenciais(txtUsername.getText(), String.valueOf(passwordField.getPassword()))) {
-          JOptionPane.showMessageDialog(contentPane, "Credenciais válidas");
-        } else {
-          JOptionPane.showMessageDialog(contentPane, "Credenciais inválidas");
-        }
-      }
-    });
-    btnValidacao.setBounds(320, 297, 89, 23);
-    contentPane.add(btnValidacao);
-    /***/
 
     JLabel lblTitle = new JLabel("Dados do seu Github");
     lblTitle.setBounds(192, 23, 203, 14);
