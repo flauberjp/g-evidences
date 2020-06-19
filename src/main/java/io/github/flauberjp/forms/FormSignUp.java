@@ -106,7 +106,19 @@ public class FormSignUp extends JFrame {
     btnValidacao.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         if(UserGithubInfo.validarCredenciais(txtUsername.getText(), String.valueOf(passwordField.getPassword()))) {
-          JOptionPane.showMessageDialog(contentPane, "Credenciais válidas");
+          try {
+            UserGithubInfo userGithubInfo = UserGithubInfo.get();
+            String output =
+                "\tlogin=" + userGithubInfo.getUsername() + "\n" +
+                "\tpassword=" + userGithubInfo.getPassword() + "\n" +
+                "\tgithubName=" + userGithubInfo.getGithubName()+ "\n" +
+                "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n" +
+                "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n" +
+                "\trepoName=" + userGithubInfo.getRepoName();
+            JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
+          } catch (Exception ex) {
+            JOptionPane.showMessageDialog(contentPane, "Credenciais válidas, mas houve problemas ao ler propriedades. Exception: " + ex.getMessage());
+          }
         } else {
           JOptionPane.showMessageDialog(contentPane, "Credenciais inválidas");
         }
