@@ -13,6 +13,7 @@ import org.kohsuke.github.GitHub;
 @Getter
 @ToString
 public class UserGithubInfo implements Serializable {
+  public static final String PROPERTIES_FILE = "propriedades.txt";
   private static UserGithubInfo userGithubInfo;
   //default serialVersion id
   private static final long serialVersionUID = 1L;
@@ -21,7 +22,6 @@ public class UserGithubInfo implements Serializable {
   private String password = ""; // e.g. passw0rd
   private String githubName = ""; // e.g. Flaviano Flauber
   private String githubEmail = ""; // e.g. flauberjp@gmail.com
-  private Properties properties = null;
   private GitHub gitHub = null;
   private GHUser ghUser = null;
   private boolean credenciaisValidas = false;
@@ -30,7 +30,6 @@ public class UserGithubInfo implements Serializable {
   }
 
   private UserGithubInfo(Properties properties) {
-    this.properties = properties;
     username = properties.getProperty("login");
     password = properties.getProperty("password");
     repoName = properties.getProperty("repoName");
@@ -55,7 +54,7 @@ public class UserGithubInfo implements Serializable {
 
   public static UserGithubInfo get() throws IOException {
     if (userGithubInfo == null) {
-      return get(Util.getProperties());
+      return get(Util.getProperties(PROPERTIES_FILE));
     }
     return userGithubInfo;
   }
@@ -73,6 +72,20 @@ public class UserGithubInfo implements Serializable {
     }
     return userGithubInfo;
   }
+
+  public static void reset() {
+    userGithubInfo = null;
+  }
+
+  public Properties toProperties() {
+    return Util.createProperties(new String[]{
+        "repoName", getRepoName(),
+        "login", getUsername(),
+        "password", getPassword(),
+        "githubName", getGithubName(),
+        "githubEmail", getGithubEmail()
+      });
+  };
 
   public String getGithub() {
     return "https://github.com/" + getUsername() + "/";

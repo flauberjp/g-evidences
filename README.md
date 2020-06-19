@@ -1,6 +1,12 @@
 [![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master)
 # my-git-usage-evidences
 
+## github user token for testing
+
+username: mygitusageevicencesapp
+
+password: 44dbb46ec17d03c3545a4301370565c45e870ce3
+
 ## Ajuda Voluntária
 Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
 ## Referências

@@ -12,9 +12,6 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 public class Util {
-
-  public static final String GITHUB_INFORMATION_FILE = ".github";
-
   private Util() {
   }
 
@@ -26,63 +23,45 @@ public class Util {
         .startsWith("jar:");
   }
 
-  public static Properties getProperties() throws IOException {
+  public static Properties getProperties(String propertiesFileName) throws IOException {
     Properties properties = new Properties();
 
     InputStream inputStream;
     if (isRunningFromJar()) {
-      String filePath = new File(".").getCanonicalPath() + "/" + GITHUB_INFORMATION_FILE;
+      String filePath = new File(".").getCanonicalPath() + "/" + propertiesFileName;
       File file = new File(filePath);
       if (!file.exists()) {
         throw new RuntimeException("Arquivo " + filePath + " esperado não existe. ");
       }
       inputStream = new FileInputStream(file);
     } else {
-      inputStream = UserGithubProjectCreator.class.getResourceAsStream(GITHUB_INFORMATION_FILE);
+      inputStream = UserGithubProjectCreator.class.getResourceAsStream(propertiesFileName);
     }
     properties.load(inputStream);
 
     return properties;
   }
 
-  public static void WriteObjectToFile(Object userObj) {
-    try {
-
-      FileOutputStream fileOut = new FileOutputStream("User.txt");
-      ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-      objectOut.writeObject(userObj);
-      objectOut.close();
-      System.out.println("The Object  was succesfully written to a file");
-
-      ReadObjectToFile();
-
+  public static void SavePropertiesToFile(Properties properties, String propertiesFileName) {
+    try (
+        FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
+        ) {
+      properties.store(fileOut, "");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
-
   }
 
-  public static void ReadObjectToFile() {
-    String inputFile = "User.txt";
+  public static Properties ReadPropertiesFromFile(String propertiesFileName) {
+    Properties result = new Properties();
     try (
-        ObjectInputStream objectInput
-            = new ObjectInputStream(new FileInputStream(inputFile));
+        InputStream input = new FileInputStream(propertiesFileName)
     ) {
-
-      while (true) {
-        UserGithubInfo user = (UserGithubInfo) objectInput.readObject();
-
-        System.out.print(user.getGithub() + "\t");
-        System.out.print(user.getGithubName() + "\t");
-        System.out.print(user.getGithubEmail() + "\t");
-        System.out.println(user.getUsername());
-      }
-
-    } catch (EOFException eof) {
-      System.out.println("Reached end of file");
-    } catch (IOException | ClassNotFoundException ex) {
-      ex.printStackTrace();
+      result.load(input);
+    } catch (IOException io) {
+      io.printStackTrace();
     }
+    return result;
   }
 
   /**

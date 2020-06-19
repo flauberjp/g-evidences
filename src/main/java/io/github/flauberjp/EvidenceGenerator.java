@@ -39,7 +39,7 @@ public class EvidenceGenerator {
 
       String dir = getDirOndeRepositorioRemotoSeraClonado(userGithubInfo.getRepoName());
 
-      git = Git.cloneRepository().setDirectory(new File(dir))
+      git = Git.cloneRepository().setDirectory(new File(dir)).setBare(true)
           .setCredentialsProvider(credentialsProvider).setURI(userGithubInfo.getRepoNameFullPath())
           .call();
 
@@ -49,7 +49,7 @@ public class EvidenceGenerator {
       config.save();
 
       // Gera evidencia em template_index.html
-      String fileNameWithItsPath = dir + "/template_index.html";
+      String fileNameWithItsPath = dir + "/index.html";
       updateEvidenceFile(fileNameWithItsPath, dataEHoraExecucao);
 
       git.add().addFilepattern(".").call();
@@ -79,6 +79,7 @@ public class EvidenceGenerator {
           .forEach(File::delete);
     }
   }
+
 
   private static void updateEvidenceFile(String fileNameWithItsPath, String dataEHoraExecucao) {
     Path filePath = Paths.get(fileNameWithItsPath);
