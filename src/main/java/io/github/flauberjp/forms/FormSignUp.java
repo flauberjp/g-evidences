@@ -101,6 +101,21 @@ public class FormSignUp extends JFrame {
     btnConfirm.setBounds(217, 297, 89, 23);
     contentPane.add(btnConfirm);
 
+    /***/
+    JButton btnValidacao = new JButton("Validar Credenciais");
+    btnValidacao.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if(UserGithubInfo.validarCredenciais(txtUsername.getText(), String.valueOf(passwordField.getPassword()))) {
+          JOptionPane.showMessageDialog(contentPane, "Credenciais válidas");
+        } else {
+          JOptionPane.showMessageDialog(contentPane, "Credenciais inválidas");
+        }
+      }
+    });
+    btnValidacao.setBounds(320, 297, 89, 23);
+    contentPane.add(btnValidacao);
+    /***/
+
     JLabel lblTitle = new JLabel("Dados do seu Github");
     lblTitle.setBounds(192, 23, 203, 14);
     contentPane.add(lblTitle);
