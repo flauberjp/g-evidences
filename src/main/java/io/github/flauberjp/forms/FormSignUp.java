@@ -18,13 +18,8 @@ import javax.swing.border.EmptyBorder;
 public class FormSignUp extends JFrame {
 
   private JPanel contentPane;
-  private JTextField txtRepoName;
   private JTextField txtUsername;
   private JPasswordField passwordField;
-  private JLabel lblGithubName;
-  private JTextField txtGithubName;
-  private JLabel lblGithubEmail;
-  private JTextField txtGithubEmail;
 
   /**
    * Launch the application.
@@ -54,16 +49,6 @@ public class FormSignUp extends JFrame {
     setContentPane(contentPane);
     contentPane.setLayout(null);
 
-    txtRepoName = new JTextField();
-    txtRepoName.setText("e.g. \"xxxx\" or \"contributions-cal\"");
-    txtRepoName.setBounds(156, 66, 293, 20);
-    contentPane.add(txtRepoName);
-    txtRepoName.setColumns(10);
-
-    JLabel lblRepoName = new JLabel("Nome do Reposit\u00F3rio");
-    lblRepoName.setBounds(35, 69, 111, 14);
-    contentPane.add(lblRepoName);
-
     JLabel lblUsername = new JLabel("Nome de Usu\u00E1rio");
     lblUsername.setBounds(35, 111, 111, 14);
     contentPane.add(lblUsername);
@@ -83,42 +68,19 @@ public class FormSignUp extends JFrame {
     lblPassword.setBounds(35, 156, 111, 14);
     contentPane.add(lblPassword);
 
-    lblGithubName = new JLabel("Nome do Github");
-    lblGithubName.setBounds(35, 198, 111, 14);
-    contentPane.add(lblGithubName);
-
-    txtGithubName = new JTextField();
-    txtGithubName.setText("e.g. My github name");
-    txtGithubName.setColumns(10);
-    txtGithubName.setBounds(156, 195, 293, 20);
-    contentPane.add(txtGithubName);
-
-    lblGithubEmail = new JLabel("Email do Github");
-    lblGithubEmail.setBounds(35, 239, 111, 14);
-    contentPane.add(lblGithubEmail);
-
-    txtGithubEmail = new JTextField();
-    txtGithubEmail.setText("e.g. My github email");
-    txtGithubEmail.setColumns(10);
-    txtGithubEmail.setBounds(156, 236, 293, 20);
-    contentPane.add(txtGithubEmail);
-
     JButton btnConfirm = new JButton("Confirmar");
     btnConfirm.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          String repoName = txtRepoName.getText();
           String username = txtUsername.getText();
           String password = new String(passwordField.getPassword());
-          String githubname = txtGithubName.getText();
-          String githubemail = txtGithubEmail.getText();
 
           String[] args = new String[]{
-              "repoName", repoName,
+              "repoName", "<MUDAR_REPO_NAME>",
               "login", username,
               "password", password,
-              "githubName", githubname,
-              "githubEmail", githubemail
+              "githubName", "<MUDAR_GITHUB_NAME>",
+              "githubEmail", "<MUDAR_GITHUB_EMAIL"
           };
           UserGithubInfo user = UserGithubInfo.get(Util.createProperties(args));
 
