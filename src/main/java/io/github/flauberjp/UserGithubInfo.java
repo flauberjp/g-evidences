@@ -52,6 +52,10 @@ public class UserGithubInfo implements Serializable {
     }
   }
 
+  public static void setRepoName(String repoName) {
+    userGithubInfo.repoName = repoName;
+  }
+
   public static UserGithubInfo get() throws IOException {
     if (userGithubInfo == null) {
       return get(Util.getProperties(PROPERTIES_FILE));
