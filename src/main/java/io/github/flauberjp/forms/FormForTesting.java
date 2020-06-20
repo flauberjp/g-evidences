@@ -25,6 +25,7 @@ public class FormForTesting extends JFrame {
   private JPanel contentPane;
   private JTextField txtUsername;
   private JPasswordField passwordField;
+  private JTextField txtRepoName;
 
   /**
    * Launch the application.
@@ -65,11 +66,20 @@ public class FormForTesting extends JFrame {
   private void geraPainelPrincipal() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 525, 397);
+
     contentPane = new JPanel();
-    contentPane.setToolTipText("");
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     setContentPane(contentPane);
     contentPane.setLayout(null);
+
+    JLabel lblTeste = new JLabel("Área de testes");
+    lblTeste.setBounds(220, 5, 203, 14);
+    lblTeste.setForeground(Color.red);
+    contentPane.add(lblTeste);
+
+    JLabel lblTitle = new JLabel("Dados do seu Github");
+    lblTitle.setBounds(192, 23, 203, 14);
+    contentPane.add(lblTitle);
 
     JLabel lblUsername = new JLabel("Nome de Usu\u00E1rio");
     lblUsername.setBounds(35, 111, 111, 14);
@@ -81,24 +91,25 @@ public class FormForTesting extends JFrame {
     txtUsername.setBounds(156, 108, 293, 20);
     contentPane.add(txtUsername);
 
-    passwordField = new JPasswordField();
-    passwordField.setToolTipText("e.g. passw0rd");
-    passwordField.setText("4e6e43db83b57aa5431e1280f2a50935cdfbf300");
-    passwordField.setBounds(156, 153, 293, 20);
-    contentPane.add(passwordField);
-
     JLabel lblPassword = new JLabel("Password");
-    lblPassword.setBounds(35, 156, 111, 14);
+    lblPassword.setBounds(35, 138, 111, 14);
     contentPane.add(lblPassword);
 
-    JLabel lblTitle = new JLabel("Dados do seu Github");
-    lblTitle.setBounds(192, 23, 203, 14);
-    contentPane.add(lblTitle);
+    passwordField = new JPasswordField();
+    passwordField.setToolTipText("e.g. passw0rd");
+    passwordField.setText("096de2970af549347ab1b7c07ed67dc3fdc5f8a9");
+    passwordField.setBounds(156, 135, 293, 20);
+    contentPane.add(passwordField);
 
-    JLabel lblTeste = new JLabel("Área de testes");
-    lblTeste.setBounds(220, 5, 203, 14);
-    lblTeste.setForeground(Color.red);
-    contentPane.add(lblTeste);
+    JLabel lblRepoName = new JLabel("Repositório");
+    lblRepoName.setBounds(35, 161, 111, 14);
+    contentPane.add(lblRepoName);
+
+    txtRepoName = new JTextField();
+    txtRepoName.setText("my-git-usage-evidences-repo");
+    txtRepoName.setColumns(10);
+    txtRepoName.setBounds(156, 158, 293, 20);
+    contentPane.add(txtRepoName);
   }
 
   private void botaoGerarEvidencia() {
@@ -107,7 +118,9 @@ public class FormForTesting extends JFrame {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
         try {
-          if(EvidenceGenerator.geraEvidenciaDeUsoDoGit(UserGithubInfo.get())) {
+          UserGithubInfo userGithubInfo = UserGithubInfo.get();
+          userGithubInfo.setRepoName(txtRepoName.getText());
+          if(EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo)) {
             JOptionPane.showMessageDialog(contentPane, "Evidência gerada.");
           } else {
             JOptionPane.showMessageDialog(contentPane, "Problemas na geração de evidências.");
@@ -127,7 +140,9 @@ public class FormForTesting extends JFrame {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
         try {
-          UserGithubProjectCreator.criaProjetoInicialNoGithub(UserGithubInfo.get());
+          UserGithubInfo userGithubInfo = UserGithubInfo.get();
+          userGithubInfo.setRepoName(txtRepoName.getText());
+          UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
           JOptionPane.showMessageDialog(contentPane, "Projeto criado.");
         } catch (Exception ex) {
           JOptionPane.showMessageDialog(contentPane, "Problemas na criação do projeto. Exception: " + ex.getMessage());
