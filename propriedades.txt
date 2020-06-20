@@ -1,7 +1,0 @@
-#
-#Sat Jun 20 18:44:52 BRT 2020
-githubName=my-git-usage-evidences
-password=
-repoName=my-git-usage-evidences-repo
-githubEmail=mygitusageevicencesapp@gmail.com
-login=mygitusageevicencesapp
