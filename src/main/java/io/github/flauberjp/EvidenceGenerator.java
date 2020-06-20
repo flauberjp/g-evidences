@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.api.Git;
@@ -18,6 +19,11 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public class EvidenceGenerator {
+  private static final Path workspace = Paths.get("delete-me");
+
+  public static Path getWorkspace() {
+    return workspace;
+  }
 
   public static void main(String[] args) throws IOException {
     System.out.println("Programa iniciado às: " + LocalDateTime.now());
@@ -37,9 +43,10 @@ public class EvidenceGenerator {
 
       Git git;
 
+      resetWorkspace();
       String dir = getDirOndeRepositorioRemotoSeraClonado(userGithubInfo.getRepoName());
 
-      git = Git.cloneRepository().setDirectory(new File(dir)).setBare(true)
+      git = Git.cloneRepository().setDirectory(new File(dir))
           .setCredentialsProvider(credentialsProvider).setURI(userGithubInfo.getRepoNameFullPath())
           .call();
 
@@ -63,15 +70,26 @@ public class EvidenceGenerator {
     return result;
   }
 
-  public static String getDirOndeRepositorioRemotoSeraClonado(String repoName) throws IOException {
-    String dir = System.getProperty("java.io.tmpdir");
-    dir += "/" + repoName;
-    Path path = Paths.get(dir);
-    deletaDirDoRepositorioCasoExista(path);
+  public static void resetWorkspace() throws IOException {
+    if (Files.exists(getWorkspace())) {
+      deletaDir(getWorkspace());
+    }
+    getWorkspace().toFile().mkdir();
+  }
+
+  public static String geraDirAleatorioNaWorkspace() {
+    String dir = getWorkspace()
+        + "/"
+        + String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
+    new File(dir).mkdir();
     return dir;
   }
 
-  private static void deletaDirDoRepositorioCasoExista(Path path) throws IOException {
+  public static String getDirOndeRepositorioRemotoSeraClonado(String repoName) throws IOException {
+    return geraDirAleatorioNaWorkspace() + "/" + repoName;
+  }
+
+  private static void deletaDir(Path path) throws IOException {
     if (Files.exists(path)) {
       Files.walk(path)
           .sorted(Comparator.reverseOrder())
@@ -79,7 +97,6 @@ public class EvidenceGenerator {
           .forEach(File::delete);
     }
   }
-
 
   private static void updateEvidenceFile(String fileNameWithItsPath, String dataEHoraExecucao) {
     Path filePath = Paths.get(fileNameWithItsPath);

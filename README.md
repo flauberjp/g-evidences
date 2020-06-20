@@ -5,7 +5,7 @@
 
 username: mygitusageevicencesapp
 
-password: 44dbb46ec17d03c3545a4301370565c45e870ce3
+password: 4e6e43db83b57aa5431e1280f2a50935cdfbf300
 
 ## Ajuda Voluntária
 Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
