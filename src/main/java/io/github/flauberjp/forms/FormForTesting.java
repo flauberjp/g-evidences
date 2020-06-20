@@ -97,7 +97,7 @@ public class FormForTesting extends JFrame {
 
     passwordField = new JPasswordField();
     passwordField.setToolTipText("e.g. passw0rd");
-    passwordField.setText("096de2970af549347ab1b7c07ed67dc3fdc5f8a9");
+    passwordField.setText("4e6e43db83b57aa5431e1280f2a50935cdfbf300");
     passwordField.setBounds(156, 135, 293, 20);
     contentPane.add(passwordField);
 
