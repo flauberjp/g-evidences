@@ -96,8 +96,8 @@ public class FormForTesting extends JFrame {
     contentPane.add(lblPassword);
 
     passwordField = new JPasswordField();
-    passwordField.setToolTipText("e.g. passw0rd");
-    passwordField.setText("4e6e43db83b57aa5431e1280f2a50935cdfbf300");
+    passwordField.setToolTipText("e.g. 4e6e43db83b57aa5431e1280f2a50935cdfbf300");
+    passwordField.setText("");
     passwordField.setBounds(156, 135, 293, 20);
     contentPane.add(passwordField);
 
