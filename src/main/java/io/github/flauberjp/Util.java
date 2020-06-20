@@ -42,7 +42,7 @@ public class Util {
     return properties;
   }
 
-  public static void SavePropertiesToFile(Properties properties, String propertiesFileName) {
+  public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
         ) {
@@ -52,7 +52,7 @@ public class Util {
     }
   }
 
-  public static Properties ReadPropertiesFromFile(String propertiesFileName) {
+  public static Properties readPropertiesFromFile(String propertiesFileName) {
     Properties result = new Properties();
     try (
         InputStream input = new FileInputStream(propertiesFileName)

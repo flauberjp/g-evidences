@@ -5,7 +5,6 @@ import io.github.flauberjp.Util;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import lombok.SneakyThrows;
-import org.kohsuke.github.GHCompare.User;
 
 public class FormSignUp extends JFrame {
 
@@ -77,7 +74,7 @@ public class FormSignUp extends JFrame {
         try {
           if(UserGithubInfo.validarCredenciais(txtUsername.getText(), String.valueOf(passwordField.getPassword()))) {
             try {
-              Util.SavePropertiesToFile(UserGithubInfo.get().toProperties(), UserGithubInfo.PROPERTIES_FILE);
+              Util.savePropertiesToFile(UserGithubInfo.get().toProperties(), UserGithubInfo.PROPERTIES_FILE);
               JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!");
             } catch (Exception ex) {
               JOptionPane.showMessageDialog(contentPane, "Credenciais válidas, mas houve problemas ao ler propriedades. Exception: " + ex.getMessage());
