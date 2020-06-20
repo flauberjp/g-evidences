@@ -23,7 +23,7 @@ class UtilTest {
   private void convertResourceToFileTest(String filename) throws IOException {
     String randomFilename = Files.createTempDirectory("tmp").toString() + "/" +
         String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
-    Util.convertResourceToFile("initialProjectTemplate/" + filename, randomFilename);
+    Util.convertResourceToFile("templates/initialGithubProject/" + filename, randomFilename);
     assertTrue(new File(randomFilename).exists());
   }
 }
