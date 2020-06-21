@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 public class Util {
@@ -28,7 +29,7 @@ public class Util {
 
     InputStream inputStream;
     if (isRunningFromJar()) {
-      String filePath = new File(".").getCanonicalPath() + "/" + propertiesFileName;
+      String filePath = getCurrentJarDirectory() + "/" + propertiesFileName;
       File file = new File(filePath);
       if (!file.exists()) {
         throw new RuntimeException("Arquivo " + filePath + " esperado não existe. ");
@@ -42,7 +43,17 @@ public class Util {
     return properties;
   }
 
-  public static void SavePropertiesToFile(Properties properties, String propertiesFileName) {
+  private static String getCurrentJarDirectory() {
+    try {
+      return new File(Util.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
+    } catch (URISyntaxException exception) {
+      exception.printStackTrace();
+    }
+
+    return null;
+  }
+
+  public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
         ) {
@@ -52,7 +63,7 @@ public class Util {
     }
   }
 
-  public static Properties ReadPropertiesFromFile(String propertiesFileName) {
+  public static Properties readPropertiesFromFile(String propertiesFileName) {
     Properties result = new Properties();
     try (
         InputStream input = new FileInputStream(propertiesFileName)
@@ -65,7 +76,7 @@ public class Util {
   }
 
   /**
-   * @param resource e.g.: "initialProjectTemplate/template_index.html"
+   * @param resource e.g.: "templates/initialGithubProject/template_index.html"
    * @param file     e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
    * @throws IOException
    */

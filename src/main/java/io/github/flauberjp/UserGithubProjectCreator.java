@@ -51,8 +51,8 @@ public class UserGithubProjectCreator {
       config.save();
 
       // Copia arquivos iniciais usando templates
-      Util.convertResourceToFile("initialProjectTemplate/template_index.html", dir + "/index.html");
-      Util.convertResourceToFile("initialProjectTemplate/template_README.md", dir + "/README.md");
+      Util.convertResourceToFile("templates/initialGithubProject/template_index.html", dir + "/index.html");
+      Util.convertResourceToFile("templates/initialGithubProject/template_README.md", dir + "/README.md");
 
       git.add().addFilepattern(".").call();
       git.commit().setMessage("Initial setup").call();

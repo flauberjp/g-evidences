@@ -1,6 +1,7 @@
 package io.github.flauberjp.forms;
 
 import io.github.flauberjp.EvidenceGenerator;
+import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.Util;
@@ -18,7 +19,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
-import org.kohsuke.github.GHCompare.User;
 
 public class FormForTesting extends JFrame {
 
@@ -59,7 +59,7 @@ public class FormForTesting extends JFrame {
 
     botaoGerarEvidencia();
 
-    botaoSemFuncaoAinda();
+    botaoGerarHook();
 
   }
 
@@ -163,7 +163,7 @@ public class FormForTesting extends JFrame {
           JOptionPane.showMessageDialog(contentPane, "Arquivo inexistente, valide as suas credenciais primeiro!", "Erro", JOptionPane.ERROR_MESSAGE);
           return;
         }
-        UserGithubInfo userGithubInfo = UserGithubInfo.get(Util.ReadPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE));
+        UserGithubInfo userGithubInfo = UserGithubInfo.get(Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE));
         String output =
             "\tlogin=" + userGithubInfo.getUsername() + "\n" +
             "\tpassword=" + userGithubInfo.getPassword() + "\n" +
@@ -184,7 +184,7 @@ public class FormForTesting extends JFrame {
       public void actionPerformed(ActionEvent e) {
         try {
           UserGithubInfo.reset();
-          Util.SavePropertiesToFile(UserGithubInfo.get(txtUsername.getText(), String.valueOf(passwordField.getPassword())).toProperties(), UserGithubInfo.PROPERTIES_FILE);
+          Util.savePropertiesToFile(UserGithubInfo.get(txtUsername.getText(), String.valueOf(passwordField.getPassword())).toProperties(), UserGithubInfo.PROPERTIES_FILE);
           JOptionPane.showMessageDialog(contentPane, "Dados salvos!");
         } catch (Exception ex) {
           JOptionPane.showMessageDialog(contentPane, "Problemas ao tentar salvar dados. Exception: " + ex.getMessage());
@@ -223,12 +223,16 @@ public class FormForTesting extends JFrame {
     contentPane.add(btnValidacao);
   }
 
-  private void botaoSemFuncaoAinda() {
-    JButton btn = new JButton("Sem função atribuída ainda");
+  private void botaoGerarHook() {
+    JButton btn = new JButton("Gerar hook(arquivo pre-push)");
     btn.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(contentPane, "Função não implementada ainda");
+        if(GenerateHook.generateHook()) {
+          JOptionPane.showMessageDialog(contentPane, "Arquivo gerado.");
+        } else {
+          JOptionPane.showMessageDialog(contentPane, "Problemas na geração do hook.");
+        }
       }
     });
     btn.setBounds(156, 324, 300, 23);
