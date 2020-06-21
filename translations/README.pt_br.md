@@ -10,7 +10,7 @@
 Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no github para auxiliar nos testes, para mais informções sobre como utiliza-la, pode contatar @flauberjp
 
 ## Ajuda Voluntária
-Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
+Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.pt_br.md) para verificar como você pode começar a ajudar.
 
 ## Usando a solução, usando alguns passos manuais
 
