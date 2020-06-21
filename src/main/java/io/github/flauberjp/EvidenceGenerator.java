@@ -55,8 +55,8 @@ public class EvidenceGenerator {
       config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
       config.save();
 
-      // Gera evidencia em template_index.html
-      String fileNameWithItsPath = dir + "/index.html";
+      // Gera evidencia em evidences.txt
+      String fileNameWithItsPath = dir + "/evidences.txt";
       updateEvidenceFile(fileNameWithItsPath, dataEHoraExecucao);
 
       git.add().addFilepattern(".").call();
@@ -80,7 +80,7 @@ public class EvidenceGenerator {
   public static String geraDirAleatorioNaWorkspace() {
     String dir = getWorkspace()
         + "/"
-        + String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
+        + Util.getRandomStr();
     new File(dir).mkdir();
     return dir;
   }
@@ -104,7 +104,7 @@ public class EvidenceGenerator {
       Stream<String> lines = Files.lines(filePath, Charset.forName("UTF-8"));
       List<String> replacedLine = lines
           .map(line ->
-              line.replace("<tbody>", "<tbody><tr><td>" + dataEHoraExecucao + "</td></tr>")
+              line.replace("List of evidences of git usage:", "List of evidences of git usage:\n" + dataEHoraExecucao)
           )
           .collect(Collectors.toList());
       Files.write(filePath, replacedLine, Charset.forName("UTF-8"));

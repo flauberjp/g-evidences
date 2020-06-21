@@ -22,6 +22,7 @@ import lombok.SneakyThrows;
 
 public class FormForTesting extends JFrame {
 
+  public static final String GIT_USER_FOR_TESTING = "mygitusageevicencesapp";
   private JPanel contentPane;
   private JTextField txtUsername;
   private JPasswordField passwordField;
@@ -86,7 +87,7 @@ public class FormForTesting extends JFrame {
     contentPane.add(lblUsername);
 
     txtUsername = new JTextField();
-    txtUsername.setText("mygitusageevicencesapp");
+    txtUsername.setText(GIT_USER_FOR_TESTING);
     txtUsername.setColumns(10);
     txtUsername.setBounds(156, 108, 293, 20);
     contentPane.add(txtUsername);
