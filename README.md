@@ -7,6 +7,47 @@ Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no gi
 
 ## Ajuda Voluntária
 Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
+
+## Usando a solução, usando alguns passos manuais
+
+1. Gerar o fat-jar
+    * Use seu IDE escolhendo o Maven Lifecycle package ou use a linha de comando, executando no raíz do projeto o comando: mvn package
+    * O arquivo será gerado em ./target/my-git-usage-evidences-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+2. Criei diretório para armazenar os arquivo da solução
+    * Crie o diretório my-git-usage-evidences em C:\Program Files
+    * Copie o arquivo my-git-usage-evidences-1.0-SNAPSHOT-jar-with-dependencies.jar para C:\Program Files\my-git-usage-evidences
+
+3. Crie projeto no seu repositório remoto
+    * Abra o prompt de comando  como administrador na pasta C:\Program Files\my-git-usage-evidences, criada no passo anterior
+    * A partir desse caminho, execute o seguinte comando: java -cp my-git-usage-evidences-1.0-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting
+    * No formulário que surge, digite suas credenciais do github(username e password), e clique no botão Validar Credenciais
+    * As credenciais estando validadas, clique no botão Criar projeto no repo remoto
+    * Verifique seu repositório remoto e confirme que um repositório chamado my-git-usage-evidences-repo foi criado (esse nome é customizável, é só alterar o campo Repositório no formulário, a título de exemplo vamos assumir que você escolheu o valor padrão my-git-usage-evidences-repo)
+
+4. Gerar o arquivo propriedades.txt
+    * Abra o prompt de comando como administrador na pasta C:\Program Files\my-git-usage-evidences
+    * A partir desse caminho, execute o seguinte comando: java -cp my-git-usage-evidences-1.0-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting
+    * No formulário que surge, digite suas credenciais do github(username e password), e clique no botão Validar Credenciais. 
+    * As credenciais estando validadas, clique no botão Salvar Dados em propriedades.txt(Aqui o Repositório deve ainda conter o mesmo nome do repo que você usou no passo anterior, my-git-usage-evidences-repo)
+    * Confirme que o arquivo propriedades.txt foi gerado em C:\Program Files\my-git-usage-evidences
+
+5. Gerar o hook
+    * Abra o prompt de comando como administrador, vá para a pasta C:\Program Files\my-git-usage-evidences
+    * A partir desse caminho, execute o seguinte comando: java -cp my-git-usage-evidences-1.0-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting
+    * No formulário que surge, clique no botão Gerar hook(arquivo pre-push)
+    * Confirme que o arquivo pre-push foi gerado em C:\Program Files\my-git-usage-evidences
+
+6. Usar a solução
+    * Escolha um dos seus projeto git (um projeto git é um que contém uma pasta oculta .git no seu raíz)
+    * Copie o arquivo C:\Program Files\my-git-usage-evidences\pre-push para a pasta .git\hooks do seu projeto git
+
+7. Testando a solução
+    * Abra seu projeto git onde você configurou esta solução
+    * Faça uma alteração em qualquer arquivo, commit essa alteração e execute um push
+    * Verifique no seu github o repo criado no passo "Crie projeto no seu repositório remoto"
+    * Assumindo que o nome do repositório é o nome sugerido por padrão,  my-git-usage-evidences-repo, você pode verificar que o número de commits foi incrementado (repita a operação para ve-lo aumentar mais uma vez se preciso).
+
 ## Referências
 - [GitHub API for Java](https://github-api.kohsuke.org/)
 - [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
