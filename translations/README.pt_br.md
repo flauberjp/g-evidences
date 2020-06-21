@@ -1,25 +1,29 @@
 [![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master) <a href="translations/README.md"><img align="right" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/google/241/flag-united-states_1f1fa-1f1f8.png" width="22"></a> <a href="translations/README.pt_br.md"><img align="right" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/google/241/flag-brazil_1f1e7-1f1f7.png" width="22"></a>
+ 
+
 # my-git-usage-evidences
+
+
 
 ## github user for testing
 
-This project has an [Github account](https://github.com/mygitusageevicencesapp) to support testing, for more information how to use it, please contact @flauberjp.
+Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no github para auxiliar nos testes, para mais informções sobre como utiliza-la, pode contatar @flauberjp
 
-## Call for Action
-Volunteers are welcome! If you would like to join the team, read instructions in [Be a volunteer](CONTRIBUTING.md) to check what is needed in order to start.
+## Ajuda Voluntária
+Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
 
-## Using the solution, yet using few manuals steops
+## Usando a solução, usando alguns passos manuais
 
-1. Generate the fat-jar
-    * Use your IDE chosing package Maven Lifecycle or use the command line, running the following command in the root of the project: mvn package    
-    * A file is generated at ./target/my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar
+1. Gerar o fat-jar
+    * Use seu IDE escolhendo o Maven Lifecycle package ou use a linha de comando, executando no raíz do projeto o comando: mvn package
+    * O arquivo será gerado em ./target/my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar
 
-2. Create a directory to store the files of this solution
-    * Create the directory my-git-usage-evidences at C:\Program Files
-    * Copy the file my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar to C:\Program Files\my-git-usage-evidences
+2. Criei diretório para armazenar os arquivo da solução
+    * Crie o diretório my-git-usage-evidences em C:\Program Files
+    * Copie o arquivo my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar para C:\Program Files\my-git-usage-evidences
 
-3. Create a project in your remote repository
-    * As administrador open the command prompt at C:\Program Files\my-git-usage-evidences, directory which was created in the previous step
+3. Crie projeto no seu repositório remoto
+    * Abra o prompt de comando  como administrador na pasta C:\Program Files\my-git-usage-evidences, criada no passo anterior
     * A partir desse caminho, execute o seguinte comando: java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting
     * No formulário que surge, digite suas credenciais do github(username e password), e clique no botão Validar Credenciais
     * As credenciais estando validadas, clique no botão Criar projeto no repo remoto
@@ -48,7 +52,7 @@ Volunteers are welcome! If you would like to join the team, read instructions in
     * Verifique no seu github o repo criado no passo "Crie projeto no seu repositório remoto"
     * Assumindo que o nome do repositório é o nome sugerido por padrão,  my-git-usage-evidences-repo, você pode verificar que o número de commits foi incrementado (repita a operação para ve-lo aumentar mais uma vez se preciso).
 
-## References
+## Referências
 - [GitHub API for Java](https://github-api.kohsuke.org/)
 - [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
 - [How to load an external properties file from a maven java project](https://stackoverflow.com/questions/34712885/how-to-load-an-external-properties-file-from-a-maven-java-project)
