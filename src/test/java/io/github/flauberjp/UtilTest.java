@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Random;
 import org.junit.jupiter.api.Test;
 
 class UtilTest {
@@ -22,7 +21,7 @@ class UtilTest {
 
   private void convertResourceToFileTest(String filename) throws IOException {
     String randomFilename = Files.createTempDirectory("tmp").toString() + "/" +
-        String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
+        Util.getRandomStr();
     Util.convertResourceToFile("templates/initialGithubProject/" + filename, randomFilename);
     assertTrue(new File(randomFilename).exists());
   }
