@@ -1,6 +1,7 @@
 package io.github.flauberjp.forms;
 
 import io.github.flauberjp.EvidenceGenerator;
+import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.Util;
@@ -58,7 +59,7 @@ public class FormForTesting extends JFrame {
 
     botaoGerarEvidencia();
 
-    botaoSemFuncaoAinda();
+    botaoGerarHook();
 
   }
 
@@ -222,12 +223,16 @@ public class FormForTesting extends JFrame {
     contentPane.add(btnValidacao);
   }
 
-  private void botaoSemFuncaoAinda() {
-    JButton btn = new JButton("Sem função atribuída ainda");
+  private void botaoGerarHook() {
+    JButton btn = new JButton("Gerar hook(arquivo pre-push)");
     btn.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(contentPane, "Função não implementada ainda");
+        if(GenerateHook.generateHook()) {
+          JOptionPane.showMessageDialog(contentPane, "Arquivo gerado.");
+        } else {
+          JOptionPane.showMessageDialog(contentPane, "Problemas na geração do hook.");
+        }
       }
     });
     btn.setBounds(156, 324, 300, 23);
