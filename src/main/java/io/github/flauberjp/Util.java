@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.Properties;
+import java.util.Random;
 
 public class Util {
   private Util() {
@@ -106,5 +107,9 @@ public class Util {
     }
 
     return props;
+  }
+
+  public static String getRandomStr() {
+    return String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
   }
 }
