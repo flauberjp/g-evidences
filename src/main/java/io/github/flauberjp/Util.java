@@ -91,9 +91,9 @@ public class Util {
 	        for (File file : files) {
 	            if (file.isDirectory()) {
 	            	if (file.getName().equals(".git")) {
-	            		System.out.println("é git:" + file.getCanonicalPath());
+	            		System.out.println("git:" + file.getCanonicalPath());
 					}
-	                
+
 	                listGitFiles(file);
 	            }
 	        }
