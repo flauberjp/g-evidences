@@ -20,6 +20,8 @@ import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.StoredConfig;
 
 
 public class Util {
@@ -164,5 +166,23 @@ public class Util {
 
       e.printStackTrace();
     }
+  }
+
+  public static boolean isThisGitProjectAGithubOne(String fullPathDirectoryOfAGitProject) {
+    boolean result = false;
+    if(Paths.get(fullPathDirectoryOfAGitProject).toFile().exists()) {
+      if(Paths.get(fullPathDirectoryOfAGitProject + "/.git").toFile().exists()) {
+        try {
+          Git git = Git.open(new File(fullPathDirectoryOfAGitProject));
+          StoredConfig config = git.getRepository().getConfig();
+          result = config.getString("remote", "origin", "url")
+              .toLowerCase()
+              .contains("//github");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return result;
   }
 }
