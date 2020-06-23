@@ -26,7 +26,8 @@ Volunteers are welcome! If you would like to join the team, read instructions in
     * As administrador open the command 
     prompt at _C:\Program Files\my-git-usage-evidences_
     * From that path, run this 
-    command: _java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting_
+    command: 
+      > _java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting_
     * This solution program starts, then enter your github 
     credentials (username and password), and click the button "_Validar Credenciais_"
     * With the credentials validated, click the "_Criar projeto no repo remoto_" button
@@ -34,7 +35,7 @@ Volunteers are welcome! If you would like to join the team, read instructions in
       * Here we are assuming the value of the text field _Repositório_ was not modified
 
 4. Generate the file _propriedades.txt_
-    * Back to the solution program, click "_Salvar Dados em propriedades.txt" button
+    * Back to the solution program, click "_Salvar Dados em propriedades.txt_" button
     * Confirm that arquivo _propriedades.txt_ file was generated 
     at _C:\Program Files\my-git-usage-evidences_
 
