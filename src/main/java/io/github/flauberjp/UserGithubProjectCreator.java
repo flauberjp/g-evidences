@@ -1,5 +1,6 @@
 package io.github.flauberjp;
 
+import io.github.flauberjp.forms.FormForTesting;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -11,7 +12,6 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
 
 public class UserGithubProjectCreator {
 
@@ -27,12 +27,12 @@ public class UserGithubProjectCreator {
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
     boolean result;
     try {
-      GitHub github = GitHubBuilder
-          .fromProperties(userGithubInfo.getProperties())
-          .build();
+      GitHub github = GitHub.connectUsingPassword(userGithubInfo.getUsername(), userGithubInfo.getPassword());
 
       GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
-      repo.private_(true);
+      if(!userGithubInfo.getUsername().equalsIgnoreCase(FormForTesting.GIT_USER_FOR_TESTING)) {
+        repo.private_(true);
+      }
       repo.create();
 
       CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(
@@ -53,8 +53,9 @@ public class UserGithubProjectCreator {
       config.save();
 
       // Copia arquivos iniciais usando templates
-      Util.convertResourceToFile("initialProjectTemplate/template_index.html", dir + "/index.html");
-      Util.convertResourceToFile("initialProjectTemplate/template_README.md", dir + "/README.md");
+      Util.convertResourceToFile("templates/initialGithubProject/template_index.html", dir + "/index.html");
+      Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt", dir + "/evidences.txt");
+      Util.convertResourceToFile("templates/initialGithubProject/template_README.md", dir + "/README.md");
 
       git.add().addFilepattern(".").call();
       git.commit().setMessage("Initial setup").call();

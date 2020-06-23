@@ -1,17 +1,30 @@
 package io.github.flauberjp;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
+import java.util.Random;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import lombok.SneakyThrows;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.StoredConfig;
+
 
 public class Util {
 
@@ -29,63 +42,55 @@ public class Util {
         .startsWith("jar:");
   }
 
-  public static Properties getProperties() throws IOException {
+  public static Properties getProperties(String propertiesFileName) throws IOException {
     Properties properties = new Properties();
 
     InputStream inputStream;
     if (isRunningFromJar()) {
-      String filePath = new File(".").getCanonicalPath() + "/" + GITHUB_INFORMATION_FILE;
+      String filePath = getCurrentJarDirectory() + "/" + propertiesFileName;
       File file = new File(filePath);
       if (!file.exists()) {
         throw new RuntimeException("Arquivo " + filePath + " esperado não existe. ");
       }
       inputStream = new FileInputStream(file);
     } else {
-      inputStream = UserGithubProjectCreator.class.getResourceAsStream(GITHUB_INFORMATION_FILE);
+      inputStream = UserGithubProjectCreator.class.getResourceAsStream(propertiesFileName);
     }
     properties.load(inputStream);
 
     return properties;
   }
 
-  public static void WriteObjectToFile(Object userObj) {
+  private static String getCurrentJarDirectory() {
     try {
+      return new File(Util.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
+    } catch (URISyntaxException exception) {
+      exception.printStackTrace();
+    }
 
-      FileOutputStream fileOut = new FileOutputStream("User.txt");
-      ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-      objectOut.writeObject(userObj);
-      objectOut.close();
-      System.out.println("The Object  was succesfully written to a file");
+    return null;
+  }
 
-      ReadObjectFromFile();
-
+  public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
+    try (
+        FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
+        ) {
+      properties.store(fileOut, "");
     } catch (Exception ex) {
       ex.printStackTrace();
     }
-
   }
 
-  public static void ReadObjectFromFile() {
-    String inputFile = "User.txt";
+  public static Properties readPropertiesFromFile(String propertiesFileName) {
+    Properties result = new Properties();
     try (
-        ObjectInputStream objectInput
-            = new ObjectInputStream(new FileInputStream(inputFile));
+        InputStream input = new FileInputStream(propertiesFileName)
     ) {
-
-      while (true) {
-        UserGithubInfo user = (UserGithubInfo) objectInput.readObject();
-
-        System.out.print(user.getGithub() + "\t");
-        System.out.print(user.getGithubName() + "\t");
-        System.out.print(user.getGithubEmail() + "\t");
-        System.out.println(user.getUsername());
-      }
-
-    } catch (EOFException eof) {
-      System.out.println("Reached end of file");
-    } catch (IOException | ClassNotFoundException ex) {
-      ex.printStackTrace();
+      result.load(input);
+    } catch (IOException io) {
+      io.printStackTrace();
     }
+    return result;
   }
 
   public static void addGitFiles(File dir) {
@@ -94,7 +99,9 @@ public class Util {
 	        for (File file : files) {
 	            if (file.isDirectory()) {
 	            	if (file.getName().equals(".git")) {
-	            		gitDir.add(file.getCanonicalPath());
+	            	  if (!isThisGitProjectAGithubOne(file.getParentFile().getCanonicalPath())) {
+                        gitDir.add(file.getParentFile().getCanonicalPath());
+                      }
 					}
 	                addGitFiles(file);
 	            }
@@ -103,7 +110,6 @@ public class Util {
 	        e.printStackTrace();
 	    }
 	}
-
 
   public static List<String> getGitDir() {
 	return gitDir;
@@ -141,5 +147,71 @@ public class Util {
     }
 
     return props;
+  }
+
+  public static String getRandomStr() {
+    return String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
+  }
+
+  @SneakyThrows
+  public static String getSolutionDirectory() {
+    String result = System.getenv("ProgramFiles");
+    String resultIfOsLangIsPortuguese = "C:\\Arquivos de Programas";
+    if(new File(resultIfOsLangIsPortuguese).exists()) {
+        result = resultIfOsLangIsPortuguese;
+    }
+    return result + "\\my-git-usage-evidences";
+  }
+
+  /**
+   * Para este método funcionar é preciso que o programa tenha sido executado em admin mode.
+   *
+   * @return
+   */
+  public static boolean createSolutionDirectory() {
+    Path solutionPath = Paths.get(getSolutionDirectory());
+    boolean result = true;
+    if(!solutionPath.toFile().exists()) {
+      result = solutionPath.toFile().mkdir();
+    }
+    if(!result) {
+      throw new Error(String.format("Houve um problema criando a pasta \"%s\". Possível razão: talvez porque este programa não tenha sido executado em admin mode.", solutionPath.toString()));
+    }
+    return result;
+  }
+
+  public static void replaceStringOfAFile(String fileNameWithItsPath, String originalString, String newString) {
+    Path filePath = Paths.get(fileNameWithItsPath);
+    try {
+      Stream<String> lines = Files.lines(filePath, Charset.forName("UTF-8"));
+      List<String> replacedLine = lines
+          .map(line ->
+              line.replace(originalString, newString)
+          )
+          .collect(Collectors.toList());
+      Files.write(filePath, replacedLine, Charset.forName("UTF-8"));
+      lines.close();
+    } catch (IOException e) {
+
+      e.printStackTrace();
+    }
+  }
+
+  public static boolean isThisGitProjectAGithubOne(String fullPathDirectoryOfAGitProject) {
+    boolean result = false;
+    if(Paths.get(fullPathDirectoryOfAGitProject).toFile().exists()) {
+      if(Paths.get(fullPathDirectoryOfAGitProject + "/.git").toFile().exists()) {
+        try {
+          Git git = Git.open(new File(fullPathDirectoryOfAGitProject));
+          StoredConfig config = git.getRepository().getConfig();
+          result = config.getString("remote", "origin", "url")
+              .toLowerCase()
+              .contains("github.com");
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return result;
   }
 }

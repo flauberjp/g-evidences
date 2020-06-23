@@ -1,9 +1,60 @@
-[![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master)
+[![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master) <a href="translations/README.pt_br.md"><img align="right" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/google/241/flag-brazil_1f1e7-1f1f7.png" width="22"></a> <a href="translations/README.md"><img align="right" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/google/241/flag-united-states_1f1fa-1f1f8.png" width="22"></a>
 # my-git-usage-evidences
 
-## Ajuda Voluntária
-Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
-## Referências
+## github user for testing
+
+This project has an [Github account](https://github.com/mygitusageevicencesapp) to support testing, for more information how to use it, please contact @flauberjp.
+
+## Call for Action
+Volunteers are welcome! If you would like to join the team, read instructions in [Be a volunteer](CONTRIBUTING.md) to check what is needed in order to start.
+
+## How to use
+
+1. [Download the _fat jar_ file from our 1st release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.0-SNAPSHOT)
+
+2. Create a directory to store the files of this solution
+    * Create this directory _C:\Program Files\my-git-usage-evidences_
+    * Copy the _fat jar_ to this directory
+
+3. Create a repository in your Github
+    * As administrador open the command 
+    prompt at _C:\Program Files\my-git-usage-evidences_
+    * From that path, run this 
+    command: 
+      > _java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting_
+    * This solution program starts, then enter your github 
+    credentials (username and password), and click the button "_Validar Credenciais_"
+    * With the credentials validated, click the "_Criar projeto no repo remoto_" button
+    * Access your Github and verify that it contains a repo named _my-git-usage-evidences-repo_. 
+      * Here we are assuming the value of the text field _Repositório_ was not modified
+
+4. Generate the file _propriedades.txt_
+    * Back to the solution program, click "_Salvar Dados em propriedades.txt_" button
+    * Confirm that arquivo _propriedades.txt_ file was generated 
+    at _C:\Program Files\my-git-usage-evidences_
+
+5. Generate the hook
+    * Back to the solution program, click "_Gerar hook(arquivo pre-push)_" button
+    * Confirm that _pre-push_ file, which is the hook, was generated 
+    at _C:\Program Files\my-git-usage-evidences_
+
+6. Apply the hook to a git project
+    * Pick one of your git projects
+      * A git project is a folder that has a hidden sub-folder named _.git_)
+    * Copy the hook to this folder _.git\hooks_ of your git project
+
+7. Testing the solution
+    * Open one of yours git project where you just configured used this solution
+    * Do any modification, then commit the modification, 
+    then push it, what will trigger our solution
+    * Access your github repo created on step 3. _my-git-usage-evidences-repo_
+    * Check that the commit amount increased. 
+    Repeat the operation to see this 
+    number increase again. And with that your 
+    [Github Contributions](https://help.github.com/en/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
+    Calendar got marked, an evidence on Github that you just used git locally
+
+## References
 - [GitHub API for Java](https://github-api.kohsuke.org/)
 - [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
 - [How to load an external properties file from a maven java project](https://stackoverflow.com/questions/34712885/how-to-load-an-external-properties-file-from-a-maven-java-project)
@@ -11,6 +62,8 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
 - [How to get the real path of Java application at runtime?](https://stackoverflow.com/questions/4032957/how-to-get-the-real-path-of-java-application-at-runtime)
 - [File loading by getClass().getResource](https://stackoverflow.com/questions/14089146/file-loading-by-getclass-getresource)
 - [JUnit 5 Tutorial: Running Unit Tests With Maven](https://www.petrikainulainen.net/programming/testing/junit-5-tutorial-running-unit-tests-with-maven/)
+- [Creating a personal access token for the command line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
+- [How to get the real path of Java application at runtime?](https://stackoverflow.com/a/43553093/6771132)
 
 ## License
 The MIT License (MIT)

@@ -1,2 +1,6 @@
 /.idea
 /target
+/.settings
+/delete-me
+propriedades.txt
+pre-push
