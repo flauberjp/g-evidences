@@ -12,45 +12,55 @@ Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no gi
 ## Ajuda Voluntária
 Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.pt_br.md) para verificar como você pode começar a ajudar.
 
-## Usando a solução, usando alguns passos manuais
+## Como usar
 
-1. Gerar o fat-jar
-    * Use seu IDE escolhendo o Maven Lifecycle package ou use a linha de comando, executando no raíz do projeto o comando: mvn package
-    * O arquivo será gerado em ./target/my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar
+1. Gerar o _fat jar_
+    * Use o Maven Lifecycle package usando sua IDE ou usando a linha de comando, 
+    executando no raíz do projeto o comando abaixo, gerando o arquivo jar _./target/my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar_ 
+      > mvn package
+      * Se você preferir, você pode simplesmente 
+      [baixando esse arquivo _fat jar_ da nossa 1a release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.0-SNAPSHOT)
 
-2. Criei diretório para armazenar os arquivo da solução
-    * Crie o diretório my-git-usage-evidences em C:\Program Files
-    * Copie o arquivo my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar para C:\Program Files\my-git-usage-evidences
+2. Crie um diretório para armazenar os arquivos da solução
+    * Crie o diretório _C:\Program Files\my-git-usage-evidences_
+    * Copie o _fat jar_ para esse diretório
 
-3. Crie projeto no seu repositório remoto
-    * Abra o prompt de comando  como administrador na pasta C:\Program Files\my-git-usage-evidences, criada no passo anterior
-    * A partir desse caminho, execute o seguinte comando: java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting
-    * No formulário que surge, digite suas credenciais do github(username e password), e clique no botão Validar Credenciais
-    * As credenciais estando validadas, clique no botão Criar projeto no repo remoto
-    * Verifique seu repositório remoto e confirme que um repositório chamado my-git-usage-evidences-repo foi criado (esse nome é customizável, é só alterar o campo Repositório no formulário, a título de exemplo vamos assumir que você escolheu o valor padrão my-git-usage-evidences-repo)
+3. Crie um repositório no seu Github
+    * Como administrador abra o prompt de comando 
+    na pasta _C:\Program Files\my-git-usage-evidences_
+    * A partir desse caminho, execute o seguinte 
+    comando: _java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting_
+    * A programa desta solução é executado, então digite suas credenciais 
+    do github (username e password), e clique no botão "_Validar Credenciais_"
+    * As credenciais estando validadas, clique no botão "_Criar projeto no repo remoto_"
+    * Acesse seu Github e verifique que ele contém um repositório 
+    chamado _my-git-usage-evidences-repo_. 
+      * Aqui estamos assumindo que o valor do campo "_Repositório_" não foi alterado 
 
-4. Gerar o arquivo propriedades.txt
-    * Abra o prompt de comando como administrador na pasta C:\Program Files\my-git-usage-evidences
-    * A partir desse caminho, execute o seguinte comando: java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting
-    * No formulário que surge, digite suas credenciais do github(username e password), e clique no botão Validar Credenciais. 
-    * As credenciais estando validadas, clique no botão Salvar Dados em propriedades.txt(Aqui o Repositório deve ainda conter o mesmo nome do repo que você usou no passo anterior, my-git-usage-evidences-repo)
-    * Confirme que o arquivo propriedades.txt foi gerado em C:\Program Files\my-git-usage-evidences
+4. Gerar o arquivo _propriedades.txt_
+    * De volta ao programa da solução, clique no botão "_Salvar Dados em propriedades.txt_"
+    * Confirme que o arquivo _propriedades.txt_ foi gerado 
+    em _C:\Program Files\my-git-usage-evidences_
 
 5. Gerar o hook
-    * Abra o prompt de comando como administrador, vá para a pasta C:\Program Files\my-git-usage-evidences
-    * A partir desse caminho, execute o seguinte comando: java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting
-    * No formulário que surge, clique no botão Gerar hook(arquivo pre-push)
-    * Confirme que o arquivo pre-push foi gerado em C:\Program Files\my-git-usage-evidences
+    * De volta ao programa da solução, clique no botão "_Gerar hook(arquivo pre-push)_"
+    * Confirme que o arquivo _pre-push_ foi gerado 
+    em _C:\Program Files\my-git-usage-evidences_
 
-6. Usar a solução
-    * Escolha um dos seus projeto git (um projeto git é um que contém uma pasta oculta .git no seu raíz)
-    * Copie o arquivo C:\Program Files\my-git-usage-evidences\pre-push para a pasta .git\hooks do seu projeto git
+6. Aplique o hook em um projeto git
+    * Escolha um dos seus projetos git
+      * Um projeto git é uma pasta que contém uma sub-pasta oculta chamada _.git_
+    * Copie o hook para a pasta _.git\hooks_ do seu projeto git
 
 7. Testando a solução
-    * Abra seu projeto git onde você configurou esta solução
-    * Faça uma alteração em qualquer arquivo, commit essa alteração e execute um push
-    * Verifique no seu github o repo criado no passo "Crie projeto no seu repositório remoto"
-    * Assumindo que o nome do repositório é o nome sugerido por padrão,  my-git-usage-evidences-repo, você pode verificar que o número de commits foi incrementado (repita a operação para ve-lo aumentar mais uma vez se preciso), e com isso seu [Calendário de contribuições do Github](https://help.github.com/pt/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) foi marcado, evidenciando no Github de que você acabou de usar o git localmente
+    * Abra seu projeto git onde você acabou de configurar esta solução
+    * Faça uma alteração em qualquer arquivo, então realize um commit 
+    e em seguida execute um push, o que disparará nossa solução
+    * Verifique no seu github o repo criado no passo 3. _my-git-usage-evidences-repo_
+    * Verifique que o número de commits foi incrementado. 
+    Repita a operação para ve-lo aumentar mais uma vez se preciso.
+    E com isso seu [Calendário de contribuições do Github](https://help.github.com/pt/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
+    foi marcado, evidenciando no Github de que você acabou de usar o git localmente
 
 ## Referências
 - [GitHub API for Java](https://github-api.kohsuke.org/)
