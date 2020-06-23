@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -25,6 +27,10 @@ import org.eclipse.jgit.lib.StoredConfig;
 
 
 public class Util {
+
+  public static final String GITHUB_INFORMATION_FILE = ".github";
+  private static List<String> gitDir = new ArrayList();
+
   private Util() {
   }
 
@@ -87,8 +93,31 @@ public class Util {
     return result;
   }
 
-  /**
-   * @param resource e.g.: "templates/initialGithubProject/template_index.html"
+  public static void addGitFiles(File dir) {
+	    try {
+	        File[] files = dir.listFiles();
+	        for (File file : files) {
+	            if (file.isDirectory()) {
+	            	if (file.getName().equals(".git")) {
+	            	  if (!isThisGitProjectAGithubOne(file.getParentFile().getCanonicalPath())) {
+                        gitDir.add(file.getParentFile().getCanonicalPath());
+                      }
+					}
+	                addGitFiles(file);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+  public static List<String> getGitDir() {
+	return gitDir;
+}
+
+
+/**
+   * @param resource e.g.: "initialProjectTemplate/template_index.html"
    * @param file     e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
    * @throws IOException
    */
@@ -177,8 +206,8 @@ public class Util {
           StoredConfig config = git.getRepository().getConfig();
           result = config.getString("remote", "origin", "url")
               .toLowerCase()
-              .contains("//github");
-        } catch (IOException e) {
+              .contains("github.com");
+        } catch (Exception e) {
           e.printStackTrace();
         }
       }
