@@ -38,7 +38,7 @@ class UtilTest {
 
   @Test
   void isThisGitProjectAGithubOneTest_checkFalse() {
-    Path currentRelativePath = Paths.get("C:\\");
+    Path currentRelativePath = Paths.get("/");
     String s = currentRelativePath.toAbsolutePath().toString();
     assertFalse(Util.isThisGitProjectAGithubOne(s));
   }
