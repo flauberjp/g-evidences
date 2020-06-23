@@ -14,12 +14,7 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
 
 ## Como usar
 
-1. Gerar o _fat jar_
-    * Use o Maven Lifecycle package usando sua IDE ou usando a linha de comando, 
-    executando no raíz do projeto o comando abaixo, gerando o arquivo jar _./target/my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar_ 
-      > mvn package
-      * Se você preferir, você pode simplesmente 
-      [baixando esse arquivo _fat jar_ da nossa 1a release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.0-SNAPSHOT)
+1. [Faça o download do _fat jar_ da nossa 1a release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.0-SNAPSHOT)
 
 2. Crie um diretório para armazenar os arquivos da solução
     * Crie o diretório _C:\Program Files\my-git-usage-evidences_
