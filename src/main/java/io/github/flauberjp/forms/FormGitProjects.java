@@ -1,8 +1,6 @@
 package io.github.flauberjp.forms;
 
 import io.github.flauberjp.Util;
-import io.github.flauberjp.filetree.CreateChildNodes;
-import io.github.flauberjp.filetree.FileNode;
 import lombok.SneakyThrows;
 
 import java.awt.EventQueue;
