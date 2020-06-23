@@ -9,11 +9,14 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class Util {
 
   public static final String GITHUB_INFORMATION_FILE = ".github";
+  private static List<String> gitDir = new ArrayList();
 
   private Util() {
   }
@@ -85,16 +88,15 @@ public class Util {
     }
   }
 
-  public static void listGitFiles(File dir) {
+  public static void addGitFiles(File dir) {
 	    try {
 	        File[] files = dir.listFiles();
 	        for (File file : files) {
 	            if (file.isDirectory()) {
 	            	if (file.getName().equals(".git")) {
-	            		System.out.println("git:" + file.getCanonicalPath());
+	            		gitDir.add(file.getCanonicalPath());
 					}
-
-	                listGitFiles(file);
+	                addGitFiles(file);
 	            }
 	        }
 	    } catch (IOException e) {
@@ -102,7 +104,13 @@ public class Util {
 	    }
 	}
 
-  /**
+
+  public static List<String> getGitDir() {
+	return gitDir;
+}
+
+
+/**
    * @param resource e.g.: "initialProjectTemplate/template_index.html"
    * @param file     e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
    * @throws IOException

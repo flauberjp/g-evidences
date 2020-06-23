@@ -22,15 +22,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.JTree;
 import javax.swing.JScrollBar;
+import javax.swing.JTextArea;
 
 public class FormGitProjects extends JFrame {
 
   private JPanel contentPane;
   private JTextField textField;
-  
-  //File Tree
-  private DefaultMutableTreeNode root;
-  private DefaultTreeModel treeModel;
 
   /**
    * Launch the application.
@@ -54,7 +51,7 @@ public class FormGitProjects extends JFrame {
    */
   public FormGitProjects() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 525, 370);
+    setBounds(100, 100, 608, 413);
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     setContentPane(contentPane);
@@ -62,22 +59,19 @@ public class FormGitProjects extends JFrame {
 
     JLabel lblEscolherProjetos = new JLabel("Escolher Projetos");
     lblEscolherProjetos.setHorizontalAlignment(SwingConstants.TRAILING);
-    lblEscolherProjetos.setBounds(166, 11, 134, 14);
+    lblEscolherProjetos.setBounds(221, 14, 134, 14);
     contentPane.add(lblEscolherProjetos);
 
     JLabel lblPastaPai = new JLabel("Caminho da Pasta Pai");
-    lblPastaPai.setBounds(29, 39, 330, 14);
+    lblPastaPai.setBounds(29, 39, 388, 14);
     contentPane.add(lblPastaPai);
 	  
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(39, 64, 444, 256);
+    scrollPane.setBounds(10, 64, 572, 286);
     contentPane.add(scrollPane);
-    //JTree
-    DefaultMutableTreeNode contacts = new DefaultMutableTreeNode("Contacts");
-    JTree tree = new JTree();
-    scrollPane.setViewportView(tree);
-    tree.setShowsRootHandles(true);
-    tree.setVisible(false);
+    
+    JTextArea textArea = new JTextArea();
+    scrollPane.setViewportView(textArea);
 
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.addActionListener(new ActionListener() {
@@ -90,18 +84,10 @@ public class FormGitProjects extends JFrame {
         int option = fileChooser.showOpenDialog(null);
         if (option == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
+    	  
+          Util.addGitFiles(file);
           
-          File fileRoot = new File(file.getCanonicalPath());
-    	  root = new DefaultMutableTreeNode(new FileNode(fileRoot));
-    	  treeModel = new DefaultTreeModel(root);
-    	  
-    	  tree.setModel(treeModel);
-    	  CreateChildNodes ccn = 
-    	          new CreateChildNodes(fileRoot, root);
-    	  new Thread(ccn).start();
-    	  tree.setVisible(true);
-    	  
-          Util.listGitFiles(file);
+          Util.getGitDir().forEach(item->textArea.append(item + "\n"));
         
           lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
         } else {
@@ -110,7 +96,7 @@ public class FormGitProjects extends JFrame {
         
       }
     });
-    btnSelect.setBounds(387, 35, 96, 23);
+    btnSelect.setBounds(464, 35, 96, 23);
     contentPane.add(btnSelect);
     
    
