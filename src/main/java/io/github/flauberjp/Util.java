@@ -1,17 +1,26 @@
 package io.github.flauberjp;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import lombok.SneakyThrows;
+
 
 public class Util {
   private Util() {
@@ -111,5 +120,49 @@ public class Util {
 
   public static String getRandomStr() {
     return String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
+  }
+
+  @SneakyThrows
+  public static String getSolutionDirectory() {
+    String result = System.getenv("ProgramFiles");
+    String resultIfOsLangIsPortuguese = "C:\\Arquivos de Programas";
+    if(new File(resultIfOsLangIsPortuguese).exists()) {
+        result = resultIfOsLangIsPortuguese;
+    }
+    return result + "\\my-git-usage-evidences";
+  }
+
+  /**
+   * Para este método funcionar é preciso que o programa tenha sido executado em admin mode.
+   *
+   * @return
+   */
+  public static boolean createSolutionDirectory() {
+    Path solutionPath = Paths.get(getSolutionDirectory());
+    boolean result = true;
+    if(!solutionPath.toFile().exists()) {
+      result = solutionPath.toFile().mkdir();
+    }
+    if(!result) {
+      throw new Error(String.format("Houve um problema criando a pasta \"%s\". Possível razão: talvez porque este programa não tenha sido executado em admin mode.", solutionPath.toString()));
+    }
+    return result;
+  }
+
+  public static void replaceStringOfAFile(String fileNameWithItsPath, String originalString, String newString) {
+    Path filePath = Paths.get(fileNameWithItsPath);
+    try {
+      Stream<String> lines = Files.lines(filePath, Charset.forName("UTF-8"));
+      List<String> replacedLine = lines
+          .map(line ->
+              line.replace(originalString, newString)
+          )
+          .collect(Collectors.toList());
+      Files.write(filePath, replacedLine, Charset.forName("UTF-8"));
+      lines.close();
+    } catch (IOException e) {
+
+      e.printStackTrace();
+    }
   }
 }

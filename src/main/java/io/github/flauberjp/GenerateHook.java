@@ -25,6 +25,8 @@ public class GenerateHook {
   public static boolean generateHook() {
     try {
       Util.convertResourceToFile("templates/gerarEvidencias.bat", "pre-push");
+      Util.replaceStringOfAFile("pre-push", "<solution_directory>",
+          Util.getSolutionDirectory());
       return true;
     } catch (IOException e) {
       e.printStackTrace();
