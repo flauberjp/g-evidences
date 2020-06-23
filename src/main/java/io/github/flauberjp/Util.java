@@ -54,7 +54,7 @@ public class Util {
       objectOut.close();
       System.out.println("The Object  was succesfully written to a file");
 
-      ReadObjectToFile();
+      ReadObjectFromFile();
 
     } catch (Exception ex) {
       ex.printStackTrace();
@@ -62,7 +62,7 @@ public class Util {
 
   }
 
-  public static void ReadObjectToFile() {
+  public static void ReadObjectFromFile() {
     String inputFile = "User.txt";
     try (
         ObjectInputStream objectInput
@@ -84,6 +84,23 @@ public class Util {
       ex.printStackTrace();
     }
   }
+
+  public static void listGitFiles(File dir) {
+	    try {
+	        File[] files = dir.listFiles();
+	        for (File file : files) {
+	            if (file.isDirectory()) {
+	            	if (file.getName().equals(".git")) {
+	            		System.out.println("é git:" + file.getCanonicalPath());
+					}
+	                
+	                listGitFiles(file);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
 
   /**
    * @param resource e.g.: "initialProjectTemplate/template_index.html"
