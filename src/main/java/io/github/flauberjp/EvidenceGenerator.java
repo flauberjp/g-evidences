@@ -99,19 +99,7 @@ public class EvidenceGenerator {
   }
 
   private static void updateEvidenceFile(String fileNameWithItsPath, String dataEHoraExecucao) {
-    Path filePath = Paths.get(fileNameWithItsPath);
-    try {
-      Stream<String> lines = Files.lines(filePath, Charset.forName("UTF-8"));
-      List<String> replacedLine = lines
-          .map(line ->
-              line.replace("List of evidences of git usage:", "List of evidences of git usage:\n" + dataEHoraExecucao)
-          )
-          .collect(Collectors.toList());
-      Files.write(filePath, replacedLine, Charset.forName("UTF-8"));
-      lines.close();
-    } catch (IOException e) {
-
-      e.printStackTrace();
-    }
+    Util.replaceStringOfAFile(fileNameWithItsPath, "List of evidences of git usage:",
+        "List of evidences of git usage:\n" + dataEHoraExecucao);
   }
 }

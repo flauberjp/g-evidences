@@ -62,11 +62,13 @@ public class FormForTesting extends JFrame {
 
     botaoGerarHook();
 
+    botaoCriarDiretorioDaSolucao();
+
   }
 
   private void geraPainelPrincipal() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 525, 397);
+    setBounds(100, 100, 525, 640);
 
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -239,4 +241,21 @@ public class FormForTesting extends JFrame {
     btn.setBounds(156, 324, 300, 23);
     contentPane.add(btn);
   }
+
+  private void botaoCriarDiretorioDaSolucao() {
+    JButton btn = new JButton("Criar diretório da solução");
+    btn.addActionListener(new ActionListener() {
+      @SneakyThrows
+      public void actionPerformed(ActionEvent e) {
+        if(Util.createSolutionDirectory()) {
+          JOptionPane.showMessageDialog(contentPane, String.format("Diretório %s esta criado.", Util.getSolutionDirectory()));
+        } else {
+          JOptionPane.showMessageDialog(contentPane, String.format("Problemas ao criar diretório %s", Util.getSolutionDirectory()));
+        }
+      }
+    });
+    btn.setBounds(156, 351, 300, 23);
+    contentPane.add(btn);
+  }
+
 }
