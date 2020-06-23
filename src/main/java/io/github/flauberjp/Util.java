@@ -6,19 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
@@ -28,7 +24,6 @@ import org.eclipse.jgit.lib.StoredConfig;
 
 public class Util {
 
-  public static final String GITHUB_INFORMATION_FILE = ".github";
   private static List<String> gitDir = new ArrayList();
 
   private Util() {
@@ -94,26 +89,26 @@ public class Util {
   }
 
   public static void addGitFiles(File dir) {
-	    try {
-	        File[] files = dir.listFiles();
-	        for (File file : files) {
-	            if (file.isDirectory()) {
-	            	if (file.getName().equals(".git")) {
-	            	  if (!isThisGitProjectAGithubOne(file.getParentFile().getCanonicalPath())) {
-                        gitDir.add(file.getParentFile().getCanonicalPath());
-                      }
-					}
-	                addGitFiles(file);
-	            }
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-	}
+    try {
+      File[] files = dir.listFiles();
+      for (File file : files) {
+        if (file.isDirectory()) {
+          if (file.getName().equals(".git")) {
+            if (!isThisGitProjectAGithubOne(file.getParentFile().getCanonicalPath())) {
+              gitDir.add(file.getParentFile().getCanonicalPath());
+            }
+          }
+          addGitFiles(file);
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   public static List<String> getGitDir() {
-	return gitDir;
-}
+    return gitDir;
+  }
 
 
 /**

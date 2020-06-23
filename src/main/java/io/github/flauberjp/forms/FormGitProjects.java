@@ -16,10 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.JTree;
-import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
 
 public class FormGitProjects extends JFrame {
