@@ -69,7 +69,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>io.github.flauberjp.EvidenceGenerator</mainClass>
+                            <mainClass>io.github.flauberjp.forms.FormMain</mainClass>
                         </manifest>
                     </archive>
 
