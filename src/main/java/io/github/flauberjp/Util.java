@@ -1,5 +1,6 @@
 package io.github.flauberjp;
 
+import io.github.flauberjp.forms.model.GitDir;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,14 +18,10 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.swing.DefaultListModel;
-
 import lombok.SneakyThrows;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
-
-import io.github.flauberjp.forms.model.GitDir;
 
 
 public class Util {
@@ -112,17 +109,35 @@ public class Util {
     }
   }
 
-  public static List<GitDir> getGitDir() {
+  public static List<GitDir> getGitDirList() {
     return gitDirList;
   }
-  
-//Build ListModel containing gitDir's
+
+  public static List<GitDir> getSelectedGitDirList() {
+    List result = new ArrayList<GitDir>();
+    for (GitDir gitDir : getGitDirList()) {
+      if (gitDir.isSelected()) {
+        result.add(gitDir);
+      }
+    }
+    return result;
+  }
+
+  public static List<String> getSelectedGitDirStringList() {
+    List result = new ArrayList<String>();
+    for (GitDir gitDir : getSelectedGitDirList()) {
+      result.add(gitDir.getPath());
+    }
+    return result;
+  }
+
+  //Build ListModel containing gitDir's
   public static DefaultListModel<GitDir> buildDefaultListModel() {
-	  gitDirList.forEach(gitDir->listModel.addElement(gitDir));
-	 
-	    return listModel;
-	  }
-  
+    gitDirList.forEach(gitDir -> listModel.addElement(gitDir));
+
+    return listModel;
+  }
+
   public static DefaultListModel<GitDir> getListModel() {
 	    return listModel;
 	  }
