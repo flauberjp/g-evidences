@@ -1,16 +1,13 @@
 package io.github.flauberjp;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.StoredConfig;
-import org.eclipse.jgit.transport.CredentialsProvider;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.kohsuke.github.GHCreateRepositoryBuilder;
-import org.kohsuke.github.GitHub;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GenerateHook {
 
@@ -23,10 +20,19 @@ public class GenerateHook {
   }
 
   public static boolean generateHook() {
+    return generateHook(new ArrayList<String>());
+  }
+
+  public static boolean generateHook(List<String> gitDirProjects) {
     try {
-      Util.convertResourceToFile("templates/gerarEvidencias.bat", "pre-push");
+      String hookName = "pre-push";
+      Util.convertResourceToFile("templates/gerarEvidencias.bat", hookName);
       Util.replaceStringOfAFile("pre-push", "<solution_directory>",
           Util.getSolutionDirectory());
+      for (String gitDirProjectPath : gitDirProjects) {
+        Files.copy(Paths.get(hookName), Paths.get(gitDirProjectPath + "/.git/hooks/" + hookName),
+            StandardCopyOption.REPLACE_EXISTING);
+      }
       return true;
     } catch (IOException e) {
       e.printStackTrace();
