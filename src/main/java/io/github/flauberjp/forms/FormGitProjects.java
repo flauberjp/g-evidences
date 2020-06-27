@@ -2,11 +2,17 @@ package io.github.flauberjp.forms;
 
 import io.github.flauberjp.Util;
 import lombok.SneakyThrows;
+import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirListRenderer;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.function.Consumer;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -14,9 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextArea;
+import javax.swing.JList;
 
 public class FormGitProjects extends JFrame {
 
@@ -61,11 +69,11 @@ public class FormGitProjects extends JFrame {
     contentPane.add(lblPastaPai);
 	  
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(10, 64, 572, 286);
+    scrollPane.setBounds(10, 64, 561, 286);
     contentPane.add(scrollPane);
     
-    JTextArea textArea = new JTextArea();
-    scrollPane.setViewportView(textArea);
+    JList<GitDir> list = new JList<GitDir>();
+    scrollPane.setViewportView(list);
 
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.addActionListener(new ActionListener() {
@@ -80,8 +88,17 @@ public class FormGitProjects extends JFrame {
           File file = fileChooser.getSelectedFile();
     	  
           Util.addGitFiles(file);
+        //Build the model from previous Git Path using GitDir Class
+          Util.buildDefaultListModel();
           
-          Util.getGitDir().forEach(item->textArea.append(item + "\n"));
+       // Set a JList containing GitDir's
+          list.setModel(Util.getListModel());
+          
+          System.out.println(Util.getListModel()); //
+          
+       // Use a GitDirListRenderer to renderer list cells
+          list.setCellRenderer(new GitDirListRenderer());
+          list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
           lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
         } else {
@@ -93,8 +110,26 @@ public class FormGitProjects extends JFrame {
     btnSelect.setBounds(464, 35, 96, 23);
     contentPane.add(btnSelect);
     
-   
-    
+ // Add a mouse listener to handle changing selection
+    list.addMouseListener(new MouseAdapter() {
+       public void mouseClicked(MouseEvent event) {
+          JList<GitDir> list =
+             (JList<GitDir>) event.getSource();
+
+          // Get index of item clicked
+          int index = list.locationToIndex(event.getPoint());
+          GitDir item = (GitDir) list.getModel()
+                .getElementAt(index);
+
+          // Toggle selected state
+          item.setSelected(!item.isSelected());
+
+          // Repaint cell
+          list.repaint(list.getCellBounds(index, index));
+          
+          System.out.println(item + " " +item.isSelected());
+       }
+    });
     
 
 
