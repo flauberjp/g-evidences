@@ -17,14 +17,20 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.swing.DefaultListModel;
+
 import lombok.SneakyThrows;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 
+import io.github.flauberjp.forms.model.GitDir;
+
 
 public class Util {
 
-  private static List<String> gitDir = new ArrayList();
+  private static List<GitDir> gitDirList = new ArrayList<GitDir>();
+  private static DefaultListModel<GitDir> listModel = new DefaultListModel();
 
   private Util() {
   }
@@ -95,7 +101,7 @@ public class Util {
         if (file.isDirectory()) {
           if (file.getName().equals(".git")) {
             if (!isThisGitProjectAGithubOne(file.getParentFile().getCanonicalPath())) {
-              gitDir.add(file.getParentFile().getCanonicalPath());
+              gitDirList.add(new GitDir(file.getParentFile().getCanonicalPath()));
             }
           }
           addGitFiles(file);
@@ -106,9 +112,20 @@ public class Util {
     }
   }
 
-  public static List<String> getGitDir() {
-    return gitDir;
+  public static List<GitDir> getGitDir() {
+    return gitDirList;
   }
+  
+//Build ListModel containing gitDir's
+  public static DefaultListModel<GitDir> buildDefaultListModel() {
+	  gitDirList.forEach(gitDir->listModel.addElement(gitDir));
+	 
+	    return listModel;
+	  }
+  
+  public static DefaultListModel<GitDir> getListModel() {
+	    return listModel;
+	  }
 
 
 /**

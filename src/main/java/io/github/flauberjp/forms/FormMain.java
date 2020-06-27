@@ -4,20 +4,31 @@ import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.Util;
+import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirListRenderer;
+import lombok.SneakyThrows;
+
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.io.File;
 import java.util.Map;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
 
 public class FormMain extends JFrame {
 
@@ -53,7 +64,7 @@ public class FormMain extends JFrame {
 
   private void geraPainelPrincipal() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 525, 370);
+    setBounds(100, 100, 525, 440);
     contentPane = new JPanel();
     contentPane.setToolTipText("");
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,7 +83,7 @@ public class FormMain extends JFrame {
     txtUsername = new JTextField();
     txtUsername.setText("mygitusageevicencesapp");
     txtUsername.setColumns(10);
-    txtUsername.setBounds(160, 50, 293, 20);
+    txtUsername.setBounds(160, 50, 325, 20);
     contentPane.add(txtUsername);
 
     JLabel lblPassword = new JLabel("Password:");
@@ -82,7 +93,7 @@ public class FormMain extends JFrame {
     passwordField = new JPasswordField();
     passwordField.setToolTipText("e.g. passw0rd");
     passwordField.setText("44dbb46ec17d03c3545a4301370565c45e870ce3");
-    passwordField.setBounds(160, 75, 293, 20);
+    passwordField.setBounds(160, 75, 325, 20);
     contentPane.add(passwordField);
 
     JLabel lblRepoNameArea = new JLabel("Repositório no seu Github que irá registrar o seu uso local do git");
@@ -97,7 +108,7 @@ public class FormMain extends JFrame {
     txtReponame = new JTextField();
     txtReponame.setText("my-git-usage-evidences");
     txtReponame.setColumns(10);
-    txtReponame.setBounds(160, 132, 293, 20);
+    txtReponame.setBounds(160, 132, 325, 20);
     contentPane.add(txtReponame);
 
     JLabel lblProjects = new JLabel("Projetos que não são do Github que terão o uso local do git registrado no Github");
@@ -129,7 +140,74 @@ public class FormMain extends JFrame {
         }
       }
     });
-    btn.setBounds(175, 297, 170, 23);
+    btn.setBounds(188, 367, 170, 23);
     contentPane.add(btn);
+    
+    JLabel lblPastaPai = new JLabel("Selecione a Pasta Pai dos Projetos Github ");
+    lblPastaPai.setBounds(35, 184, 349, 14);
+    contentPane.add(lblPastaPai);
+    
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setBounds(35, 212, 450, 151);
+    contentPane.add(scrollPane);
+    
+    JList<GitDir> list = new JList<GitDir>();
+    scrollPane.setViewportView(list);
+    
+    JButton btnSelect = new JButton("Selecionar");
+    btnSelect.addActionListener(new ActionListener() {
+        @SneakyThrows
+        public void actionPerformed(ActionEvent e) {
+      	  
+          JFileChooser fileChooser = new JFileChooser();
+          fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+          
+          int option = fileChooser.showOpenDialog(null);
+          if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+      	  
+            Util.addGitFiles(file);
+          //Build the model from previous Git Path using GitDir Class
+            Util.buildDefaultListModel();
+            
+         // Set a JList containing GitDir's
+            list.setModel(Util.getListModel());
+            
+            System.out.println(Util.getListModel()); //
+            
+         // Use a GitDirListRenderer to renderer list cells
+            list.setCellRenderer(new GitDirListRenderer());
+            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+          
+            lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
+          } else {
+            lblPastaPai.setText("Erro");
+          }
+          
+        }
+      });
+    btnSelect.setBounds(394, 178, 91, 23);
+    contentPane.add(btnSelect);
+
+    // Add a mouse listener to handle changing selection
+       list.addMouseListener(new MouseAdapter() {
+          public void mouseClicked(MouseEvent event) {
+             JList<GitDir> list =
+                (JList<GitDir>) event.getSource();
+
+             // Get index of item clicked
+             int index = list.locationToIndex(event.getPoint());
+             GitDir item = (GitDir) list.getModel()
+                   .getElementAt(index);
+
+             // Toggle selected state
+             item.setSelected(!item.isSelected());
+
+             // Repaint cell
+             list.repaint(list.getCellBounds(index, index));
+             
+             System.out.println(item + " " +item.isSelected());
+          }
+       });
   }
 }
