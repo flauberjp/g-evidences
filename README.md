@@ -21,7 +21,7 @@ Volunteers are welcome! If you would like to join the team, read instructions in
     prompt at _C:\Program Files\my-git-usage-evidences_
     * From that path, run this 
     command: 
-      > _java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting_
+      > _java -cp my-git-usage-evidences-jar-with-dependencies io.github.flauberjp.forms.FormForTesting_
     * This solution program starts, then enter your github 
     credentials (username and password), and click the button "_Validar Credenciais_"
     * With the credentials validated, click the "_Criar projeto no repo remoto_" button

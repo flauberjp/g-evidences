@@ -25,7 +25,7 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
     na pasta _C:\Program Files\my-git-usage-evidences_
     * A partir desse caminho, execute o seguinte 
     comando: 
-      > _java -cp my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar io.github.flauberjp.forms.FormForTesting_
+      > _java -cp my-git-usage-evidences-jar-with-dependencies io.github.flauberjp.forms.FormForTesting_
     * A programa desta solução é executado, então digite suas credenciais 
     do github (username e password), e clique no botão "_Validar Credenciais_"
     * As credenciais estando validadas, clique no botão "_Criar projeto no repo remoto_"
