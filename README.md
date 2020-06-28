@@ -10,44 +10,45 @@ Volunteers are welcome! If you would like to join the team, read instructions in
 
 ## How to use
 
-1. [Download the _fat jar_ file from our 1st release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.0-SNAPSHOT)
+1. [Download the _fat jar_ file from our 2st release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.1-SNAPSHOT)
 
-2. Create a directory to store the files of this solution
+2. Create a directory to store the files of this program
     * Create this directory _C:\Program Files\my-git-usage-evidences_
+      * If your OS language is not english, the path of _C:\Programa Files_ is different, 
+      for instance, for brazilian portugues, it would be _c:\Arquivos de Programas_
     * Copy the _fat jar_ to this directory
 
-3. Create a repository in your Github
+3. Start the program
     * As administrador open the command 
     prompt at _C:\Program Files\my-git-usage-evidences_
-    * From that path, run this 
-    command: 
-      > _java -cp my-git-usage-evidences-jar-with-dependencies io.github.flauberjp.forms.FormForTesting_
-    * This solution program starts, then enter your github 
-    credentials (username and password), and click the button "_Validar Credenciais_"
-    * With the credentials validated, click the "_Criar projeto no repo remoto_" button
-    * Access your Github and verify that it contains a repo named _my-git-usage-evidences-repo_. 
-      * Here we are assuming the value of the text field _Repositório_ was not modified
+    * From that path, type the following command and hit _Enter_ key, what starts the program. 
+    Command:
+      > _my-git-usage-evidences-jar-with-dependencies_
 
-4. Generate the file _propriedades.txt_
-    * Back to the solution program, click "_Salvar Dados em propriedades.txt_" button
-    * Confirm that arquivo _propriedades.txt_ file was generated 
-    at _C:\Program Files\my-git-usage-evidences_
+4. Configure the program
+    * On the program, enter your github 
+    credentials (username and password)
+    * Set the name of the repository on your github that is going 
+    to be used to record your usage of git on non-github projects
+    * Select the non-github git projects that you want to monitor 
+    your git usage 
+      * For that, select a folder which contains most of 
+      you git projects, by clicking the button "_Selecionar_" and
+      selecting the folder. That folder is going to be analyzed, 
+      where in the end only the non-github git project folders
+      are listed. **The analysis takes sometime, please wait**
+      * Check the projects you want to monitor     
 
-5. Generate the hook
-    * Back to the solution program, click "_Gerar hook(arquivo pre-commit)_" button
-    * Confirm that _pre-commit_ file, which is the hook, was generated 
-    at _C:\Program Files\my-git-usage-evidences_
+5. Apply the configuration
+    * Click "_Aplicar configurações_" button, and wait the confirmation
+    message indicating that everything was correctly configured
 
-6. Apply the hook to a git project
-    * Pick one of your git projects
-      * A git project is a folder that has a hidden sub-folder named _.git_)
-    * Copy the hook to this folder _.git\hooks_ of your git project
-
-7. Testing the solution
+6. Testing the solution
     * Open one of yours git project where you just configured used this solution
     * Do any modification, then commit the modification, 
     then push it, what will trigger our solution
-    * Access your github repo created on step 3. _my-git-usage-evidences-repo_
+    * Access your github repo created on step 4. 
+    ( defaul value is _my-git-usage-evidences-repo_ )
     * Check that the commit amount increased. 
     Repeat the operation to see this 
     number increase again. And with that your 
