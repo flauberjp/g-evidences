@@ -39,8 +39,8 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
     em _C:\Program Files\my-git-usage-evidences_
 
 5. Gerar o hook
-    * De volta ao programa da solução, clique no botão "_Gerar hook(arquivo pre-push)_"
-    * Confirme que o arquivo _pre-push_ foi gerado 
+    * De volta ao programa da solução, clique no botão "_Gerar hook(arquivo pre-commit)_"
+    * Confirme que o arquivo _pre-commit_ foi gerado 
     em _C:\Program Files\my-git-usage-evidences_
 
 6. Aplique o hook em um projeto git
