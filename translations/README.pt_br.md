@@ -23,11 +23,13 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
     * Copie o _fat jar_ para esse diretório
 
 3. Inicie o programa
-    * Como administrador abra o prompt de comando 
+    * Primeiramente, configure o programa java.exe para ser executado como administrador, 
+    veja como em [10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
+    * Abra o prompt de comando 
     na pasta _C:\Program Files\my-git-usage-evidences_
     * A partir desse caminho, digite o seguinte comando e tecle _Enter_, o que iniciará o programa. 
     Comando: 
-      > _java -cp my-git-usage-evidences-jar-with-dependencies io.github.flauberjp.forms.FormForTesting_
+      > _java -jar my-git-usage-evidences-jar-with-dependencies.jar_
 
 4. Configure o programa
     * No programa, digite suas credenciais do Github 
@@ -59,15 +61,17 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
     foi marcado, evidenciando no Github de que você acabou de usar o git localmente
 
 ## Referências
-- [GitHub API for Java](https://github-api.kohsuke.org/)
-- [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
-- [How to load an external properties file from a maven java project](https://stackoverflow.com/questions/34712885/how-to-load-an-external-properties-file-from-a-maven-java-project)
-- [Can you tell on runtime if you're running java from within a jar?](https://stackoverflow.com/questions/482560/can-you-tell-on-runtime-if-youre-running-java-from-within-a-jar)
-- [How to get the real path of Java application at runtime?](https://stackoverflow.com/questions/4032957/how-to-get-the-real-path-of-java-application-at-runtime)
-- [File loading by getClass().getResource](https://stackoverflow.com/questions/14089146/file-loading-by-getclass-getresource)
-- [JUnit 5 Tutorial: Running Unit Tests With Maven](https://www.petrikainulainen.net/programming/testing/junit-5-tutorial-running-unit-tests-with-maven/)
-- [Creating a personal access token for the command line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
-- [How to get the real path of Java application at runtime?](https://stackoverflow.com/a/43553093/6771132)
+1. [GitHub API for Java](https://github-api.kohsuke.org/)
+2. [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
+3. [How to load an external properties file from a maven java project](https://stackoverflow.com/questions/34712885/how-to-load-an-external-properties-file-from-a-maven-java-project)
+4. [Can you tell on runtime if you're running java from within a jar?](https://stackoverflow.com/questions/482560/can-you-tell-on-runtime-if-youre-running-java-from-within-a-jar)
+5. [How to get the real path of Java application at runtime?](https://stackoverflow.com/questions/4032957/how-to-get-the-real-path-of-java-application-at-runtime)
+6. [File loading by getClass().getResource](https://stackoverflow.com/questions/14089146/file-loading-by-getclass-getresource)
+7. [JUnit 5 Tutorial: Running Unit Tests With Maven](https://www.petrikainulainen.net/programming/testing/junit-5-tutorial-running-unit-tests-with-maven/)
+8. [Creating a personal access token for the command line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
+9. [How to get the real path of Java application at runtime?](https://stackoverflow.com/a/43553093/6771132)
+10. [How to Run .JAR Files on Windows 10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
+
 
 ## License
 The MIT License (MIT)
