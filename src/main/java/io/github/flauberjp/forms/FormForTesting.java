@@ -227,7 +227,7 @@ public class FormForTesting extends JFrame {
   }
 
   private void botaoGerarHook() {
-    JButton btn = new JButton("Gerar hook(arquivo pre-push)");
+    JButton btn = new JButton("Gerar hook(arquivo pre-commit)");
     btn.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {

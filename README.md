@@ -34,8 +34,8 @@ Volunteers are welcome! If you would like to join the team, read instructions in
     at _C:\Program Files\my-git-usage-evidences_
 
 5. Generate the hook
-    * Back to the solution program, click "_Gerar hook(arquivo pre-push)_" button
-    * Confirm that _pre-push_ file, which is the hook, was generated 
+    * Back to the solution program, click "_Gerar hook(arquivo pre-commit)_" button
+    * Confirm that _pre-commit_ file, which is the hook, was generated 
     at _C:\Program Files\my-git-usage-evidences_
 
 6. Apply the hook to a git project

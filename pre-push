@@ -1,0 +1,4 @@
+#!/bin/sh
+cd "C:\Arquivos de Programas\my-git-usage-evidences"
+start java -cp "C:\Arquivos de Programas\my-git-usage-evidences/my-git-usage-evidences-1.1-SNAPSHOT-jar-with-dependencies.jar" io.github.flauberjp.EvidenceGenerator
+exit 0
