@@ -69,6 +69,21 @@ public class Util {
     return null;
   }
 
+  public static String getCurrentDirectory() {
+    String result = ".";
+    if (isRunningFromJar()) {
+      result = getCurrentJarDirectory();
+    } else {
+      try {
+        result = new File( "." ).getCanonicalPath();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return result;
+  }
+
+
   public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
@@ -178,33 +193,6 @@ public class Util {
 
   public static String getRandomStr() {
     return String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
-  }
-
-  @SneakyThrows
-  public static String getSolutionDirectory() {
-    String result = System.getenv("ProgramFiles");
-    String resultIfOsLangIsPortuguese = "C:\\Arquivos de Programas";
-    if(new File(resultIfOsLangIsPortuguese).exists()) {
-        result = resultIfOsLangIsPortuguese;
-    }
-    return result + "\\my-git-usage-evidences";
-  }
-
-  /**
-   * Para este método funcionar é preciso que o programa tenha sido executado em admin mode.
-   *
-   * @return
-   */
-  public static boolean createSolutionDirectory() {
-    Path solutionPath = Paths.get(getSolutionDirectory());
-    boolean result = true;
-    if(!solutionPath.toFile().exists()) {
-      result = solutionPath.toFile().mkdir();
-    }
-    if(!result) {
-      throw new Error(String.format("Houve um problema criando a pasta \"%s\". Possível razão: talvez porque este programa não tenha sido executado em admin mode.", solutionPath.toString()));
-    }
-    return result;
   }
 
   public static void replaceStringOfAFile(String fileNameWithItsPath, String originalString, String newString) {
