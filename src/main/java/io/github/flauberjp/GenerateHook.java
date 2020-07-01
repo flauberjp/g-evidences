@@ -28,7 +28,7 @@ public class GenerateHook {
       String hookName = "pre-commit";
       Util.convertResourceToFile("templates/gerarEvidencias.bat", hookName);
       Util.replaceStringOfAFile(hookName, "<solution_directory>",
-          Util.getSolutionDirectory());
+          Util.getCurrentDirectory());
       for (String gitDirProjectPath : gitDirProjects) {
         Files.copy(Paths.get(hookName), Paths.get(gitDirProjectPath + "/.git/hooks/" + hookName),
             StandardCopyOption.REPLACE_EXISTING);
