@@ -1,0 +1,22 @@
+. Usar o Launch4j para transformar o jar em executáveis 
+
+.. Configuração geral
+... Na aba "JRE", na seção "Search options", marque o campo "Min JRE version" igual a 11
+
+.. Executável mgue.exe (mgue comes from my-git-usage-evidences)  (configuração disponível em: my-git-usage-evidences\extras\gerar_muge.exe.xml)
+... Inicie o Launch4j
+... Na aba Basic, o campo "Dont' wrap the jar, lanch only' deve estar desmarcado
+... O campo "Jar" deve apontar para o fat jar da nossa solução. Normalmente ele se encontra em:  my-git-usage-evidences\target\my-git-usage-evidences-jar-with-dependencies.jar
+... O campo "Output file" deve conter o valor my-git-usage-evidences\mgue.exe
+... Na aba Header, escolha como Header type Console
+... Salve essa configuração clicando no botão "Save configuration"
+... Gere o .exe clicando no botão "Build wrapper"
+
+
+O programa mgue.exe é um programa de linha de comando onde qdo executado sem nenhum parametro exibe o configurado, e qdo chamado passando-se um parametro qualquer, executa a geração de evidência.
+
+Referências:
+- Como faço para empacotar um JRE em um EXE para um aplicativo Java? Launch4j diz que "o tempo de execução está ausente ou corrompido". - https://www.it-swarm.dev/pt/jar/como-faco-para-empacotar-um-jre-em-um-exe-para-um-aplicativo-java-launch4j-diz-que-o-tempo-de-execucao-esta-ausente-ou-corrompido./1070223403/
+
+-  launch4j 3.12 http://launch4j.sourceforge.net/links.html
+- Inno Setup https://jrsoftware.org/isinfo.php
