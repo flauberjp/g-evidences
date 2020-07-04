@@ -18,5 +18,6 @@ O programa mgue.exe é um programa de linha de comando onde qdo executado sem ne
 Referências:
 - Como faço para empacotar um JRE em um EXE para um aplicativo Java? Launch4j diz que "o tempo de execução está ausente ou corrompido". - https://www.it-swarm.dev/pt/jar/como-faco-para-empacotar-um-jre-em-um-exe-para-um-aplicativo-java-launch4j-diz-que-o-tempo-de-execucao-esta-ausente-ou-corrompido./1070223403/
 
--  launch4j 3.12 http://launch4j.sourceforge.net/links.html
+- launch4j 3.12 http://launch4j.sourceforge.net/links.html
 - Inno Setup https://jrsoftware.org/isinfo.php
+- How can I use launch4j to wrap a GUI application that also provides a command line interface? - https://stackoverflow.com/a/35497703/6771132
