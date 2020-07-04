@@ -229,9 +229,10 @@ public class Util {
         try {
           Git git = Git.open(new File(fullPathDirectoryOfAGitProject));
           StoredConfig config = git.getRepository().getConfig();
-          result = config.getString("remote", "origin", "url")
-              .toLowerCase()
-              .contains("github.com");
+          String remoteOriginUrl = config.getString("remote", "origin", "url");
+          if(remoteOriginUrl != null) {
+            result = remoteOriginUrl.toLowerCase().contains("github.com");
+          }
         } catch (Exception e) {
           e.printStackTrace();
         }
