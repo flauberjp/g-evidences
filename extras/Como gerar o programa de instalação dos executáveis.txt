@@ -1,0 +1,57 @@
+. Usar o Inno Setup Compiler versão 6.0.5 (u) para gerar instalador e configurar os executavéis para serem redados com direito de administrador
+
+.. Ao iniciar o programa, na tela de Welcome, escolha Create a new script file using the Script Wizard e clique OK
+.. Clique Next
+
+.. Digite o nome do programa igual a my-git-usage-evidences installer
+.. Defina a versão, por exemplo, 1.0
+.. Limple o campo Application publisher
+.. Em application website, defina https://flauberjp.github.io/my-git-usage-evidences/
+.. Clique Next
+
+.. Application destination base folder deve usar o valor padrão: Program Files Folder
+.. Sete o campo Application folder name para my-git-usage-evidences
+.. Desmarque o campo Allow user to change the application folder
+.. Clique Next
+
+.. Configure Application main executable file igual a my-git-usage-evidences\mgue.exe
+.. Marque o campo Allow user to start the application after Setup has finished
+.. Clique Next
+
+.. Clique Next 
+
+.. Clique Next 
+
+.. O install mode deve ser Administrative install mode
+.. Clique Next
+
+.. No setup das linguas, marque English e Brazilian Portuguese
+.. Clique Next 
+
+.. Clique Next 
+
+.. Clique Next 
+
+.. Clique Finish
+
+.. Clique no para o dialgo que é exibido
+
+.. Adicione no seção [Setup] a seguinte linha:
+ArchitecturesInstallIn64BitMode=x64
+
+.. Crie uma seção [Registry]
+
+.. Adicione na seção [Registry] o seguinte conteúdo:
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; \
+    ValueType: String; ValueName: "{app}\mgue.exe"; ValueData: "~ RUNASADMIN"; \
+    Flags: uninsdeletekeyifempty
+
+.. Clique no botão salvar para salvar o script, nomeio assim: "Script gerador do programa de instalação.iss"
+
+.. O instalador será gerado em: C:\Users\Flaviano Flauber\Documents\Projetos\my-git-usage-evidences\extras\Output\mysetup.exe
+
+
+Referências:
+- How to set 'Run as administrator' on a file using Inno Setup - https://stackoverflow.com/questions/16978917/how-to-set-run-as-administrator-on-a-file-using-inno-setup?noredirect=1&lq=1
+- Writing 32/64-bit specific registry key in Inno Setup - https://stackoverflow.com/questions/46258689/writing-32-64-bit-specific-registry-key-in-inno-setup
+- [Setup]: ArchitecturesInstallIn64BitMode - https://jrsoftware.org/ishelp/index.php?topic=32vs64bitinstalls

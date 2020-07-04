@@ -1,5 +1,6 @@
 package io.github.flauberjp;
 
+import io.github.flauberjp.forms.FormMain;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,9 +23,11 @@ public class EvidenceGenerator {
 
   public static void main(String[] args) throws IOException {
     System.out.println("Programa iniciado às: " + LocalDateTime.now());
-
-    System.out.println(geraEvidenciaDeUsoDoGit(UserGithubInfo.get()));
-
+    if(args != null && args.length == 0) {
+      FormMain.showFormMain();
+    } else {
+      System.out.println(geraEvidenciaDeUsoDoGit(UserGithubInfo.get()));
+    }
     System.out.println("Programa finalizado às: " + LocalDateTime.now());
   }
 
