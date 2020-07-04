@@ -69,7 +69,7 @@ public class Util {
     return null;
   }
 
-  public static String getCurrentDirectory() {
+  private static String getCurrentDirectory() {
     String result = ".";
     if (isRunningFromJar()) {
       result = getCurrentJarDirectory();
@@ -79,6 +79,16 @@ public class Util {
       } catch (IOException e) {
         e.printStackTrace();
       }
+    }
+    return result;
+  }
+
+  public static String getSolutionDirectoryIn83Format() {
+    String result = getCurrentDirectory();
+    if(result.contains("Program Files")) {
+      result = result.replace("Program Files", "progra~1");
+    } else if(result.contains("Arquivos de Programas")) {
+      result = result.replace("Arquivos de Programas", "arquiv~1");
     }
     return result;
   }
@@ -229,4 +239,6 @@ public class Util {
     }
     return result;
   }
+
+
 }
