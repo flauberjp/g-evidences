@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>console</headerType>
-  <jar>C:\Users\Flaviano Flauber\Documents\Projetos\my-git-usage-evidences\target\my-git-usage-evidences-jar-with-dependencies.jar</jar>
-  <outfile>C:\Users\Flaviano Flauber\Documents\Projetos\my-git-usage-evidences\mgue.exe</outfile>
+  <jar>C:\my-git-usage-evidences\target\my-git-usage-evidences-jar-with-dependencies.jar</jar>
+  <outfile>C:\my-git-usage-evidences\extras\output\mgue.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

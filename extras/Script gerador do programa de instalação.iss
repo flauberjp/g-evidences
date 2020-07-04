@@ -22,11 +22,11 @@ DefaultDirName={autopf}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
-LicenseFile=C:\Users\Flaviano Flauber\Documents\Projetos\my-git-usage-evidences\LICENSE
+LicenseFile=C:\my-git-usage-evidences\LICENSE
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputBaseFilename=my-git-usage-evidences-inst-win64
-SetupIconFile=C:\Users\Flaviano Flauber\Documents\Projetos\my-git-usage-evidences\src\main\resources\icon\my-git-usage-evidences.ico
+SetupIconFile=C:\my-git-usage-evidences\src\main\resources\icon\my-git-usage-evidences.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -40,7 +40,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Flaviano Flauber\Documents\Projetos\my-git-usage-evidences\mgue.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\my-git-usage-evidences\extras\Output\mgue.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
