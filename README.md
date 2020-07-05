@@ -1,63 +1,61 @@
-[![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master) <a href="translations/README.pt_br.md"><img align="right" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/google/241/flag-brazil_1f1e7-1f1f7.png" width="22"></a> <a href="translations/README.md"><img align="right" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/google/241/flag-united-states_1f1fa-1f1f8.png" width="22"></a>
 # my-git-usage-evidences
 
 ## github user for testing
 
-This project has an [Github account](https://github.com/mygitusageevicencesapp) to support testing, for more information how to use it, please contact @flauberjp.
+Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no github para auxiliar nos testes, para mais informções sobre como utiliza-la, pode contatar @flauberjp
 
-## Call for Action
-Volunteers are welcome! If you would like to join the team, read instructions in [Be a volunteer](CONTRIBUTING.md) to check what is needed in order to start.
+## Ajuda Voluntária
+Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.pt_br.md) para verificar como você pode começar a ajudar.
 
-## How to use
+## Como usar
 
-1. [Download the _fat jar_ file from our 2st release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.1-SNAPSHOT)
+1. [Faça o download do _fat jar_ da nossa 2a release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.1-SNAPSHOT)
 
-2. Create a directory to store the files of this program
-    * Create this directory _C:\Program Files\my-git-usage-evidences_
-      * If your OS language is not english, the path of _C:\Programa Files_ is different, 
-      for instance, for brazilian portugues, it would be _c:\Arquivos de Programas_
-    * Copy the _fat jar_ to this directory
+2. Crie um diretório para armazenar os arquivos deste programa
+    * Crie o diretório _C:\Program Files\my-git-usage-evidences_
+      * Se a língua do seu SO não é inglês, o caminho _C:\Programa Files_ é diferene, 
+       por exemplo, quando a língua for português brasileiro, o caminho seria _c:\Arquivos de Programas_
+    * Copie o _fat jar_ para esse diretório
 
-3. Start the program
-    * First of all, configure java.exe program to run as 
-    administrator, see how at [10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
-    * Open the command prompt 
-    at _C:\Program Files\my-git-usage-evidences_
-    * From that path, type the following command and hit _Enter_ key, what starts the program. 
-    Command:
+3. Inicie o programa
+    * Primeiramente, configure o programa java.exe para ser executado como administrador, 
+    veja como em [10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
+    * Abra o prompt de comando 
+    na pasta _C:\Program Files\my-git-usage-evidences_
+    * A partir desse caminho, digite o seguinte comando e tecle _Enter_, o que iniciará o programa. 
+    Comando: 
       > _java -jar my-git-usage-evidences-jar-with-dependencies.jar_
 
-4. Configure the program
-    * On the program, enter your github 
-    credentials (username and password)
-    * Set the name of the repository on your github that is going 
-    to be used to record your usage of git on non-github projects
-    * Select the non-github git projects that you want to monitor 
-    your git usage 
-      * For that, select a folder which contains most of 
-      you git projects, by clicking the button "_Selecionar_" and
-      selecting the folder. That folder is going to be analyzed, 
-      where in the end only the non-github git project folders
-      are listed. **The analysis takes sometime, please wait**
-      * Check the projects you want to monitor     
+4. Configure o programa
+    * No programa, digite suas credenciais do Github 
+    (username e password)
+    * Configure o nome do repositório no seu github que será usado
+    para registrar o seu uso do git em projetos que não são projetos 
+    do tipo Github
+    * Selecione os projetos que não são projetos Github que você quer
+    monitorar o uso do git neles
+      * Para isso, selecione uma pasta que contém a maioria dos seus
+      projetos git, clicando no botão "_Selecionar_" e escolhendo a pasta.
+      Essa pasta será analisada, e apenas projetos git que não são projetos
+      Github serão listados. 
+      **Essa analise demora um certo tempo, por favor aguarde**
+      * Marque os projetos que você quer monitorar
 
-5. Apply the configuration
-    * Click "_Aplicar configurações_" button, and wait the confirmation
-    message indicating that everything was correctly configured
+5. Aplique a configuração
+    * Clique no botão "_Aplicar configurações_", e aguarde a mensagem
+    de confirmação de que tudo foi configurado corretamente. 
 
-6. Testing the solution
-    * Open one of yours git project where you just configured used this solution
-    * Do any modification, then commit the modification, 
-    then push it, what will trigger our solution
-    * Access your github repo created on step 4. 
-    ( defaul value is _my-git-usage-evidences-repo_ )
-    * Check that the commit amount increased. 
-    Repeat the operation to see this 
-    number increase again. And with that your 
-    [Github Contributions](https://help.github.com/en/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
-    Calendar got marked, an evidence on Github that you just used git locally
+6. Testando a solução
+    * Abra seu projeto git onde você acabou de configurar esta solução
+    * Faça uma alteração em qualquer arquivo, então realize um commit 
+    e em seguida execute um push, o que disparará nossa solução
+    * Verifique no seu github o repo criado no passo 3. _my-git-usage-evidences-repo_
+    * Verifique que o número de commits foi incrementado. 
+    Repita a operação para ve-lo aumentar mais uma vez se preciso.
+    E com isso seu [Calendário de contribuições do Github](https://help.github.com/pt/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
+    foi marcado, evidenciando no Github de que você acabou de usar o git localmente
 
-## References
+## Referências
 1. [GitHub API for Java](https://github-api.kohsuke.org/)
 2. [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
 3. [How to load an external properties file from a maven java project](https://stackoverflow.com/questions/34712885/how-to-load-an-external-properties-file-from-a-maven-java-project)
@@ -69,8 +67,8 @@ Volunteers are welcome! If you would like to join the team, read instructions in
 9. [How to get the real path of Java application at runtime?](https://stackoverflow.com/a/43553093/6771132)
 10. [How to Run .JAR Files on Windows 10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
 
+
 ## License
 The MIT License (MIT)
 
 Prove your coding activity throughout any cv (Gitlab, Bitbucket etc.)  using this Tool. 
-
