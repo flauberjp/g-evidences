@@ -1,17 +1,23 @@
-package io.github.flauberjp;
+package io.github.flauberjp.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.flauberjp.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UtilTest {
+
+  @Test
+  void checkContentOfTemplateEvidencesFile() throws IOException {
+    convertResourceToFileTest("template_index.html");
+  }
 
   @Test
   void convertIndexHtmlResourceToFileTest() throws IOException {
@@ -44,5 +50,27 @@ class UtilTest {
     assertFalse(Util.isThisGitProjectAGithubOne(s));
   }
 
+  @Test
+  void contentOfTemplateEvidencesFile() throws IOException {
+    String randomFilename = Files.createTempDirectory("tmp").toString() + "/" +
+        Util.getRandomStr();
+    Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt", randomFilename);
+    List<String> lines = Util.readFileContent(randomFilename);
+    assertEquals(1, lines.size());
+    assertEquals("List of evidences of git usage:", lines.get(0));
+  }
+
+  @Test
+  void appendStringToEvidencesFile() throws IOException {
+    String appendedString = "appendedString";
+    String randomFilename = Files.createTempDirectory("tmp").toString() + "/" +
+        Util.getRandomStr();
+    Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt", randomFilename);
+    Util.appendStringToAFile(randomFilename, appendedString);
+    List<String> lines = Util.readFileContent(randomFilename);
+    assertEquals(2, lines.size());
+    assertEquals("List of evidences of git usage:", lines.get(0));
+    assertEquals(appendedString, lines.get(1));
+  }
 
 }

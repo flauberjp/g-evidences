@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -240,6 +241,26 @@ public class Util {
           .collect(Collectors.toList());
       Files.write(filePath, replacedLine, Charset.forName("UTF-8"));
       lines.close();
+    } catch (IOException ex) {
+      LOGGER.error(ex.getMessage(), ex);
+    }
+  }
+
+  public static ArrayList<String> readFileContent(String fileNameWithItsPath) throws IOException {
+    Path filePath = Paths.get(fileNameWithItsPath);
+    Stream<String> linesStream = Files.lines(filePath, Charset.forName("UTF-8"));
+    ArrayList<String> linesArrayList = new ArrayList<String>(linesStream
+        .collect(Collectors.toList()));
+    return linesArrayList;
+  }
+
+  public static void appendStringToAFile(String fileNameWithItsPath, String stringToBeAppended) {
+    LOGGER.debug(
+        "Util.appendStringToAFile(fileNameWithItsPath = {}, stringToBeAppended = {})",
+        fileNameWithItsPath, stringToBeAppended);
+    Path filePath = Paths.get(fileNameWithItsPath);
+    try {
+      Files.write(filePath, ("\n" + stringToBeAppended).getBytes(), StandardOpenOption.APPEND);
     } catch (IOException ex) {
       LOGGER.error(ex.getMessage(), ex);
     }
