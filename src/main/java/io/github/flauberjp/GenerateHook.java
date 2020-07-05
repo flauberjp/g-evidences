@@ -9,25 +9,25 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import static io.github.flauberjp.util.MyLogger.logger;
+import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 public class GenerateHook {
 
   public static void main(String[] args) throws IOException, URISyntaxException {
-    logger.info("Programa iniciado às: " + LocalDateTime.now());
+    LOGGER.info("Programa iniciado às: " + LocalDateTime.now());
 
-    logger.info("Geração do hook funcionou? " + generateHook());
+    LOGGER.info("Geração do hook funcionou? " + generateHook());
 
-    logger.info("Programa finalizado às: " + LocalDateTime.now());
+    LOGGER.info("Programa finalizado às: " + LocalDateTime.now());
   }
 
   public static boolean generateHook() {
-    logger.debug("GenerateHook.generateHook()");
+    LOGGER.debug("GenerateHook.generateHook()");
     return generateHook(new ArrayList<String>());
   }
 
   public static boolean generateHook(List<String> gitDirProjects) {
-    logger.debug("GenerateHook.generateHook(gitDirProjects = " + gitDirProjects + ")");
+    LOGGER.debug("GenerateHook.generateHook(gitDirProjects = " + gitDirProjects + ")");
     try {
       String hookName =
           Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE).getProperty("hookType");

@@ -1,7 +1,7 @@
 package io.github.flauberjp.forms;
 
 import io.github.flauberjp.util.Util;
-import static io.github.flauberjp.util.MyLogger.logger;
+import static io.github.flauberjp.util.MyLogger.LOGGER;
 import lombok.SneakyThrows;
 import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.forms.model.GitDirListRenderer;
@@ -93,7 +93,7 @@ public class FormGitProjects extends JFrame {
        // Set a JList containing GitDir's
           list.setModel(Util.getListModel());
           
-          logger.info(Util.getListModel().toString()); //
+          LOGGER.info(Util.getListModel().toString()); //
           
        // Use a GitDirListRenderer to renderer list cells
           list.setCellRenderer(new GitDirListRenderer());
@@ -126,7 +126,7 @@ public class FormGitProjects extends JFrame {
           // Repaint cell
           list.repaint(list.getCellBounds(index, index));
           
-          logger.info(item + " " +item.isSelected());
+          LOGGER.info(item + " " +item.isSelected());
        }
     });
     
