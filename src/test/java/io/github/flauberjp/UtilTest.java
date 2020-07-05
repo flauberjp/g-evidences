@@ -3,6 +3,7 @@ package io.github.flauberjp;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.github.flauberjp.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

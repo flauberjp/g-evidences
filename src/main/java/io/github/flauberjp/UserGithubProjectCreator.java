@@ -1,11 +1,13 @@
 package io.github.flauberjp;
 
 import io.github.flauberjp.forms.FormForTesting;
+import io.github.flauberjp.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import static io.github.flauberjp.util.MyLogger.logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -16,14 +18,16 @@ import org.kohsuke.github.GitHub;
 public class UserGithubProjectCreator {
 
   public static void main(String[] args) throws IOException, URISyntaxException {
-    System.out.println("Programa iniciado às: " + LocalDateTime.now());
+    logger.info("Programa iniciado às: " + LocalDateTime.now());
 
-    System.out.println(criaProjetoInicialNoGithub(UserGithubInfo.get()));
+    logger.info("Projeto criado no Github com sucesso? " + criaProjetoInicialNoGithub(UserGithubInfo.get()));
 
-    System.out.println("Programa finalizado às: " + LocalDateTime.now());
+    logger.info("Programa finalizado às: " + LocalDateTime.now());
   }
 
   public static boolean criaProjetoInicialNoGithub(UserGithubInfo userGithubInfo) {
+    logger.debug("UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo {})",
+        userGithubInfo);
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
     boolean result;
     try {
