@@ -4,7 +4,7 @@ import io.github.flauberjp.EvidenceGenerator;
 import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
-import io.github.flauberjp.Util;
+import io.github.flauberjp.util.Util;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -19,6 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
+import static io.github.flauberjp.util.MyLogger.logger;
 
 public class FormForTesting extends JFrame {
 
@@ -32,6 +33,7 @@ public class FormForTesting extends JFrame {
    * Launch the application.
    */
   public static void main(String[] args) {
+    logger.info("FormForTesting.main(args = {})", args);
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
@@ -48,6 +50,7 @@ public class FormForTesting extends JFrame {
    * Create the frame.
    */
   public FormForTesting() {
+    logger.debug("FormForTesting.FormForTesting()");
     geraPainelPrincipal();
 
     botaoValidacao();
@@ -65,6 +68,7 @@ public class FormForTesting extends JFrame {
   }
 
   private void geraPainelPrincipal() {
+    logger.debug("FormForTesting.geraPainelPrincipal()");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 525, 640);
 
@@ -114,10 +118,12 @@ public class FormForTesting extends JFrame {
   }
 
   private void botaoGerarEvidencia() {
+    logger.debug("FormForTesting.botaoGerarEvidencia()");
     JButton btnGenerateEvidence = new JButton("Gerar evidência");
     btnGenerateEvidence.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
+        logger.info("Botão \"Gerar evidência\" pressionado");
         try {
           UserGithubInfo userGithubInfo = UserGithubInfo.get();
           userGithubInfo.setRepoName(txtRepoName.getText());
@@ -136,10 +142,12 @@ public class FormForTesting extends JFrame {
   }
 
   private void botaoCriarProjetoRemoto() {
+    logger.debug("FormForTesting.botaoCriarProjetoRemoto()");
     JButton btnCreateProject = new JButton("Criar projeto no repo remoto");
     btnCreateProject.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
+        logger.info("Botão \"Criar projeto no repo remoto\" pressionado");
         try {
           UserGithubInfo userGithubInfo = UserGithubInfo.get();
           userGithubInfo.setRepoName(txtRepoName.getText());
@@ -156,10 +164,12 @@ public class FormForTesting extends JFrame {
   }
 
   private void botaoLerDados() {
+    logger.debug("FormForTesting.botaoLerDados()");
     JButton btnLerArq = new JButton("Ler conteúdo do arquivo " + UserGithubInfo.PROPERTIES_FILE);
     btnLerArq.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
+        logger.info("Botão \"Ler conteúdo do arquivo " + UserGithubInfo.PROPERTIES_FILE + "\" pressionado");
         if(!new File(UserGithubInfo.PROPERTIES_FILE).exists()) {
           JOptionPane.showMessageDialog(contentPane, "Arquivo inexistente, valide as suas credenciais primeiro!", "Erro", JOptionPane.ERROR_MESSAGE);
           return;
@@ -180,9 +190,12 @@ public class FormForTesting extends JFrame {
   }
 
   private void botaoSalvarDados() {
+    logger
+        .debug("FormForTesting.botaoSalvarDados()");
     JButton btnConfirm = new JButton("Salvar Dados em " + UserGithubInfo.PROPERTIES_FILE);
     btnConfirm.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        logger.info("Botão \"Salvar Dados em...\" pressioando");
         try {
           UserGithubInfo.reset();
           Util.savePropertiesToFile(UserGithubInfo.get(txtUsername.getText(), String.valueOf(passwordField.getPassword())).toProperties(), UserGithubInfo.PROPERTIES_FILE);
@@ -197,9 +210,11 @@ public class FormForTesting extends JFrame {
   }
 
   private void botaoValidacao() {
+    logger.debug("FormForTesting.botaoValidacao()");
     JButton btnValidacao = new JButton("Validar Credenciais");
     btnValidacao.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        logger.info("Botão \"Validar Credenciais\" pressionado");
         UserGithubInfo.reset();
         if(UserGithubInfo.validarCredenciais(txtUsername.getText(), String.valueOf(passwordField.getPassword()))) {
           try {
@@ -225,10 +240,12 @@ public class FormForTesting extends JFrame {
   }
 
   private void botaoGerarHook() {
+    logger.debug("FormForTesting.botaoGerarHook()");
     JButton btn = new JButton("Gerar hook(arquivo pre-commit)");
     btn.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
+        logger.info("Botão \"Gerar hook...\" pressionado");
         if(GenerateHook.generateHook()) {
           JOptionPane.showMessageDialog(contentPane, "Arquivo gerado.");
         } else {

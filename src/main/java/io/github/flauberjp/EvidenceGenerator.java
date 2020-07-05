@@ -1,6 +1,7 @@
 package io.github.flauberjp;
 
 import io.github.flauberjp.forms.FormMain;
+import io.github.flauberjp.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,6 +10,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import static io.github.flauberjp.util.MyLogger.logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -18,20 +20,25 @@ public class EvidenceGenerator {
   private static final Path workspace = Paths.get("delete-me");
 
   public static Path getWorkspace() {
+    logger.debug("EvidenceGenerator.getWorkspace()");
     return workspace;
   }
 
   public static void main(String[] args) throws IOException {
-    System.out.println("Programa iniciado às: " + LocalDateTime.now());
-    if(args != null && args.length == 0) {
+    logger.debug("EvidenceGenerator.main(args = {})", args);
+    if (args != null && args.length == 0) {
+      logger.info("Exibindo FormMain");
       FormMain.showFormMain();
     } else {
-      System.out.println(geraEvidenciaDeUsoDoGit(UserGithubInfo.get()));
+      logger.info("Gerando evidência via linha de comando.");
+      boolean result = geraEvidenciaDeUsoDoGit(UserGithubInfo.get());
+      logger.debug("Resultado da geração de evidência: {}", result);
     }
-    System.out.println("Programa finalizado às: " + LocalDateTime.now());
   }
 
   public static boolean geraEvidenciaDeUsoDoGit(UserGithubInfo userGithubInfo) {
+    logger.debug("EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo = {})", userGithubInfo);
+
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
     boolean result;
     try {
@@ -69,6 +76,7 @@ public class EvidenceGenerator {
   }
 
   public static void resetWorkspace() throws IOException {
+    logger.debug("EvidenceGenerator.resetWorkspace()");
     if (Files.exists(getWorkspace())) {
       deletaDir(getWorkspace());
     }
@@ -76,6 +84,7 @@ public class EvidenceGenerator {
   }
 
   public static String geraDirAleatorioNaWorkspace() {
+    logger.debug("EvidenceGenerator.geraDirAleatorioNaWorkspace()");
     String dir = getWorkspace()
         + "/"
         + Util.getRandomStr();
@@ -84,10 +93,13 @@ public class EvidenceGenerator {
   }
 
   public static String getDirOndeRepositorioRemotoSeraClonado(String repoName) throws IOException {
+    logger.debug(
+        "EvidenceGenerator.getDirOndeRepositorioRemotoSeraClonado(repoName = {})", repoName);
     return geraDirAleatorioNaWorkspace() + "/" + repoName;
   }
 
   private static void deletaDir(Path path) throws IOException {
+    logger.debug("EvidenceGenerator.deletaDir(path = {})", path);
     if (Files.exists(path)) {
       Files.walk(path)
           .sorted(Comparator.reverseOrder())
@@ -97,6 +109,9 @@ public class EvidenceGenerator {
   }
 
   private static void updateEvidenceFile(String fileNameWithItsPath, String dataEHoraExecucao) {
+    logger.debug(
+        "EvidenceGenerator.updateEvidenceFile(fileNameWithItsPath = {}, dataEHoraExecucao = {})",
+        fileNameWithItsPath, dataEHoraExecucao);
     Util.replaceStringOfAFile(fileNameWithItsPath, "List of evidences of git usage:",
         "List of evidences of git usage:\n" + dataEHoraExecucao);
   }
