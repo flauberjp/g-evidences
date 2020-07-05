@@ -5,3 +5,4 @@
 You can contribute to the project by volunteering, all help is very welcome.
 
 As for coding, the coding style and formatting standard we use is defined in: [Padrão de estilo e formatação de codificação – Java](https://flauberjp.wordpress.com/2020/06/06/padrao-de-estilo-e-formatacao-de-codificacao-java/)  
+For Eclipse IDE check: [Eclipse Google Java Style Guide](http://www.practicesofmastery.com/post/eclipse-google-java-style-guide/)  

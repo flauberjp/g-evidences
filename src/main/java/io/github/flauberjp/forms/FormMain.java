@@ -1,12 +1,6 @@
 package io.github.flauberjp.forms;
 
-import io.github.flauberjp.GenerateHook;
-import io.github.flauberjp.UserGithubInfo;
-import io.github.flauberjp.UserGithubProjectCreator;
-import io.github.flauberjp.Util;
 import io.github.flauberjp.Version;
-import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirListRenderer;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.Map;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -24,226 +19,258 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
-import lombok.SneakyThrows;
 import javax.swing.SwingConstants;
-import javax.swing.JSeparator;
+import javax.swing.border.EmptyBorder;
+import io.github.flauberjp.GenerateHook;
+import io.github.flauberjp.UserGithubInfo;
+import io.github.flauberjp.UserGithubProjectCreator;
+import io.github.flauberjp.Util;
+import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirListRenderer;
+import lombok.SneakyThrows;
 
 public class FormMain extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField txtUsername;
-	private JPasswordField passwordField;
-	private JTextField txtReponame;
+  private JPanel contentPane;
+  private JTextField txtUsername;
+  private JPasswordField passwordField;
+  private JTextField txtReponame;
+  private JRadioButton rdbtnPreCommit;
+  private JRadioButton rdbtnPrePush;
+  private String hookType;
 
-	/**
-	 * Create the frame.
-	 */
-	public FormMain() {
-		geraPainelPrincipal();
+  /**
+   * Create the frame.
+   */
+  public FormMain() {
+    geraPainelPrincipal();
 
-		botaoConfigurar();
-		
-		adicionarLblProgramName();
+    botaoConfigurar();
 
-		selecionadorDeProjetosGit();
-	}
+    adicionarLblProgramName();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FormMain frame = new FormMain();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    selecionadorDeProjetosGit();
+  }
 
-	private void geraPainelPrincipal() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 525, 540);
-		contentPane = new JPanel();
-		contentPane.setToolTipText("");
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+  /**
+   * Launch the application.
+   */
+  public static void main(String[] args) {
+    EventQueue.invokeLater(new Runnable() {
+      public void run() {
+        try {
+          FormMain frame = new FormMain();
+          frame.setVisible(true);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    });
+  }
 
-		JLabel lblTitle = new JLabel("Credenciais do Github");
-		setLabelUnderline(lblTitle);
-		lblTitle.setBounds(35, 70, 203, 14);
-		contentPane.add(lblTitle);
+  private void geraPainelPrincipal() {
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setBounds(100, 100, 538, 540);
+    contentPane = new JPanel();
+    contentPane.setToolTipText("");
+    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    setContentPane(contentPane);
+    contentPane.setLayout(null);
 
-		JLabel lblUsername = new JLabel("Nome de Usu\u00E1rio:");
-		lblUsername.setBounds(35, 99, 111, 14);
-		contentPane.add(lblUsername);
+    JLabel lblTitle = new JLabel("Credenciais do Github");
+    setLabelUnderline(lblTitle);
+    lblTitle.setBounds(35, 70, 203, 14);
+    contentPane.add(lblTitle);
 
-		txtUsername = new JTextField();
-		txtUsername.setText("mygitusageevicencesapp");
-		txtUsername.setColumns(10);
-		txtUsername.setBounds(160, 97, 325, 20);
-		contentPane.add(txtUsername);
+    JLabel lblUsername = new JLabel("Nome de Usu\u00E1rio:");
+    lblUsername.setBounds(35, 99, 111, 14);
+    contentPane.add(lblUsername);
 
-		JLabel lblPassword = new JLabel("Password:");
-		lblPassword.setBounds(35, 124, 111, 14);
-		contentPane.add(lblPassword);
+    JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para ap\u00F3s:");
+    lblHookType.setBounds(35, 160, 260, 14);
+    contentPane.add(lblHookType);
 
-		passwordField = new JPasswordField();
-		passwordField.setToolTipText("e.g. passw0rd");
-		passwordField.setText("44dbb46ec17d03c3545a4301370565c45e870ce3");
-		passwordField.setBounds(160, 122, 325, 20);
-		contentPane.add(passwordField);
+    ButtonGroup G = new ButtonGroup();
 
-		JLabel lblRepoNameArea = new JLabel(
-				"Repositório no seu Github que irá registrar o seu uso local do git");
-		setLabelUnderline(lblRepoNameArea);
-		lblRepoNameArea.setBounds(35, 167, 450, 14);
-		contentPane.add(lblRepoNameArea);
+    rdbtnPreCommit = new JRadioButton("Commit");
+    rdbtnPreCommit.setBounds(301, 156, 81, 23);
+    contentPane.add(rdbtnPreCommit);
 
-		JLabel lblRepoName = new JLabel("Nome do Repositório:");
-		lblRepoName.setBounds(35, 194, 123, 14);
-		contentPane.add(lblRepoName);
+    rdbtnPrePush = new JRadioButton("Push");
+    rdbtnPrePush.setBounds(411, 156, 74, 23);
+    contentPane.add(rdbtnPrePush);
 
-		txtReponame = new JTextField();
-		txtReponame.setText("my-git-usage-evidences");
-		txtReponame.setColumns(10);
-		txtReponame.setBounds(160, 192, 325, 20);
-		contentPane.add(txtReponame);
+    G.add(rdbtnPreCommit);
+    G.add(rdbtnPrePush);
 
-		JLabel lblProjects = new JLabel(
-				"Projetos que não são do Github que terão o uso local do git registrado no Github");
-		setLabelUnderline(lblProjects);
-		lblProjects.setBounds(35, 225, 450, 14);
-		contentPane.add(lblProjects);
-	}
+    txtUsername = new JTextField();
+    txtUsername.setText("mygitusageevicencesapp");
+    txtUsername.setColumns(10);
+    txtUsername.setBounds(160, 97, 325, 20);
+    contentPane.add(txtUsername);
 
-	private void setLabelUnderline(JLabel label) {
-		Font font = label.getFont();
-		Map attributes = font.getAttributes();
-		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		label.setFont(font.deriveFont(attributes));
-	}
+    JLabel lblPassword = new JLabel("Password:");
+    lblPassword.setBounds(35, 124, 111, 14);
+    contentPane.add(lblPassword);
 
-	private void botaoConfigurar() {
-		JButton btn = new JButton("Aplicar configurações");
-		btn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					System.out.println(Util.getSelectedGitDirStringList().toString());
-					UserGithubInfo userGithubInfo = UserGithubInfo.get(txtUsername.getText(),
-							String.valueOf(passwordField.getPassword()));
-					userGithubInfo.setRepoName(txtReponame.getText());
-					Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
-					UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
-					GenerateHook.generateHook(Util.getSelectedGitDirStringList());
-					JOptionPane.showMessageDialog(contentPane, "Configurações aplicadas!");
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(contentPane,
-							"Problemas ao aplicar configurações. Exception: " + ex.getMessage());
-				}
-			}
-		});
-		btn.setBounds(188, 440, 170, 23);
-		contentPane.add(btn);
+    passwordField = new JPasswordField();
+    passwordField.setToolTipText("e.g. passw0rd");
+    passwordField.setText("44dbb46ec17d03c3545a4301370565c45e870ce3");
+    passwordField.setBounds(160, 122, 325, 20);
+    contentPane.add(passwordField);
 
-	}
-	
-	private void adicionarLblProgramName() {		
-		JLabel lblProgramName = new JLabel("my-git-usage-evidences Program");
-		lblProgramName.setToolTipText(Version.getVersionFromPom());
-		lblProgramName.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblProgramName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblProgramName.setBounds(35, 11, 450, 23);
-		contentPane.add(lblProgramName);		
-	}
+    JLabel lblRepoNameArea =
+        new JLabel("Repositório no seu Github que irá registrar o seu uso local do git");
+    setLabelUnderline(lblRepoNameArea);
+    lblRepoNameArea.setBounds(35, 209, 450, 14);
+    contentPane.add(lblRepoNameArea);
 
-	private void selecionadorDeProjetosGit() {
-		String label = "Selecione a Pasta Pai dos Projetos Github ";
-		JLabel lblPastaPai = new JLabel(label);
-		lblPastaPai.setBounds(35, 250, 323, 14);
-		contentPane.add(lblPastaPai);
+    JLabel lblRepoName = new JLabel("Nome do Repositório:");
+    lblRepoName.setBounds(35, 236, 123, 14);
+    contentPane.add(lblRepoName);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(35, 278, 450, 151);
-		contentPane.add(scrollPane);
+    txtReponame = new JTextField();
+    txtReponame.setText("my-git-usage-evidences");
+    txtReponame.setColumns(10);
+    txtReponame.setBounds(160, 234, 325, 20);
+    contentPane.add(txtReponame);
 
-		JList<GitDir> list = new JList<GitDir>();
-		scrollPane.setViewportView(list);
+    JLabel lblProjects = new JLabel(
+        "Projetos que não são do Github que terão o uso local do git registrado no Github");
+    setLabelUnderline(lblProjects);
+    lblProjects.setBounds(35, 267, 450, 14);
+    contentPane.add(lblProjects);
+  }
 
-		JButton btnSelect = new JButton("Selecionar");
-		btnSelect.setToolTipText(label);
-		btnSelect.addActionListener(new ActionListener() {
-			@SneakyThrows
-			public void actionPerformed(ActionEvent e) {
+  private void setLabelUnderline(JLabel label) {
+    Font font = label.getFont();
+    Map attributes = font.getAttributes();
+    attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+    label.setFont(font.deriveFont(attributes));
+  }
 
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+  private void botaoConfigurar() {
+    JButton btn = new JButton("Aplicar configurações");
+    btn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        try {
+          if (rdbtnPreCommit.isSelected()) {
+            hookType = "pre-commit";
+          } else if (rdbtnPrePush.isSelected()) {
+            hookType = "pre-push";
+          }
+          System.out.println(hookType);
+          System.out.println(Util.getSelectedGitDirStringList().toString());
+          UserGithubInfo userGithubInfo = UserGithubInfo.get(txtUsername.getText(),
+              String.valueOf(passwordField.getPassword()), hookType);
+          userGithubInfo.setRepoName(txtReponame.getText());
+          Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
+          UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
+          GenerateHook.generateHook(Util.getSelectedGitDirStringList());
+          JOptionPane.showMessageDialog(contentPane, "Configurações aplicadas!");
+        } catch (Exception ex) {
+          JOptionPane.showMessageDialog(contentPane,
+              "Problemas ao aplicar configurações. Exception: " + ex.getMessage());
+        }
+      }
+    });
+    btn.setBounds(188, 467, 170, 23);
+    contentPane.add(btn);
+  }
 
-				int option = fileChooser.showOpenDialog(null);
-				if (option == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
+  private void adicionarLblProgramName() {
+    JLabel lblProgramName = new JLabel("my-git-usage-evidences Program");
+    lblProgramName.setToolTipText(Version.getVersionFromPom());
+    lblProgramName.setFont(new Font("Tahoma", Font.BOLD, 16));
+    lblProgramName.setHorizontalAlignment(SwingConstants.CENTER);
+    lblProgramName.setBounds(35, 11, 450, 23);
+    contentPane.add(lblProgramName);
+  }
 
-					Util.addGitFiles(file);
-					// Build the model from previous Git Path using GitDir Class
-					Util.buildDefaultListModel();
+  private void selecionadorDeProjetosGit() {
+    String label = "Selecione a Pasta Pai dos Projetos Github ";
+    JLabel lblPastaPai = new JLabel(label);
+    lblPastaPai.setBounds(35, 292, 323, 14);
+    contentPane.add(lblPastaPai);
 
-					// Set a JList containing GitDir's
-					list.setModel(Util.getListModel());
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setBounds(35, 315, 450, 144);
+    contentPane.add(scrollPane);
 
-					System.out.println(Util.getListModel()); //
+    JList<GitDir> list = new JList<GitDir>();
+    scrollPane.setViewportView(list);
 
-					// Use a GitDirListRenderer to renderer list cells
-					list.setCellRenderer(new GitDirListRenderer());
-					list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    JButton btnSelect = new JButton("Selecionar");
+    btnSelect.setToolTipText(label);
+    btnSelect.addActionListener(new ActionListener() {
+      @SneakyThrows
+      public void actionPerformed(ActionEvent e) {
 
-					lblPastaPai.setToolTipText("Selecionado: " + file.getCanonicalPath());
-					lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
-				} else {
-					lblPastaPai.setText(label);
-				}
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-			}
-		});
-		btnSelect.setBounds(362, 244, 123, 23);
-		contentPane.add(btnSelect);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(35, 82, 396, 2);
-		contentPane.add(separator);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(35, 179, 396, 2);
-		contentPane.add(separator_1);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(35, 237, 396, 2);
-		contentPane.add(separator_2);
+        int option = fileChooser.showOpenDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION) {
+          File file = fileChooser.getSelectedFile();
 
-		// Add a mouse listener to handle changing selection
-		list.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent event) {
-				JList<GitDir> list = (JList<GitDir>) event.getSource();
+          Util.addGitFiles(file);
+          // Build the model from previous Git Path using GitDir Class
+          Util.buildDefaultListModel();
 
-				// Get index of item clicked
-				int index = list.locationToIndex(event.getPoint());
-				GitDir item = (GitDir) list.getModel().getElementAt(index);
+          // Set a JList containing GitDir's
+          list.setModel(Util.getListModel());
 
-				// Toggle selected state
-				item.setSelected(!item.isSelected());
+          System.out.println(Util.getListModel()); //
 
-				// Repaint cell
-				list.repaint(list.getCellBounds(index, index));
+          // Use a GitDirListRenderer to renderer list cells
+          list.setCellRenderer(new GitDirListRenderer());
+          list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-				System.out.println(item + " " + item.isSelected());
-			}
-		});
-	}
+          lblPastaPai.setToolTipText("Selecionado: " + file.getCanonicalPath());
+          lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
+        } else {
+          lblPastaPai.setText(label);
+        }
+
+      }
+    });
+    btnSelect.setBounds(362, 286, 123, 23);
+    contentPane.add(btnSelect);
+
+    JSeparator separator = new JSeparator();
+    separator.setBounds(35, 82, 396, 2);
+    contentPane.add(separator);
+
+    JSeparator separator_1 = new JSeparator();
+    separator_1.setBounds(35, 279, 396, 2);
+    contentPane.add(separator_1);
+
+    JSeparator separator_2 = new JSeparator();
+    separator_2.setBounds(35, 221, 396, 2);
+    contentPane.add(separator_2);
+
+    // Add a mouse listener to handle changing selection
+    list.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent event) {
+        JList<GitDir> list = (JList<GitDir>) event.getSource();
+
+        // Get index of item clicked
+        int index = list.locationToIndex(event.getPoint());
+        GitDir item = (GitDir) list.getModel().getElementAt(index);
+
+        // Toggle selected state
+        item.setSelected(!item.isSelected());
+
+        // Repaint cell
+        list.repaint(list.getCellBounds(index, index));
+
+        System.out.println(item + " " + item.isSelected());
+      }
+    });
+  }
 }

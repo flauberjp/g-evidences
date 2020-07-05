@@ -25,10 +25,10 @@ public class GenerateHook {
 
   public static boolean generateHook(List<String> gitDirProjects) {
     try {
-      String hookName = "pre-commit";
+      String hookName =
+          Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE).getProperty("hookType");
       Util.convertResourceToFile("templates/gerarEvidencias.bat", hookName);
-      Util.replaceStringOfAFile(hookName, "<solution_directory>",
-          Util.getSolutionDirectory());
+      Util.replaceStringOfAFile(hookName, "<solution_directory>", Util.getSolutionDirectory());
       for (String gitDirProjectPath : gitDirProjects) {
         Files.copy(Paths.get(hookName), Paths.get(gitDirProjectPath + "/.git/hooks/" + hookName),
             StandardCopyOption.REPLACE_EXISTING);
