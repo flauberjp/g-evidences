@@ -33,7 +33,7 @@ public class UserGithubInfo implements Serializable {
   }
 
   private UserGithubInfo(Properties properties) {
-    LOGGER.debug("UserGithubInfo.UserGithubInfo(properties = {}", properties);
+    LOGGER.debug("UserGithubInfo.UserGithubInfo(properties = {}", Util.camuflaPasswordDeUmProperties(properties));
     username = properties.getProperty("login");
     password = properties.getProperty("password");
     repoName = properties.getProperty("repoName");
@@ -89,7 +89,7 @@ public class UserGithubInfo implements Serializable {
   }
 
   public static UserGithubInfo get(Properties properties) throws IOException {
-    LOGGER.debug("UserGithubInfo.get(properties = {})", properties);
+    LOGGER.debug("UserGithubInfo.get(properties = {})", Util.camuflaPasswordDeUmProperties(properties));
     if (userGithubInfo == null) {
       userGithubInfo = new UserGithubInfo(properties);
     }
@@ -149,5 +149,21 @@ public class UserGithubInfo implements Serializable {
     LOGGER.debug("UserGithubInfo.validarCredenciais(username {}, password XXX)", username);
     UserGithubInfo user = UserGithubInfo.get(username, password);
     return user.isCredenciaisValidas();
+  }
+
+  public String toString() {
+    String var10000 = this.getRepoName();
+    return "UserGithubInfo("
+        + "repoName=" + var10000
+        + ", username=" + this.getUsername()
+        + ", password=XXX"
+        + ", githubName=" + this.getGithubName()
+        + ", githubEmail=" + this.getGithubEmail()
+        + ", gitHub=" + this.getGithub()
+        + ", ghUser=" + this.getGhUser()
+        + ", hookType="
+        + this.getHookType()
+        + ", credenciaisValidas=" + this.isCredenciaisValidas()
+        + ")";
   }
 }
