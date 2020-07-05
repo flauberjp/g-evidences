@@ -1,10 +1,14 @@
 package io.github.flauberjp.forms;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
-import io.github.flauberjp.util.Util;
 import io.github.flauberjp.Version;
+import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirListRenderer;
+import io.github.flauberjp.util.Util;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,7 +19,6 @@ import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.Map;
 import javax.swing.ButtonGroup;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -31,8 +34,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirListRenderer;
 import lombok.SneakyThrows;
 
 public class FormMain extends JFrame {
@@ -74,8 +75,8 @@ public class FormMain extends JFrame {
         try {
           FormMain frame = new FormMain();
           frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
+        } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
         }
       }
     });
@@ -177,7 +178,8 @@ public class FormMain extends JFrame {
             hookType = "pre-push";
           }
           LOGGER.info("Botão \"Aplicar configurações\" pressionando");
-          LOGGER.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList().toString());
+          LOGGER.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList()
+              .toString());
           UserGithubInfo userGithubInfo = UserGithubInfo.get(txtUsername.getText(),
               String.valueOf(passwordField.getPassword()), hookType);
           userGithubInfo.setRepoName(txtReponame.getText());
@@ -186,6 +188,7 @@ public class FormMain extends JFrame {
           GenerateHook.generateHook(Util.getSelectedGitDirStringList());
           JOptionPane.showMessageDialog(contentPane, "Configurações aplicadas!");
         } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
           JOptionPane.showMessageDialog(contentPane,
               "Problemas ao aplicar configurações. Exception: " + ex.getMessage());
         }

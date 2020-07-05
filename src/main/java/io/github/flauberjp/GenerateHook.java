@@ -1,5 +1,7 @@
 package io.github.flauberjp;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.util.Util;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,7 +11,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 public class GenerateHook {
 
@@ -27,6 +28,7 @@ public class GenerateHook {
   }
 
   public static boolean generateHook(List<String> gitDirProjects) {
+    boolean result = false;
     LOGGER.debug("GenerateHook.generateHook(gitDirProjects = " + gitDirProjects + ")");
     try {
       String hookName =
@@ -38,10 +40,10 @@ public class GenerateHook {
         Files.copy(Paths.get(hookName), Paths.get(gitDirProjectPath + "/.git/hooks/" + hookName),
             StandardCopyOption.REPLACE_EXISTING);
       }
-      return true;
+      result = true;
     } catch (IOException e) {
-      e.printStackTrace();
-      return false;
+      LOGGER.error(e.getMessage(), e);
     }
+    return result;
   }
 }

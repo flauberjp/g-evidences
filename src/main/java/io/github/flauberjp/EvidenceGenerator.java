@@ -1,5 +1,7 @@
 package io.github.flauberjp;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.forms.FormMain;
 import io.github.flauberjp.util.Util;
 import java.io.File;
@@ -10,13 +12,13 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public class EvidenceGenerator {
+
   private static final Path workspace = Paths.get("delete-me");
 
   public static Path getWorkspace() {
@@ -40,7 +42,7 @@ public class EvidenceGenerator {
     LOGGER.debug("EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo = {})", userGithubInfo);
 
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
-    boolean result;
+    boolean result = false;
     try {
 
       CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(
@@ -68,9 +70,8 @@ public class EvidenceGenerator {
       git.commit().setMessage(dataEHoraExecucao).call();
       git.push().setCredentialsProvider(credentialsProvider).call();
       result = true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      result = false;
+    } catch (Exception ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
     return result;
   }

@@ -1,5 +1,7 @@
 package io.github.flauberjp;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.forms.FormForTesting;
 import io.github.flauberjp.util.Util;
 import java.io.File;
@@ -7,7 +9,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -20,7 +21,8 @@ public class UserGithubProjectCreator {
   public static void main(String[] args) throws IOException, URISyntaxException {
     LOGGER.info("Programa iniciado às: " + LocalDateTime.now());
 
-    LOGGER.info("Projeto criado no Github com sucesso? " + criaProjetoInicialNoGithub(UserGithubInfo.get()));
+    LOGGER.info("Projeto criado no Github com sucesso? " + criaProjetoInicialNoGithub(
+        UserGithubInfo.get()));
 
     LOGGER.info("Programa finalizado às: " + LocalDateTime.now());
   }
@@ -29,12 +31,13 @@ public class UserGithubProjectCreator {
     LOGGER.debug("UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo {})",
         userGithubInfo);
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
-    boolean result;
+    boolean result = false;
     try {
-      GitHub github = GitHub.connectUsingPassword(userGithubInfo.getUsername(), userGithubInfo.getPassword());
+      GitHub github = GitHub
+          .connectUsingPassword(userGithubInfo.getUsername(), userGithubInfo.getPassword());
 
       GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
-      if(!userGithubInfo.getUsername().equalsIgnoreCase(FormForTesting.GIT_USER_FOR_TESTING)) {
+      if (!userGithubInfo.getUsername().equalsIgnoreCase(FormForTesting.GIT_USER_FOR_TESTING)) {
         repo.private_(true);
       }
       repo.create();
@@ -57,18 +60,20 @@ public class UserGithubProjectCreator {
       config.save();
 
       // Copia arquivos iniciais usando templates
-      Util.convertResourceToFile("templates/initialGithubProject/template_index.html", dir + "/index.html");
-      Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt", dir + "/evidences.txt");
-      Util.convertResourceToFile("templates/initialGithubProject/template_README.md", dir + "/README.md");
+      Util.convertResourceToFile("templates/initialGithubProject/template_index.html",
+          dir + "/index.html");
+      Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt",
+          dir + "/evidences.txt");
+      Util.convertResourceToFile("templates/initialGithubProject/template_README.md",
+          dir + "/README.md");
 
       git.add().addFilepattern(".").call();
       git.commit().setMessage("Initial setup").call();
       git.push().setCredentialsProvider(credentialsProvider).call();
 
       result = true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      result = false;
+    } catch (Exception ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
     return result;
   }
