@@ -113,7 +113,6 @@ public class EvidenceGenerator {
     LOGGER.debug(
         "EvidenceGenerator.updateEvidenceFile(fileNameWithItsPath = {}, dataEHoraExecucao = {})",
         fileNameWithItsPath, dataEHoraExecucao);
-    Util.replaceStringOfAFile(fileNameWithItsPath, "List of evidences of git usage:",
-        "List of evidences of git usage:\n" + dataEHoraExecucao);
+    Util.appendStringToAFile(fileNameWithItsPath, dataEHoraExecucao);
   }
 }
