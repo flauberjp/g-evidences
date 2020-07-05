@@ -1,5 +1,6 @@
 package io.github.flauberjp;
 
+import io.github.flauberjp.util.Util;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -8,27 +9,31 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import static io.github.flauberjp.util.MyLogger.logger;
 
 public class GenerateHook {
 
   public static void main(String[] args) throws IOException, URISyntaxException {
-    System.out.println("Programa iniciado às: " + LocalDateTime.now());
+    logger.info("Programa iniciado às: " + LocalDateTime.now());
 
-    System.out.println(generateHook());
+    logger.info("Geração do hook funcionou? " + generateHook());
 
-    System.out.println("Programa finalizado às: " + LocalDateTime.now());
+    logger.info("Programa finalizado às: " + LocalDateTime.now());
   }
 
   public static boolean generateHook() {
+    logger.debug("GenerateHook.generateHook()");
     return generateHook(new ArrayList<String>());
   }
 
   public static boolean generateHook(List<String> gitDirProjects) {
+    logger.debug("GenerateHook.generateHook(gitDirProjects = " + gitDirProjects + ")");
     try {
       String hookName =
           Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE).getProperty("hookType");
       Util.convertResourceToFile("templates/gerarEvidencias.bat", hookName);
-      Util.replaceStringOfAFile(hookName, "<solution_directory>", Util.getSolutionDirectory());
+      Util.replaceStringOfAFile(hookName, "<solution_directory>",
+          Util.getSolutionDirectoryIn83Format());
       for (String gitDirProjectPath : gitDirProjects) {
         Files.copy(Paths.get(hookName), Paths.get(gitDirProjectPath + "/.git/hooks/" + hookName),
             StandardCopyOption.REPLACE_EXISTING);

@@ -1,6 +1,7 @@
 package io.github.flauberjp.forms;
 
-import io.github.flauberjp.Util;
+import io.github.flauberjp.util.Util;
+import static io.github.flauberjp.util.MyLogger.logger;
 import lombok.SneakyThrows;
 import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.forms.model.GitDirListRenderer;
@@ -11,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.function.Consumer;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -23,7 +23,6 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextArea;
 import javax.swing.JList;
 
 public class FormGitProjects extends JFrame {
@@ -94,7 +93,7 @@ public class FormGitProjects extends JFrame {
        // Set a JList containing GitDir's
           list.setModel(Util.getListModel());
           
-          System.out.println(Util.getListModel()); //
+          logger.info(Util.getListModel().toString()); //
           
        // Use a GitDirListRenderer to renderer list cells
           list.setCellRenderer(new GitDirListRenderer());
@@ -127,7 +126,7 @@ public class FormGitProjects extends JFrame {
           // Repaint cell
           list.repaint(list.getCellBounds(index, index));
           
-          System.out.println(item + " " +item.isSelected());
+          logger.info(item + " " +item.isSelected());
        }
     });
     

@@ -1,4 +1,3 @@
 #!/bin/sh
-cd "<solution_directory>"
-start java -cp "<solution_directory>/my-git-usage-evidences-jar-with-dependencies.jar" io.github.flauberjp.EvidenceGenerator
+start /MIN "cmd /C <solution_directory>/mgue gerarevidencia"
 exit 0

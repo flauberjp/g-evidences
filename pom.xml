@@ -7,7 +7,7 @@
     <groupId>io.github.flauberjp</groupId>
     <artifactId>my-git-usage-evidences</artifactId>
     <packaging>jar</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <name>my-git-usage-evidences</name>
     <url>https://github.com/flauberjp/my-git-usage-evidences</url>
 
@@ -59,6 +59,11 @@
             <artifactId>maven-model</artifactId>
             <version>3.3.9</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -76,7 +81,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>io.github.flauberjp.forms.FormMain</mainClass>
+                            <mainClass>io.github.flauberjp.EvidenceGenerator</mainClass>
                         </manifest>
                     </archive>
 
