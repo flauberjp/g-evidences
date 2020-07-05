@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 import javax.swing.DefaultListModel;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
-import static io.github.flauberjp.util.MyLogger.logger;
+import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 public class Util {
 
@@ -33,7 +33,7 @@ public class Util {
   }
 
   public static boolean isRunningFromJar() {
-    logger.debug("Util.isRunningFromJar()");
+    LOGGER.debug("Util.isRunningFromJar()");
     return Util
         .class
         .getResource("Util.class")
@@ -42,7 +42,7 @@ public class Util {
   }
 
   public static Properties getProperties(String propertiesFileName) throws IOException {
-    logger.debug("Util.getProperties(propertiesFileName = {})", propertiesFileName);
+    LOGGER.debug("Util.getProperties(propertiesFileName = {})", propertiesFileName);
     Properties properties = new Properties();
 
     InputStream inputStream;
@@ -62,7 +62,7 @@ public class Util {
   }
 
   private static String getCurrentJarDirectory() {
-    logger.debug("Util.getCurrentJarDirectory()");
+    LOGGER.debug("Util.getCurrentJarDirectory()");
     try {
       return new File(Util.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
     } catch (URISyntaxException exception) {
@@ -73,7 +73,7 @@ public class Util {
   }
 
   private static String getCurrentDirectory() {
-    logger.debug("Util.getCurrentDirectory()");
+    LOGGER.debug("Util.getCurrentDirectory()");
     String result = ".";
     if (isRunningFromJar()) {
       result = getCurrentJarDirectory();
@@ -88,7 +88,7 @@ public class Util {
   }
 
   public static String getSolutionDirectoryIn83Format() {
-    logger.debug("Util.getSolutionDirectoryIn83Format()");
+    LOGGER.debug("Util.getSolutionDirectoryIn83Format()");
     String result = getCurrentDirectory();
     if(result.contains("Program Files")) {
       result = result.replace("Program Files", "progra~1");
@@ -100,7 +100,7 @@ public class Util {
 
 
   public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
-    logger.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})", properties, propertiesFileName);
+    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})", properties, propertiesFileName);
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
         ) {
@@ -111,7 +111,7 @@ public class Util {
   }
 
   public static Properties readPropertiesFromFile(String propertiesFileName) {
-    logger.debug("Util.readPropertiesFromFile(propertiesFileName = {})", propertiesFileName);
+    LOGGER.debug("Util.readPropertiesFromFile(propertiesFileName = {})", propertiesFileName);
     Properties result = new Properties();
     try (
         InputStream input = new FileInputStream(propertiesFileName)
@@ -124,7 +124,7 @@ public class Util {
   }
 
   public static void addGitFiles(File dir) {
-    logger.debug("Util.addGitFiles(dir = {})", dir);
+    LOGGER.debug("Util.addGitFiles(dir = {})", dir);
     try {
       File[] files = dir.listFiles();
       for (File file : files) {
@@ -143,12 +143,12 @@ public class Util {
   }
 
   public static List<GitDir> getGitDirList() {
-    logger.debug("Util.getGitDirList()");
+    LOGGER.debug("Util.getGitDirList()");
     return gitDirList;
   }
 
   public static List<GitDir> getSelectedGitDirList() {
-    logger.debug("Util.getSelectedGitDirList()");
+    LOGGER.debug("Util.getSelectedGitDirList()");
     List result = new ArrayList<GitDir>();
     for (GitDir gitDir : getGitDirList()) {
       if (gitDir.isSelected()) {
@@ -159,7 +159,7 @@ public class Util {
   }
 
   public static List<String> getSelectedGitDirStringList() {
-    logger.debug("Util.getSelectedGitDirStringList()");
+    LOGGER.debug("Util.getSelectedGitDirStringList()");
     List result = new ArrayList<String>();
     for (GitDir gitDir : getSelectedGitDirList()) {
       result.add(gitDir.getPath());
@@ -169,14 +169,14 @@ public class Util {
 
   //Build ListModel containing gitDir's
   public static DefaultListModel<GitDir> buildDefaultListModel() {
-    logger.debug("Util.buildDefaultListModel()");
+    LOGGER.debug("Util.buildDefaultListModel()");
     gitDirList.forEach(gitDir -> listModel.addElement(gitDir));
 
     return listModel;
   }
 
   public static DefaultListModel<GitDir> getListModel() {
-    logger.debug("Util.getListModel()");
+    LOGGER.debug("Util.getListModel()");
     return listModel;
   }
 
@@ -188,7 +188,7 @@ public class Util {
    */
   public static void convertResourceToFile(String resource, String file)
       throws IOException {
-    logger.debug("Util.convertResourceToFile(resource = {}, file = {})", resource, file);
+    LOGGER.debug("Util.convertResourceToFile(resource = {}, file = {})", resource, file);
     InputStream resourceAsStream = UserGithubProjectCreator.class.getResourceAsStream(resource);
     byte[] buffer = new byte[resourceAsStream.available()];
     resourceAsStream.read(buffer);
@@ -202,7 +202,7 @@ public class Util {
    */
   public static Properties createProperties(String[] values)
       throws IllegalArgumentException {
-    logger.debug("Util.createProperties(values = {})", values);
+    LOGGER.debug("Util.createProperties(values = {})", values);
     if (values.length % 2 != 0) {
       throw new IllegalArgumentException("One value is missing.");
     }
@@ -217,12 +217,12 @@ public class Util {
   }
 
   public static String getRandomStr() {
-    logger.debug("Util.getRandomStr()");
+    LOGGER.debug("Util.getRandomStr()");
     return String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
   }
 
   public static void replaceStringOfAFile(String fileNameWithItsPath, String originalString, String newString) {
-    logger.debug("Util.replaceStringOfAFile(fileNameWithItsPath = {}, originalString = {}, newString = {})",
+    LOGGER.debug("Util.replaceStringOfAFile(fileNameWithItsPath = {}, originalString = {}, newString = {})",
         fileNameWithItsPath, originalString, newString);
     Path filePath = Paths.get(fileNameWithItsPath);
     try {
@@ -241,7 +241,7 @@ public class Util {
   }
 
   public static boolean isThisGitProjectAGithubOne(String fullPathDirectoryOfAGitProject) {
-    logger.debug("Util.isThisGitProjectAGithubOne(fullPathDirectoryOfAGitProject = {})",
+    LOGGER.debug("Util.isThisGitProjectAGithubOne(fullPathDirectoryOfAGitProject = {})",
         fullPathDirectoryOfAGitProject);
     boolean result = false;
     if(Paths.get(fullPathDirectoryOfAGitProject).toFile().exists()) {

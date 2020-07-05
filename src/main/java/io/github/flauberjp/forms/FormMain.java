@@ -15,7 +15,7 @@ import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.Map;
 import javax.swing.ButtonGroup;
-import static io.github.flauberjp.util.MyLogger.logger;
+import static io.github.flauberjp.util.MyLogger.LOGGER;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -49,7 +49,7 @@ public class FormMain extends JFrame {
    * Create the frame.
    */
   public FormMain() {
-    logger.debug("FormMain.FormMain()");
+    LOGGER.debug("FormMain.FormMain()");
     geraPainelPrincipal();
 
     botaoConfigurar();
@@ -63,12 +63,12 @@ public class FormMain extends JFrame {
    * Launch the application.
    */
   public static void main(String[] args) {
-    logger.info("FormMain.main(args = {})", args);
+    LOGGER.info("FormMain.main(args = {})", args);
     showFormMain();
   }
 
   public static void showFormMain() {
-    logger.debug("FormMain.showFormMain()");
+    LOGGER.debug("FormMain.showFormMain()");
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
@@ -83,7 +83,7 @@ public class FormMain extends JFrame {
 
 
   private void geraPainelPrincipal() {
-    logger.debug("FormMain.geraPainelPrincipal()");
+    LOGGER.debug("FormMain.geraPainelPrincipal()");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setBounds(100, 100, 538, 540);
     contentPane = new JPanel();
@@ -158,7 +158,7 @@ public class FormMain extends JFrame {
   }
 
   private void setLabelUnderline(JLabel label) {
-    logger.debug("FormMain.setLabelUnderline(label = {})", label);
+    LOGGER.debug("FormMain.setLabelUnderline(label = {})", label);
     Font font = label.getFont();
     Map attributes = font.getAttributes();
     attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -166,7 +166,7 @@ public class FormMain extends JFrame {
   }
 
   private void botaoConfigurar() {
-    logger.debug("FormMain.botaoConfigurar()");
+    LOGGER.debug("FormMain.botaoConfigurar()");
     JButton btn = new JButton("Aplicar configurações");
     btn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -176,8 +176,8 @@ public class FormMain extends JFrame {
           } else if (rdbtnPrePush.isSelected()) {
             hookType = "pre-push";
           }
-          logger.info("Botão \"Aplicar configurações\" pressionando");
-          logger.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList().toString());
+          LOGGER.info("Botão \"Aplicar configurações\" pressionando");
+          LOGGER.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList().toString());
           UserGithubInfo userGithubInfo = UserGithubInfo.get(txtUsername.getText(),
               String.valueOf(passwordField.getPassword()), hookType);
           userGithubInfo.setRepoName(txtReponame.getText());
@@ -196,7 +196,7 @@ public class FormMain extends JFrame {
   }
 
   private void adicionarLblProgramName() {
-    logger.debug("FormMain.adicionarLblProgramName()");
+    LOGGER.debug("FormMain.adicionarLblProgramName()");
     JLabel lblProgramName = new JLabel("my-git-usage-evidences Program");
     lblProgramName.setToolTipText(Version.getVersionFromPom());
     lblProgramName.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -206,7 +206,7 @@ public class FormMain extends JFrame {
   }
 
   private void selecionadorDeProjetosGit() {
-    logger.debug("FormMain.selecionadorDeProjetosGit()");
+    LOGGER.debug("FormMain.selecionadorDeProjetosGit()");
     String label = "Selecione a Pasta Pai dos Projetos Github ";
     JLabel lblPastaPai = new JLabel(label);
     lblPastaPai.setBounds(35, 292, 323, 14);
@@ -224,7 +224,7 @@ public class FormMain extends JFrame {
     btnSelect.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
-        logger.info("Botão \"Selecionar\" pressionado");
+        LOGGER.info("Botão \"Selecionar\" pressionado");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
@@ -239,7 +239,7 @@ public class FormMain extends JFrame {
           // Set a JList containing GitDir's
           list.setModel(Util.getListModel());
 
-          logger.info(Util.getListModel().toString()); //
+          LOGGER.info(Util.getListModel().toString()); //
 
           // Use a GitDirListRenderer to renderer list cells
           list.setCellRenderer(new GitDirListRenderer());
@@ -283,7 +283,7 @@ public class FormMain extends JFrame {
         // Repaint cell
         list.repaint(list.getCellBounds(index, index));
 
-        logger.info(item + " " + item.isSelected());
+        LOGGER.info(item + " " + item.isSelected());
       }
     });
   }

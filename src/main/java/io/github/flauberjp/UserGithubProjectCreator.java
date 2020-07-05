@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import static io.github.flauberjp.util.MyLogger.logger;
+import static io.github.flauberjp.util.MyLogger.LOGGER;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -18,15 +18,15 @@ import org.kohsuke.github.GitHub;
 public class UserGithubProjectCreator {
 
   public static void main(String[] args) throws IOException, URISyntaxException {
-    logger.info("Programa iniciado às: " + LocalDateTime.now());
+    LOGGER.info("Programa iniciado às: " + LocalDateTime.now());
 
-    logger.info("Projeto criado no Github com sucesso? " + criaProjetoInicialNoGithub(UserGithubInfo.get()));
+    LOGGER.info("Projeto criado no Github com sucesso? " + criaProjetoInicialNoGithub(UserGithubInfo.get()));
 
-    logger.info("Programa finalizado às: " + LocalDateTime.now());
+    LOGGER.info("Programa finalizado às: " + LocalDateTime.now());
   }
 
   public static boolean criaProjetoInicialNoGithub(UserGithubInfo userGithubInfo) {
-    logger.debug("UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo {})",
+    LOGGER.debug("UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo {})",
         userGithubInfo);
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
     boolean result;
