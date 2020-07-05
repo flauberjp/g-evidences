@@ -39,8 +39,8 @@ public class FormGitProjects extends JFrame {
         try {        
           FormGitProjects frame = new FormGitProjects();
           frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
+        } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
         }
       }
     });

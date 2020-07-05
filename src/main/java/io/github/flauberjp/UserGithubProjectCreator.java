@@ -29,7 +29,7 @@ public class UserGithubProjectCreator {
     LOGGER.debug("UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo {})",
         userGithubInfo);
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
-    boolean result;
+    boolean result = false;
     try {
       GitHub github = GitHub.connectUsingPassword(userGithubInfo.getUsername(), userGithubInfo.getPassword());
 
@@ -66,9 +66,8 @@ public class UserGithubProjectCreator {
       git.push().setCredentialsProvider(credentialsProvider).call();
 
       result = true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      result = false;
+    } catch (Exception ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
     return result;
   }

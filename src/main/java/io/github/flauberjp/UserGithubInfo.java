@@ -51,7 +51,8 @@ public class UserGithubInfo implements Serializable {
       this.credenciaisValidas = true;
       this.githubName = ghUser.getName();
       this.githubEmail = ghUser.getEmail();
-    } catch (IOException e) {
+    } catch (IOException ex) {
+      LOGGER.error(ex.getMessage(), ex);
       this.credenciaisValidas = false;
     }
   }
@@ -66,7 +67,8 @@ public class UserGithubInfo implements Serializable {
       this.githubName = ghUser.getName();
       this.githubEmail = ghUser.getEmail();
       this.hookType = hookType;
-    } catch (IOException e) {
+    } catch (IOException ex) {
+      LOGGER.error(ex.getMessage(), ex);
       this.credenciaisValidas = false;
     }
   }

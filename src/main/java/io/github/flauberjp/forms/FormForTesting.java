@@ -39,8 +39,8 @@ public class FormForTesting extends JFrame {
         try {
           FormForTesting frame = new FormForTesting();
           frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
+        } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
         }
       }
     });
@@ -133,6 +133,7 @@ public class FormForTesting extends JFrame {
             JOptionPane.showMessageDialog(contentPane, "Problemas na geração de evidências.");
           }
         } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
           JOptionPane.showMessageDialog(contentPane, "Problemas na geração de evidências. Exception: " + ex.getMessage());
         }
       }
@@ -154,6 +155,7 @@ public class FormForTesting extends JFrame {
           UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
           JOptionPane.showMessageDialog(contentPane, "Projeto criado.");
         } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
           JOptionPane.showMessageDialog(contentPane, "Problemas na criação do projeto. Exception: " + ex.getMessage());
         }
 
@@ -201,6 +203,7 @@ public class FormForTesting extends JFrame {
           Util.savePropertiesToFile(UserGithubInfo.get(txtUsername.getText(), String.valueOf(passwordField.getPassword())).toProperties(), UserGithubInfo.PROPERTIES_FILE);
           JOptionPane.showMessageDialog(contentPane, "Dados salvos!");
         } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
           JOptionPane.showMessageDialog(contentPane, "Problemas ao tentar salvar dados. Exception: " + ex.getMessage());
         }
       }
@@ -228,6 +231,7 @@ public class FormForTesting extends JFrame {
                     "\trepoName=" + userGithubInfo.getRepoName();
             JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
           } catch (Exception ex) {
+            LOGGER.error(ex.getMessage(), ex);
             JOptionPane.showMessageDialog(contentPane, "Credenciais válidas, mas houve problemas ao ler propriedades. Exception: " + ex.getMessage());
           }
         } else {

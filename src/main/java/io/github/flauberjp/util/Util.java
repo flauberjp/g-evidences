@@ -65,8 +65,8 @@ public class Util {
     LOGGER.debug("Util.getCurrentJarDirectory()");
     try {
       return new File(Util.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
-    } catch (URISyntaxException exception) {
-      exception.printStackTrace();
+    } catch (URISyntaxException ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
 
     return null;
@@ -80,8 +80,8 @@ public class Util {
     } else {
       try {
         result = new File( "." ).getCanonicalPath();
-      } catch (IOException e) {
-        e.printStackTrace();
+      } catch (IOException ex) {
+        LOGGER.error(ex.getMessage(), ex);
       }
     }
     return result;
@@ -106,7 +106,7 @@ public class Util {
         ) {
       properties.store(fileOut, "");
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.error(ex.getMessage(), ex);
     }
   }
 
@@ -117,8 +117,8 @@ public class Util {
         InputStream input = new FileInputStream(propertiesFileName)
     ) {
       result.load(input);
-    } catch (IOException io) {
-      io.printStackTrace();
+    } catch (IOException ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
     return result;
   }
@@ -137,8 +137,8 @@ public class Util {
           addGitFiles(file);
         }
       }
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
   }
 
@@ -234,9 +234,8 @@ public class Util {
           .collect(Collectors.toList());
       Files.write(filePath, replacedLine, Charset.forName("UTF-8"));
       lines.close();
-    } catch (IOException e) {
-
-      e.printStackTrace();
+    } catch (IOException ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
   }
 
@@ -253,8 +252,8 @@ public class Util {
           if(remoteOriginUrl != null) {
             result = remoteOriginUrl.toLowerCase().contains("github.com");
           }
-        } catch (Exception e) {
-          e.printStackTrace();
+        } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
         }
       }
     }

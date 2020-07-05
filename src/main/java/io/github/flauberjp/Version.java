@@ -22,7 +22,7 @@ public class Version {
 	  Model model = reader.read(new FileReader("pom.xml"));
 	  result = "Version: " + model.getVersion();
 	} catch(IOException | XmlPullParserException ex) {
-	  ex.printStackTrace();
+		LOGGER.error(ex.getMessage(), ex);
 	}
 	return result;
   }

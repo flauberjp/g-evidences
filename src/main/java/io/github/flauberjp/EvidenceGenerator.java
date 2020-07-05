@@ -40,7 +40,7 @@ public class EvidenceGenerator {
     LOGGER.debug("EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo = {})", userGithubInfo);
 
     String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
-    boolean result;
+    boolean result = false;
     try {
 
       CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(
@@ -68,9 +68,8 @@ public class EvidenceGenerator {
       git.commit().setMessage(dataEHoraExecucao).call();
       git.push().setCredentialsProvider(credentialsProvider).call();
       result = true;
-    } catch (Exception e) {
-      e.printStackTrace();
-      result = false;
+    } catch (Exception ex) {
+      LOGGER.error(ex.getMessage(), ex);
     }
     return result;
   }

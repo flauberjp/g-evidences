@@ -74,8 +74,8 @@ public class FormMain extends JFrame {
         try {
           FormMain frame = new FormMain();
           frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
+        } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
         }
       }
     });
@@ -186,6 +186,7 @@ public class FormMain extends JFrame {
           GenerateHook.generateHook(Util.getSelectedGitDirStringList());
           JOptionPane.showMessageDialog(contentPane, "Configurações aplicadas!");
         } catch (Exception ex) {
+          LOGGER.error(ex.getMessage(), ex);
           JOptionPane.showMessageDialog(contentPane,
               "Problemas ao aplicar configurações. Exception: " + ex.getMessage());
         }
