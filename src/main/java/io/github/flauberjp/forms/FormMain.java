@@ -5,8 +5,6 @@ import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.util.Util;
 import io.github.flauberjp.Version;
-import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirListRenderer;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.Map;
+import javax.swing.ButtonGroup;
 import static io.github.flauberjp.util.MyLogger.logger;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -25,14 +24,16 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirListRenderer;
 import lombok.SneakyThrows;
-import static io.github.flauberjp.util.MyLogger.logger;
 
 public class FormMain extends JFrame {
 
@@ -40,6 +41,9 @@ public class FormMain extends JFrame {
   private JTextField txtUsername;
   private JPasswordField passwordField;
   private JTextField txtReponame;
+  private JRadioButton rdbtnPreCommit;
+  private JRadioButton rdbtnPrePush;
+  private String hookType;
 
   /**
    * Create the frame.
@@ -81,7 +85,7 @@ public class FormMain extends JFrame {
   private void geraPainelPrincipal() {
     logger.debug("FormMain.geraPainelPrincipal()");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 525, 540);
+    setBounds(100, 100, 538, 540);
     contentPane = new JPanel();
     contentPane.setToolTipText("");
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -96,6 +100,23 @@ public class FormMain extends JFrame {
     JLabel lblUsername = new JLabel("Nome de Usu\u00E1rio:");
     lblUsername.setBounds(35, 99, 111, 14);
     contentPane.add(lblUsername);
+
+    JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para ap\u00F3s:");
+    lblHookType.setBounds(35, 160, 260, 14);
+    contentPane.add(lblHookType);
+
+    ButtonGroup G = new ButtonGroup();
+
+    rdbtnPreCommit = new JRadioButton("Commit");
+    rdbtnPreCommit.setBounds(301, 156, 81, 23);
+    contentPane.add(rdbtnPreCommit);
+
+    rdbtnPrePush = new JRadioButton("Push");
+    rdbtnPrePush.setBounds(411, 156, 74, 23);
+    contentPane.add(rdbtnPrePush);
+
+    G.add(rdbtnPreCommit);
+    G.add(rdbtnPrePush);
 
     txtUsername = new JTextField();
     txtUsername.setText("mygitusageevicencesapp");
@@ -116,23 +137,23 @@ public class FormMain extends JFrame {
     JLabel lblRepoNameArea = new JLabel(
         "Repositório no seu Github que irá registrar o seu uso local do git");
     setLabelUnderline(lblRepoNameArea);
-    lblRepoNameArea.setBounds(35, 167, 450, 14);
+    lblRepoNameArea.setBounds(35, 209, 450, 14);
     contentPane.add(lblRepoNameArea);
 
     JLabel lblRepoName = new JLabel("Nome do Repositório:");
-    lblRepoName.setBounds(35, 194, 123, 14);
+    lblRepoName.setBounds(35, 236, 123, 14);
     contentPane.add(lblRepoName);
 
     txtReponame = new JTextField();
     txtReponame.setText("my-git-usage-evidences");
     txtReponame.setColumns(10);
-    txtReponame.setBounds(160, 192, 325, 20);
+    txtReponame.setBounds(160, 234, 325, 20);
     contentPane.add(txtReponame);
 
     JLabel lblProjects = new JLabel(
         "Projetos que não são do Github que terão o uso local do git registrado no Github");
     setLabelUnderline(lblProjects);
-    lblProjects.setBounds(35, 225, 450, 14);
+    lblProjects.setBounds(35, 267, 450, 14);
     contentPane.add(lblProjects);
   }
 
@@ -150,10 +171,15 @@ public class FormMain extends JFrame {
     btn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
+          if (rdbtnPreCommit.isSelected()) {
+            hookType = "pre-commit";
+          } else if (rdbtnPrePush.isSelected()) {
+            hookType = "pre-push";
+          }
           logger.info("Botão \"Aplicar configurações\" pressionando");
           logger.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList().toString());
           UserGithubInfo userGithubInfo = UserGithubInfo.get(txtUsername.getText(),
-              String.valueOf(passwordField.getPassword()));
+              String.valueOf(passwordField.getPassword()), hookType);
           userGithubInfo.setRepoName(txtReponame.getText());
           Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
           UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
@@ -165,9 +191,8 @@ public class FormMain extends JFrame {
         }
       }
     });
-    btn.setBounds(188, 440, 170, 23);
+    btn.setBounds(188, 467, 170, 23);
     contentPane.add(btn);
-
   }
 
   private void adicionarLblProgramName() {
@@ -184,11 +209,11 @@ public class FormMain extends JFrame {
     logger.debug("FormMain.selecionadorDeProjetosGit()");
     String label = "Selecione a Pasta Pai dos Projetos Github ";
     JLabel lblPastaPai = new JLabel(label);
-    lblPastaPai.setBounds(35, 250, 323, 14);
+    lblPastaPai.setBounds(35, 292, 323, 14);
     contentPane.add(lblPastaPai);
 
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(35, 278, 450, 151);
+    scrollPane.setBounds(35, 315, 450, 144);
     contentPane.add(scrollPane);
 
     JList<GitDir> list = new JList<GitDir>();
@@ -228,7 +253,7 @@ public class FormMain extends JFrame {
 
       }
     });
-    btnSelect.setBounds(362, 244, 123, 23);
+    btnSelect.setBounds(362, 286, 123, 23);
     contentPane.add(btnSelect);
 
     JSeparator separator = new JSeparator();
@@ -236,11 +261,11 @@ public class FormMain extends JFrame {
     contentPane.add(separator);
 
     JSeparator separator_1 = new JSeparator();
-    separator_1.setBounds(35, 179, 396, 2);
+    separator_1.setBounds(35, 279, 396, 2);
     contentPane.add(separator_1);
 
     JSeparator separator_2 = new JSeparator();
-    separator_2.setBounds(35, 237, 396, 2);
+    separator_2.setBounds(35, 221, 396, 2);
     contentPane.add(separator_2);
 
     // Add a mouse listener to handle changing selection

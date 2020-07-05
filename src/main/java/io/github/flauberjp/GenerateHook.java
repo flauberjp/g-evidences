@@ -29,7 +29,8 @@ public class GenerateHook {
   public static boolean generateHook(List<String> gitDirProjects) {
     logger.debug("GenerateHook.generateHook(gitDirProjects = " + gitDirProjects + ")");
     try {
-      String hookName = "pre-commit";
+      String hookName =
+          Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE).getProperty("hookType");
       Util.convertResourceToFile("templates/gerarEvidencias.bat", hookName);
       Util.replaceStringOfAFile(hookName, "<solution_directory>",
           Util.getSolutionDirectoryIn83Format());

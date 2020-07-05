@@ -15,7 +15,7 @@ import static io.github.flauberjp.util.MyLogger.logger;
 public class UserGithubInfo implements Serializable {
   public static final String PROPERTIES_FILE = "propriedades.txt";
   private static UserGithubInfo userGithubInfo;
-  //default serialVersion id
+  // default serialVersion id
   private static final long serialVersionUID = 1L;
   private String repoName = "my-git-usage-evidences-repo";
   private String username = ""; // e.g. flauberjp
@@ -24,6 +24,7 @@ public class UserGithubInfo implements Serializable {
   private String githubEmail = ""; // e.g. flauberjp@gmail.com
   private GitHub gitHub = null;
   private GHUser ghUser = null;
+  private String hookType = ""; // e.g. pre-commit
   private boolean credenciaisValidas = false;
 
   private UserGithubInfo() {
@@ -34,6 +35,7 @@ public class UserGithubInfo implements Serializable {
     username = properties.getProperty("login");
     password = properties.getProperty("password");
     repoName = properties.getProperty("repoName");
+    hookType = properties.getProperty("hookType");
 
     githubName = properties.getProperty("githubName");
     githubEmail = properties.getProperty("githubEmail");
@@ -49,6 +51,21 @@ public class UserGithubInfo implements Serializable {
       this.credenciaisValidas = true;
       this.githubName = ghUser.getName();
       this.githubEmail = ghUser.getEmail();
+    } catch (IOException e) {
+      this.credenciaisValidas = false;
+    }
+  }
+
+  private UserGithubInfo(String username, String password, String hookType) {
+    try {
+      this.gitHub = GitHub.connectUsingPassword(username, password);
+      this.ghUser = gitHub.getUser(username);
+      this.username = username;
+      this.password = password;
+      this.credenciaisValidas = true;
+      this.githubName = ghUser.getName();
+      this.githubEmail = ghUser.getEmail();
+      this.hookType = hookType;
     } catch (IOException e) {
       this.credenciaisValidas = false;
     }
@@ -83,6 +100,13 @@ public class UserGithubInfo implements Serializable {
     return userGithubInfo;
   }
 
+  public static UserGithubInfo get(String username, String password, String hookType) {
+    if (userGithubInfo == null) {
+      userGithubInfo = new UserGithubInfo(username, password, hookType);
+    }
+    return userGithubInfo;
+  }
+
   public static void reset() {
     logger.debug("UserGithubInfo.reset()");
     userGithubInfo = null;
@@ -95,7 +119,8 @@ public class UserGithubInfo implements Serializable {
         "login", getUsername(),
         "password", getPassword(),
         "githubName", getGithubName(),
-        "githubEmail", getGithubEmail()
+        "githubEmail", getGithubEmail(),
+        "hookType", getHookType()
       });
   };
 
