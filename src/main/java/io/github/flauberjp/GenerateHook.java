@@ -1,5 +1,7 @@
 package io.github.flauberjp;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.util.Util;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,7 +11,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 public class GenerateHook {
 

@@ -1,5 +1,7 @@
 package io.github.flauberjp.forms;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.EvidenceGenerator;
 import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
@@ -19,7 +21,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 public class FormForTesting extends JFrame {
 
@@ -127,14 +128,15 @@ public class FormForTesting extends JFrame {
         try {
           UserGithubInfo userGithubInfo = UserGithubInfo.get();
           userGithubInfo.setRepoName(txtRepoName.getText());
-          if(EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo)) {
+          if (EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo)) {
             JOptionPane.showMessageDialog(contentPane, "Evidência gerada.");
           } else {
             JOptionPane.showMessageDialog(contentPane, "Problemas na geração de evidências.");
           }
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);
-          JOptionPane.showMessageDialog(contentPane, "Problemas na geração de evidências. Exception: " + ex.getMessage());
+          JOptionPane.showMessageDialog(contentPane,
+              "Problemas na geração de evidências. Exception: " + ex.getMessage());
         }
       }
     });
@@ -156,7 +158,8 @@ public class FormForTesting extends JFrame {
           JOptionPane.showMessageDialog(contentPane, "Projeto criado.");
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);
-          JOptionPane.showMessageDialog(contentPane, "Problemas na criação do projeto. Exception: " + ex.getMessage());
+          JOptionPane.showMessageDialog(contentPane,
+              "Problemas na criação do projeto. Exception: " + ex.getMessage());
         }
 
       }
@@ -171,19 +174,23 @@ public class FormForTesting extends JFrame {
     btnLerArq.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
-        LOGGER.info("Botão \"Ler conteúdo do arquivo " + UserGithubInfo.PROPERTIES_FILE + "\" pressionado");
-        if(!new File(UserGithubInfo.PROPERTIES_FILE).exists()) {
-          JOptionPane.showMessageDialog(contentPane, "Arquivo inexistente, valide as suas credenciais primeiro!", "Erro", JOptionPane.ERROR_MESSAGE);
+        LOGGER.info(
+            "Botão \"Ler conteúdo do arquivo " + UserGithubInfo.PROPERTIES_FILE + "\" pressionado");
+        if (!new File(UserGithubInfo.PROPERTIES_FILE).exists()) {
+          JOptionPane.showMessageDialog(contentPane,
+              "Arquivo inexistente, valide as suas credenciais primeiro!", "Erro",
+              JOptionPane.ERROR_MESSAGE);
           return;
         }
-        UserGithubInfo userGithubInfo = UserGithubInfo.get(Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE));
+        UserGithubInfo userGithubInfo = UserGithubInfo
+            .get(Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE));
         String output =
             "\tlogin=" + userGithubInfo.getUsername() + "\n" +
-            "\tpassword=" + userGithubInfo.getPassword() + "\n" +
-            "\tgithubName=" + userGithubInfo.getGithubName()+ "\n" +
-            "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n" +
-            "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n" +
-            "\trepoName=" + userGithubInfo.getRepoName();
+                "\tpassword=" + userGithubInfo.getPassword() + "\n" +
+                "\tgithubName=" + userGithubInfo.getGithubName() + "\n" +
+                "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n" +
+                "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n" +
+                "\trepoName=" + userGithubInfo.getRepoName();
         JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
       }
     });
@@ -200,11 +207,14 @@ public class FormForTesting extends JFrame {
         LOGGER.info("Botão \"Salvar Dados em...\" pressioando");
         try {
           UserGithubInfo.reset();
-          Util.savePropertiesToFile(UserGithubInfo.get(txtUsername.getText(), String.valueOf(passwordField.getPassword())).toProperties(), UserGithubInfo.PROPERTIES_FILE);
+          Util.savePropertiesToFile(
+              UserGithubInfo.get(txtUsername.getText(), String.valueOf(passwordField.getPassword()))
+                  .toProperties(), UserGithubInfo.PROPERTIES_FILE);
           JOptionPane.showMessageDialog(contentPane, "Dados salvos!");
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);
-          JOptionPane.showMessageDialog(contentPane, "Problemas ao tentar salvar dados. Exception: " + ex.getMessage());
+          JOptionPane.showMessageDialog(contentPane,
+              "Problemas ao tentar salvar dados. Exception: " + ex.getMessage());
         }
       }
     });
@@ -219,20 +229,23 @@ public class FormForTesting extends JFrame {
       public void actionPerformed(ActionEvent e) {
         LOGGER.info("Botão \"Validar Credenciais\" pressionado");
         UserGithubInfo.reset();
-        if(UserGithubInfo.validarCredenciais(txtUsername.getText(), String.valueOf(passwordField.getPassword()))) {
+        if (UserGithubInfo.validarCredenciais(txtUsername.getText(),
+            String.valueOf(passwordField.getPassword()))) {
           try {
             UserGithubInfo userGithubInfo = UserGithubInfo.get();
             String output =
                 "\tlogin=" + userGithubInfo.getUsername() + "\n" +
                     "\tpassword=" + userGithubInfo.getPassword() + "\n" +
-                    "\tgithubName=" + userGithubInfo.getGithubName()+ "\n" +
+                    "\tgithubName=" + userGithubInfo.getGithubName() + "\n" +
                     "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n" +
                     "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n" +
                     "\trepoName=" + userGithubInfo.getRepoName();
             JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
           } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
-            JOptionPane.showMessageDialog(contentPane, "Credenciais válidas, mas houve problemas ao ler propriedades. Exception: " + ex.getMessage());
+            JOptionPane.showMessageDialog(contentPane,
+                "Credenciais válidas, mas houve problemas ao ler propriedades. Exception: " + ex
+                    .getMessage());
           }
         } else {
           JOptionPane.showMessageDialog(contentPane, "Credenciais inválidas");
@@ -250,7 +263,7 @@ public class FormForTesting extends JFrame {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
         LOGGER.info("Botão \"Gerar hook...\" pressionado");
-        if(GenerateHook.generateHook()) {
+        if (GenerateHook.generateHook()) {
           JOptionPane.showMessageDialog(contentPane, "Arquivo gerado.");
         } else {
           JOptionPane.showMessageDialog(contentPane, "Problemas na geração do hook.");

@@ -1,5 +1,7 @@
 package io.github.flauberjp.util;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.forms.model.GitDir;
 import java.io.File;
@@ -22,7 +24,6 @@ import java.util.stream.Stream;
 import javax.swing.DefaultListModel;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 public class Util {
 
@@ -64,7 +65,9 @@ public class Util {
   private static String getCurrentJarDirectory() {
     LOGGER.debug("Util.getCurrentJarDirectory()");
     try {
-      return new File(Util.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParent();
+      return new File(
+          Util.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+          .getParent();
     } catch (URISyntaxException ex) {
       LOGGER.error(ex.getMessage(), ex);
     }
@@ -79,7 +82,7 @@ public class Util {
       result = getCurrentJarDirectory();
     } else {
       try {
-        result = new File( "." ).getCanonicalPath();
+        result = new File(".").getCanonicalPath();
       } catch (IOException ex) {
         LOGGER.error(ex.getMessage(), ex);
       }
@@ -90,9 +93,9 @@ public class Util {
   public static String getSolutionDirectoryIn83Format() {
     LOGGER.debug("Util.getSolutionDirectoryIn83Format()");
     String result = getCurrentDirectory();
-    if(result.contains("Program Files")) {
+    if (result.contains("Program Files")) {
       result = result.replace("Program Files", "progra~1");
-    } else if(result.contains("Arquivos de Programas")) {
+    } else if (result.contains("Arquivos de Programas")) {
       result = result.replace("Arquivos de Programas", "arquiv~1");
     }
     return result;
@@ -100,10 +103,11 @@ public class Util {
 
 
   public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
-    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})", properties, propertiesFileName);
+    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})", properties,
+        propertiesFileName);
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
-        ) {
+    ) {
       properties.store(fileOut, "");
     } catch (Exception ex) {
       LOGGER.error(ex.getMessage(), ex);
@@ -181,7 +185,7 @@ public class Util {
   }
 
 
-/**
+  /**
    * @param resource e.g.: "initialProjectTemplate/template_index.html"
    * @param file     e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
    * @throws IOException
@@ -221,8 +225,10 @@ public class Util {
     return String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
   }
 
-  public static void replaceStringOfAFile(String fileNameWithItsPath, String originalString, String newString) {
-    LOGGER.debug("Util.replaceStringOfAFile(fileNameWithItsPath = {}, originalString = {}, newString = {})",
+  public static void replaceStringOfAFile(String fileNameWithItsPath, String originalString,
+      String newString) {
+    LOGGER.debug(
+        "Util.replaceStringOfAFile(fileNameWithItsPath = {}, originalString = {}, newString = {})",
         fileNameWithItsPath, originalString, newString);
     Path filePath = Paths.get(fileNameWithItsPath);
     try {
@@ -243,13 +249,13 @@ public class Util {
     LOGGER.debug("Util.isThisGitProjectAGithubOne(fullPathDirectoryOfAGitProject = {})",
         fullPathDirectoryOfAGitProject);
     boolean result = false;
-    if(Paths.get(fullPathDirectoryOfAGitProject).toFile().exists()) {
-      if(Paths.get(fullPathDirectoryOfAGitProject + "/.git").toFile().exists()) {
+    if (Paths.get(fullPathDirectoryOfAGitProject).toFile().exists()) {
+      if (Paths.get(fullPathDirectoryOfAGitProject + "/.git").toFile().exists()) {
         try {
           Git git = Git.open(new File(fullPathDirectoryOfAGitProject));
           StoredConfig config = git.getRepository().getConfig();
           String remoteOriginUrl = config.getString("remote", "origin", "url");
-          if(remoteOriginUrl != null) {
+          if (remoteOriginUrl != null) {
             result = remoteOriginUrl.toLowerCase().contains("github.com");
           }
         } catch (Exception ex) {

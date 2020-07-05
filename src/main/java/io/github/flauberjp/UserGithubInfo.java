@@ -1,5 +1,7 @@
 package io.github.flauberjp;
 
+import static io.github.flauberjp.util.MyLogger.LOGGER;
+
 import io.github.flauberjp.util.Util;
 import java.io.IOException;
 import java.io.Serializable;
@@ -8,11 +10,11 @@ import lombok.Getter;
 import lombok.ToString;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
-import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 @Getter
 @ToString
 public class UserGithubInfo implements Serializable {
+
   public static final String PROPERTIES_FILE = "propriedades.txt";
   private static UserGithubInfo userGithubInfo;
   // default serialVersion id
@@ -123,8 +125,10 @@ public class UserGithubInfo implements Serializable {
         "githubName", getGithubName(),
         "githubEmail", getGithubEmail(),
         "hookType", getHookType()
-      });
-  };
+    });
+  }
+
+  ;
 
   public String getGithub() {
     LOGGER.debug("UserGithubInfo.getGithub()");

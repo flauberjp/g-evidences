@@ -1,9 +1,8 @@
 package io.github.flauberjp;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.File;
-import java.io.IOException;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
