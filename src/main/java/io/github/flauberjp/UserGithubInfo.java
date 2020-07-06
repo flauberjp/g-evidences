@@ -15,11 +15,12 @@ import org.kohsuke.github.GitHub;
 @ToString
 public class UserGithubInfo implements Serializable {
 
+  public static final String MY_GIT_USAGE_EVIDENCES_REPO = "my-git-usage-evidences-repo";
   public static final String PROPERTIES_FILE = "propriedades.txt";
   private static UserGithubInfo userGithubInfo;
   // default serialVersion id
   private static final long serialVersionUID = 1L;
-  private String repoName = "my-git-usage-evidences-repo";
+  private String repoName = MY_GIT_USAGE_EVIDENCES_REPO;
   private String username = ""; // e.g. flauberjp
   private String password = ""; // e.g. passw0rd
   private String githubName = ""; // e.g. Flaviano Flauber
@@ -165,5 +166,10 @@ public class UserGithubInfo implements Serializable {
         + this.getHookType()
         + ", credenciaisValidas=" + this.isCredenciaisValidas()
         + ")";
+  }
+  
+  public static void resetRepoName() {
+    LOGGER.debug("UserGithubInfo.resetRepoName()");
+	  setRepoName(MY_GIT_USAGE_EVIDENCES_REPO);
   }
 }
