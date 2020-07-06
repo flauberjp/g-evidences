@@ -16,7 +16,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Properties;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +26,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -38,6 +41,9 @@ public class FormForTesting extends JFrame {
   private JTextField txtUsername;
   private JPasswordField passwordField;
   private JTextField txtRepoName;
+  private String hookType;
+  private JRadioButton rdbtnPreCommit;
+  private JRadioButton rdbtnPrePush;
 
   /**
    * Launch the application.
@@ -63,6 +69,8 @@ public class FormForTesting extends JFrame {
     LOGGER.debug("FormForTesting.FormForTesting()");
     geraPainelPrincipal();
 
+    geraRadioButtons();
+
     botaoValidacao();
 
     botaoSalvarDados();
@@ -77,6 +85,17 @@ public class FormForTesting extends JFrame {
 
     areaEscolherProjetos();
 
+  }
+
+  private void geraRadioButtons() {
+    rdbtnPreCommit = new JRadioButton("Commit");
+    rdbtnPreCommit.setSelected(true);
+    rdbtnPreCommit.setBounds(301, 78, 81, 23);
+    contentPane.add(rdbtnPreCommit);
+
+    rdbtnPrePush = new JRadioButton("Push");
+    rdbtnPrePush.setBounds(411, 78, 74, 23);
+    contentPane.add(rdbtnPrePush);
   }
 
   private void geraPainelPrincipal() {
@@ -118,7 +137,8 @@ public class FormForTesting extends JFrame {
     passwordField.setBounds(156, 135, 293, 20);
     contentPane.add(passwordField);
 
-    JLabel lblRepoName = new JLabel("Repositório");
+    JLabel lblRepoName = new JLabel("Repo");
+    lblRepoName.setToolTipText("Nome do Repositório");
     lblRepoName.setBounds(35, 161, 111, 14);
     contentPane.add(lblRepoName);
 
@@ -212,15 +232,51 @@ public class FormForTesting extends JFrame {
   private void botaoSalvarDados() {
     LOGGER
         .debug("FormForTesting.botaoSalvarDados()");
+
+    JCheckBox ckbConsiderarGatilho = new JCheckBox("Considerar tipo de gatilho");
+    ckbConsiderarGatilho.setSelected(false);
+    ckbConsiderarGatilho.setBounds(462, 270, 183, 23);
+    contentPane.add(ckbConsiderarGatilho);
+
+    JCheckBox ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
+    ckbConsiderarNomeRepo.setSelected(false);
+    ckbConsiderarNomeRepo
+        .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
+    ckbConsiderarNomeRepo.setBounds(647, 270, 192, 23);
+    contentPane.add(ckbConsiderarNomeRepo);
+
     JButton btnConfirm = new JButton("Salvar Dados em " + UserGithubInfo.PROPERTIES_FILE);
     btnConfirm.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        Properties properties;
         LOGGER.info("Botão \"Salvar Dados em...\" pressioando");
+
         try {
           UserGithubInfo.reset();
+          if (rdbtnPreCommit.isSelected()) {
+            hookType = "pre-commit";
+          } else if (rdbtnPrePush.isSelected()) {
+            hookType = "pre-push";
+          }
+          if (ckbConsiderarGatilho.isSelected()) {
+            properties = UserGithubInfo
+                .get(txtUsername.getText(), String.valueOf(passwordField.getPassword()), hookType)
+                .toProperties();
+          } else {
+            properties = UserGithubInfo
+                .get(txtUsername.getText(), String.valueOf(passwordField.getPassword()))
+                .toProperties();
+
+          }
+          if (ckbConsiderarNomeRepo.isSelected()) {
+            UserGithubInfo.get().setRepoName(txtRepoName.getText());
+          } else {
+            UserGithubInfo.get().resetRepoName();
+          }
+
           Util.savePropertiesToFile(
-              UserGithubInfo.get(txtUsername.getText(), String.valueOf(passwordField.getPassword()))
-                  .toProperties(), UserGithubInfo.PROPERTIES_FILE);
+              properties,
+              UserGithubInfo.PROPERTIES_FILE);
           JOptionPane.showMessageDialog(contentPane, "Dados salvos!");
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);
@@ -246,11 +302,11 @@ public class FormForTesting extends JFrame {
             UserGithubInfo userGithubInfo = UserGithubInfo.get();
             String output =
                 "\tlogin=" + userGithubInfo.getUsername() + "\n"
-                + "\tpassword=" + userGithubInfo.getPassword() + "\n"
-                + "\tgithubName=" + userGithubInfo.getGithubName() + "\n"
-                + "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n"
-                + "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n"
-                + "\trepoName=" + userGithubInfo.getRepoName();
+                    + "\tpassword=" + userGithubInfo.getPassword() + "\n"
+                    + "\tgithubName=" + userGithubInfo.getGithubName() + "\n"
+                    + "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n"
+                    + "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n"
+                    + "\trepoName=" + userGithubInfo.getRepoName();
             JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
           } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
@@ -263,7 +319,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnValidacao.setBounds(156, 297, 300, 23);
+    btnValidacao.setBounds(156, 304, 300, 23);
     contentPane.add(btnValidacao);
   }
 
@@ -281,7 +337,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btn.setBounds(156, 324, 300, 23);
+    btn.setBounds(156, 331, 300, 23);
     contentPane.add(btn);
   }
 
@@ -332,6 +388,10 @@ public class FormForTesting extends JFrame {
     });
     btnSelect.setBounds(609, 357, 96, 23);
     contentPane.add(btnSelect);
+
+    JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para após:");
+    lblHookType.setBounds(35, 82, 260, 14);
+    contentPane.add(lblHookType);
 
     // Add a mouse listener to handle changing selection
     list.addMouseListener(new MouseAdapter() {

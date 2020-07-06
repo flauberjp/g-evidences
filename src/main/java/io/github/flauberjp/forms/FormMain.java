@@ -27,7 +27,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -41,9 +40,6 @@ public class FormMain extends JFrame {
   private JPanel contentPane;
   private JTextField txtUsername;
   private JPasswordField passwordField;
-  private JRadioButton rdbtnPreCommit;
-  private JRadioButton rdbtnPrePush;
-  private String hookType;
 
   /**
    * Create the frame.
@@ -101,22 +97,7 @@ public class FormMain extends JFrame {
     lblUsername.setBounds(35, 99, 111, 14);
     contentPane.add(lblUsername);
 
-    JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para ap\u00F3s:");
-    lblHookType.setBounds(35, 160, 260, 14);
-    contentPane.add(lblHookType);
-
     ButtonGroup G = new ButtonGroup();
-
-    rdbtnPreCommit = new JRadioButton("Commit");
-    rdbtnPreCommit.setBounds(301, 156, 81, 23);
-    contentPane.add(rdbtnPreCommit);
-
-    rdbtnPrePush = new JRadioButton("Push");
-    rdbtnPrePush.setBounds(411, 156, 74, 23);
-    contentPane.add(rdbtnPrePush);
-
-    G.add(rdbtnPreCommit);
-    G.add(rdbtnPrePush);
 
     txtUsername = new JTextField();
     txtUsername.setText("mygitusageevicencesapp");
@@ -155,16 +136,11 @@ public class FormMain extends JFrame {
     btn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          if (rdbtnPreCommit.isSelected()) {
-            hookType = "pre-commit";
-          } else if (rdbtnPrePush.isSelected()) {
-            hookType = "pre-push";
-          }
           LOGGER.info("Botão \"Aplicar configurações\" pressionando");
           LOGGER.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList()
               .toString());
           UserGithubInfo userGithubInfo = UserGithubInfo.get(txtUsername.getText(),
-              String.valueOf(passwordField.getPassword()), hookType);
+              String.valueOf(passwordField.getPassword()));
           Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
           UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
           GenerateHook.generateHook(Util.getSelectedGitDirStringList());
