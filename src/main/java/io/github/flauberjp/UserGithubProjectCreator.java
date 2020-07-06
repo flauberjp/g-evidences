@@ -30,11 +30,9 @@ public class UserGithubProjectCreator {
   public static boolean criaProjetoInicialNoGithub(UserGithubInfo userGithubInfo) {
     LOGGER.debug("UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo {})",
         userGithubInfo);
-    String dataEHoraExecucao = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
     boolean result = false;
     try {
-      GitHub github = GitHub
-          .connectUsingPassword(userGithubInfo.getUsername(), userGithubInfo.getPassword());
+      GitHub github = userGithubInfo.get().getGitHub();
 
       GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
       if (!userGithubInfo.getUsername().equalsIgnoreCase(FormForTesting.GIT_USER_FOR_TESTING)) {

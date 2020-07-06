@@ -34,33 +34,16 @@ public class UserGithubInfo implements Serializable {
   }
 
   private UserGithubInfo(Properties properties) {
-    LOGGER.debug("UserGithubInfo.UserGithubInfo(properties = {}", Util.camuflaPasswordDeUmProperties(properties));
-    username = properties.getProperty("login");
-    password = properties.getProperty("password");
-    repoName = properties.getProperty("repoName");
-    hookType = properties.getProperty("hookType");
-
-    githubName = properties.getProperty("githubName");
-    githubEmail = properties.getProperty("githubEmail");
+    this(properties.getProperty("login"), properties.getProperty("password"));
   }
 
   private UserGithubInfo(String username, String password) {
-    LOGGER.debug("UserGithubInfo.UserGithubInfo(username {}, password XXX)", username);
-    try {
-      this.gitHub = GitHub.connectUsingPassword(username, password);
-      this.ghUser = gitHub.getUser(username);
-      this.username = username;
-      this.password = password;
-      this.credenciaisValidas = true;
-      this.githubName = ghUser.getName();
-      this.githubEmail = ghUser.getEmail();
-    } catch (IOException ex) {
-      LOGGER.error(ex.getMessage(), ex);
-      this.credenciaisValidas = false;
-    }
+    this(username, password, "");
   }
 
   private UserGithubInfo(String username, String password, String hookType) {
+    LOGGER.debug("UserGithubInfo(username = {}, password = XXX, hookType = {})", username,
+        hookType);
     try {
       this.gitHub = GitHub.connectUsingPassword(username, password);
       this.ghUser = gitHub.getUser(username);
@@ -90,7 +73,8 @@ public class UserGithubInfo implements Serializable {
   }
 
   public static UserGithubInfo get(Properties properties) throws IOException {
-    LOGGER.debug("UserGithubInfo.get(properties = {})", Util.camuflaPasswordDeUmProperties(properties));
+    LOGGER.debug("UserGithubInfo.get(properties = {})",
+        Util.camuflaPasswordDeUmProperties(properties));
     if (userGithubInfo == null) {
       userGithubInfo = new UserGithubInfo(properties);
     }
@@ -98,7 +82,7 @@ public class UserGithubInfo implements Serializable {
   }
 
   public static UserGithubInfo get(String username, String password) {
-    LOGGER.debug("UserGithubInfo.get(username {}, password XXX)", username);
+    LOGGER.debug("UserGithubInfo.get(username = {}, password = XXX)", username);
     if (userGithubInfo == null) {
       userGithubInfo = new UserGithubInfo(username, password);
     }
@@ -120,16 +104,10 @@ public class UserGithubInfo implements Serializable {
   public Properties toProperties() {
     LOGGER.debug("UserGithubInfo.toProperties()");
     return Util.createProperties(new String[]{
-        "repoName", getRepoName(),
         "login", getUsername(),
-        "password", getPassword(),
-        "githubName", getGithubName(),
-        "githubEmail", getGithubEmail(),
-        "hookType", getHookType()
+        "password", getPassword()
     });
   }
-
-  ;
 
   public String getGithub() {
     LOGGER.debug("UserGithubInfo.getGithub()");
@@ -147,29 +125,34 @@ public class UserGithubInfo implements Serializable {
   }
 
   public static boolean validarCredenciais(String username, String password) {
-    LOGGER.debug("UserGithubInfo.validarCredenciais(username {}, password XXX)", username);
+    LOGGER.debug("UserGithubInfo.validarCredenciais(username = {}, password = XXX)", username);
     UserGithubInfo user = UserGithubInfo.get(username, password);
     return user.isCredenciaisValidas();
   }
 
   public String toString() {
-    String var10000 = this.getRepoName();
     return "UserGithubInfo("
-        + "repoName=" + var10000
+        + "repoName=" + this.getRepoName()
         + ", username=" + this.getUsername()
         + ", password=XXX"
         + ", githubName=" + this.getGithubName()
         + ", githubEmail=" + this.getGithubEmail()
         + ", gitHub=" + this.getGithub()
         + ", ghUser=" + this.getGhUser()
-        + ", hookType="
-        + this.getHookType()
+        + ", hookType=" + this.getHookType()
         + ", credenciaisValidas=" + this.isCredenciaisValidas()
         + ")";
   }
-  
+
   public static void resetRepoName() {
     LOGGER.debug("UserGithubInfo.resetRepoName()");
-	  setRepoName(MY_GIT_USAGE_EVIDENCES_REPO);
+    setRepoName(MY_GIT_USAGE_EVIDENCES_REPO);
   }
+
+  public GitHub getGitHub() {
+    if(gitHub == null) {
+      throw new Error("Chamada indevida ao objeto " + UserGithubInfo.class.getSimpleName());
+    }
+    return gitHub;
+  };
 }
