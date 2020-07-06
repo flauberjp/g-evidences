@@ -245,12 +245,12 @@ public class FormForTesting extends JFrame {
           try {
             UserGithubInfo userGithubInfo = UserGithubInfo.get();
             String output =
-                "\tlogin=" + userGithubInfo.getUsername() + "\n" +
-                    "\tpassword=" + userGithubInfo.getPassword() + "\n" +
-                    "\tgithubName=" + userGithubInfo.getGithubName() + "\n" +
-                    "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n" +
-                    "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n" +
-                    "\trepoName=" + userGithubInfo.getRepoName();
+                "\tlogin=" + userGithubInfo.getUsername() + "\n"
+                + "\tpassword=" + userGithubInfo.getPassword() + "\n"
+                + "\tgithubName=" + userGithubInfo.getGithubName() + "\n"
+                + "\tgithubRepoNameFullPath=" + userGithubInfo.getRepoNameFullPath() + "\n"
+                + "\tgithubEmail=" + userGithubInfo.getGithubEmail() + "\n"
+                + "\trepoName=" + userGithubInfo.getRepoName();
             JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
           } catch (Exception ex) {
             LOGGER.error(ex.getMessage(), ex);
