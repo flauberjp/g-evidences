@@ -82,6 +82,8 @@
                     <archive>
                         <manifest>
                             <mainClass>io.github.flauberjp.EvidenceGenerator</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
 
