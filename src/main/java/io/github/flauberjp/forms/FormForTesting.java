@@ -6,6 +6,7 @@ import io.github.flauberjp.EvidenceGenerator;
 import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
+import io.github.flauberjp.Version;
 import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
@@ -82,6 +83,8 @@ public class FormForTesting extends JFrame {
     botaoGerarEvidencia();
 
     botaoGerarHook();
+    
+    botaoVersao();
 
     areaEscolherProjetos();
 
@@ -340,21 +343,34 @@ public class FormForTesting extends JFrame {
     btn.setBounds(156, 331, 300, 23);
     contentPane.add(btn);
   }
+  
+  private void botaoVersao() {
+	LOGGER.debug("FormForTesting.botaoVersao()");
+	JButton btnVersao = new JButton("Versão");
+	btnVersao.addActionListener(new ActionListener() {
+	  public void actionPerformed(ActionEvent e) {
+		LOGGER.info("Botão \"Versão...\" pressionado");
+	    JOptionPane.showMessageDialog(contentPane, Version.getVersionFromPom());
+	  }
+	});
+	btnVersao.setBounds(156, 362, 300, 23);
+	contentPane.add(btnVersao);
+  }
 
   private void areaEscolherProjetos() {
     JLabel lblEscolherProjetos = new JLabel("Escolher Projetos");
     lblEscolherProjetos.setHorizontalAlignment(SwingConstants.LEFT);
-    lblEscolherProjetos.setBounds(35, 361, 134, 14);
+    lblEscolherProjetos.setBounds(35, 396, 134, 14);
     contentPane.add(lblEscolherProjetos);
 
     JLabel lblPastaPai = new JLabel("Caminho da Pasta Pai");
-    lblPastaPai.setBounds(174, 361, 388, 14);
+    lblPastaPai.setBounds(174, 396, 388, 14);
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
     contentPane.add(list);
     list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-    list.setBounds(156, 386, 559, 204);
+    list.setBounds(156, 421, 559, 204);
 
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.addActionListener(new ActionListener() {
@@ -386,13 +402,13 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnSelect.setBounds(609, 357, 96, 23);
+    btnSelect.setBounds(609, 392, 96, 23);
     contentPane.add(btnSelect);
 
     JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para após:");
     lblHookType.setBounds(35, 82, 260, 14);
     contentPane.add(lblHookType);
-
+    
     // Add a mouse listener to handle changing selection
     list.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent event) {
