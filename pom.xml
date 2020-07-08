@@ -7,7 +7,7 @@
     <groupId>io.github.flauberjp</groupId>
     <artifactId>my-git-usage-evidences</artifactId>
     <packaging>jar</packaging>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.3-SNAPSHOT</version>
     <name>my-git-usage-evidences</name>
     <url>https://github.com/flauberjp/my-git-usage-evidences</url>
 
@@ -82,6 +82,8 @@
                     <archive>
                         <manifest>
                             <mainClass>io.github.flauberjp.EvidenceGenerator</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
 

@@ -67,6 +67,7 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
 8. [Creating a personal access token for the command line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
 9. [How to get the real path of Java application at runtime?](https://stackoverflow.com/a/43553093/6771132)
 10. [How to Run .JAR Files on Windows 10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
+11. [Get Maven artifact version at runtime](https://stackoverflow.com/a/2713013/6771132)
 
 
 ## License
