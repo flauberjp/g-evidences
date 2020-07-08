@@ -34,6 +34,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
+import javax.swing.JScrollPane;
 
 public class FormForTesting extends JFrame {
 
@@ -368,9 +369,10 @@ public class FormForTesting extends JFrame {
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
-    contentPane.add(list);
-    list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-    list.setBounds(156, 421, 559, 204);
+    
+    JScrollPane scrollPane = new JScrollPane(list);
+    scrollPane.setBounds(156, 421, 559, 170);
+    contentPane.add(scrollPane);
 
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.addActionListener(new ActionListener() {

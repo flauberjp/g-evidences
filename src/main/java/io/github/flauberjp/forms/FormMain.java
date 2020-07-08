@@ -174,8 +174,11 @@ public class FormMain extends JFrame {
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
-    list.setBounds(36, 243, 447, 141);
-    contentPane.add(list);
+    
+    JScrollPane scrollPane = new JScrollPane(list);
+    scrollPane.setBounds(36, 243, 447, 141);
+    contentPane.add(scrollPane);
+    
     
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.setToolTipText(label);
@@ -217,11 +220,7 @@ public class FormMain extends JFrame {
     JSeparator separator = new JSeparator();
     separator.setBounds(35, 82, 396, 2);
     contentPane.add(separator);
-
-    JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(35, 241, 450, 144);
-    contentPane.add(scrollPane);
-
+   
     // Add a mouse listener to handle changing selection
     list.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent event) {
