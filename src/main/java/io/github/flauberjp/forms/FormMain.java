@@ -34,6 +34,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
+import java.util.Properties;
 
 public class FormMain extends JFrame {
 
@@ -53,6 +54,17 @@ public class FormMain extends JFrame {
     adicionarLblProgramName();
 
     selecionadorDeProjetosGit();
+
+    inicializaForm();
+  }
+
+  private void inicializaForm() {
+    LOGGER.debug("FormMain.inicializaForm()");
+    if(Util.isPropertiesFileExist(UserGithubInfo.PROPERTIES_FILE)) {
+      Properties properties = Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE);
+      txtUsername.setText(properties.getProperty("login"));
+      passwordField.setText(properties.getProperty("password"));
+    }
   }
 
   /**
@@ -100,7 +112,8 @@ public class FormMain extends JFrame {
     ButtonGroup G = new ButtonGroup();
 
     txtUsername = new JTextField();
-    txtUsername.setText("mygitusageevicencesapp");
+    txtUsername.setToolTipText("Username do seu usuário no Github, ex: passw0rd");
+    txtUsername.setText("");
     txtUsername.setColumns(10);
     txtUsername.setBounds(160, 97, 325, 20);
     contentPane.add(txtUsername);
@@ -110,8 +123,8 @@ public class FormMain extends JFrame {
     contentPane.add(lblPassword);
 
     passwordField = new JPasswordField();
-    passwordField.setToolTipText("e.g. passw0rd");
-    passwordField.setText("44dbb46ec17d03c3545a4301370565c45e870ce3");
+    passwordField.setToolTipText("Password do seu usuário no Github, ex: passw0rd");
+    passwordField.setText("");
     passwordField.setBounds(160, 122, 325, 20);
     contentPane.add(passwordField);
 

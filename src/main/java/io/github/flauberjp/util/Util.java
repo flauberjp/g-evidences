@@ -63,6 +63,13 @@ public class Util {
     return properties;
   }
 
+  public static boolean isPropertiesFileExist(String propertiesFileName) {
+    LOGGER.debug("Util.isPropertiesFileExist(propertiesFileName = {})", propertiesFileName);
+    String filePath = propertiesFileName;
+    File file = new File(getCurrentDirectory() + "/" + filePath);
+    return file.exists();
+  }
+
   private static String getCurrentJarDirectory() {
     LOGGER.debug("Util.getCurrentJarDirectory()");
     try {
