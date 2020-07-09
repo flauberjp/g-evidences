@@ -65,8 +65,14 @@ public class Util {
 
   public static boolean isPropertiesFileExist(String propertiesFileName) {
     LOGGER.debug("Util.isPropertiesFileExist(propertiesFileName = {})", propertiesFileName);
-    String filePath = propertiesFileName;
-    File file = new File(getCurrentDirectory() + "/" + filePath);
+    String filePath = getCurrentDirectory() + "/" + propertiesFileName;
+    return isFileExist(filePath);
+  }
+
+  public static boolean isFileExist(String fileName) {
+    LOGGER.debug("Util.isFileExist(fileName = {})", fileName);
+    String filePath = fileName;
+    File file = new File(filePath);
     return file.exists();
   }
 
