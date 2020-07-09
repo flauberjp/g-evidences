@@ -65,8 +65,14 @@ public class Util {
 
   public static boolean isPropertiesFileExist(String propertiesFileName) {
     LOGGER.debug("Util.isPropertiesFileExist(propertiesFileName = {})", propertiesFileName);
-    String filePath = propertiesFileName;
-    File file = new File(getCurrentDirectory() + "/" + filePath);
+    String filePath = getCurrentDirectory() + "/" + propertiesFileName;
+    return isFileExist(filePath);
+  }
+
+  public static boolean isFileExist(String fileName) {
+    LOGGER.debug("Util.isFileExist(fileName = {})", fileName);
+    String filePath = fileName;
+    File file = new File(filePath);
     return file.exists();
   }
 
@@ -111,7 +117,8 @@ public class Util {
 
 
   public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
-    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})", Util.camuflaPasswordDeUmProperties(properties),
+    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})",
+        Util.camuflaPasswordDeUmProperties(properties),
         propertiesFileName);
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
@@ -296,7 +303,7 @@ public class Util {
 
   public static Properties camuflaPasswordDeUmProperties(Properties properties) {
     Properties modifiedProperties = (Properties) properties.clone();
-    if(modifiedProperties.containsKey("password")) {
+    if (modifiedProperties.containsKey("password")) {
       modifiedProperties.setProperty("password", "XXX");
     }
     return modifiedProperties;

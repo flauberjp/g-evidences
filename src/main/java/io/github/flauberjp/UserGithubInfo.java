@@ -8,8 +8,11 @@ import java.io.Serializable;
 import java.util.Properties;
 import lombok.Getter;
 import lombok.ToString;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHRepositorySearchBuilder;
 import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
+import org.kohsuke.github.PagedSearchIterable;
 
 @Getter
 @ToString
@@ -150,9 +153,28 @@ public class UserGithubInfo implements Serializable {
   }
 
   public GitHub getGitHub() {
-    if(gitHub == null) {
+    LOGGER.debug("UserGithubInfo.getGitHub()");
+    if (gitHub == null) {
       throw new Error("Chamada indevida ao objeto " + UserGithubInfo.class.getSimpleName());
     }
     return gitHub;
-  };
+  }
+
+  public boolean isRepoExistent() {
+    LOGGER.debug("UserGithubInfo.isRepoExistent()");
+    boolean result = false;
+    GHRepositorySearchBuilder search = getGitHub().searchRepositories();
+    GHRepositorySearchBuilder s = search.q(MY_GIT_USAGE_EVIDENCES_REPO);
+
+    PagedSearchIterable res = s.list();
+
+    for (Object ghRepository : res) {
+      if ((username + "/" + MY_GIT_USAGE_EVIDENCES_REPO)
+          .equalsIgnoreCase(((GHRepository) ghRepository).getFullName())) {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
 }

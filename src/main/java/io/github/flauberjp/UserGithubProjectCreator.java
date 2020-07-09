@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -31,14 +30,13 @@ public class UserGithubProjectCreator {
     LOGGER.debug("UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo {})",
         userGithubInfo);
     boolean result = false;
+    boolean repositorioExistente = false;
     try {
-      GitHub github = userGithubInfo.get().getGitHub();
+      repositorioExistente = UserGithubInfo.get().isRepoExistent();
 
-      GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
-      if (!userGithubInfo.getUsername().equalsIgnoreCase(FormForTesting.GIT_USER_FOR_TESTING)) {
-        repo.private_(true);
+      if (!repositorioExistente) {
+        criaProjeto(userGithubInfo);
       }
-      repo.create();
 
       CredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(
           userGithubInfo.getUsername(), userGithubInfo.getPassword());
@@ -57,22 +55,38 @@ public class UserGithubProjectCreator {
       config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
       config.save();
 
-      // Copia arquivos iniciais usando templates
-      Util.convertResourceToFile("templates/initialGithubProject/template_index.html",
-          dir + "/index.html");
-      Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt",
-          dir + "/evidences.txt");
-      Util.convertResourceToFile("templates/initialGithubProject/template_README.md",
-          dir + "/README.md");
+      if (!repositorioExistente) {
+        // Copia arquivos iniciais usando templates
+        Util.convertResourceToFile("templates/initialGithubProject/template_index.html",
+            dir + "/index.html");
+        Util.convertResourceToFile("templates/initialGithubProject/template_README.md",
+            dir + "/README.md");
+      }
 
-      git.add().addFilepattern(".").call();
-      git.commit().setMessage("Initial setup").call();
-      git.push().setCredentialsProvider(credentialsProvider).call();
+      String evidencesFilePath = dir + "/evidences.txt";
+      if (!Util.isFileExist(evidencesFilePath)) {
+        Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt",
+            dir + "/evidences.txt");
+        git.add().addFilepattern(".").call();
+        git.commit().setMessage("Initial setup").call();
+        git.push().setCredentialsProvider(credentialsProvider).call();
+      }
 
       result = true;
     } catch (Exception ex) {
       LOGGER.error(ex.getMessage(), ex);
     }
     return result;
+  }
+
+  private static void criaProjeto(UserGithubInfo userGithubInfo) throws IOException {
+    LOGGER.debug("UserGithubProjectCreator.criaProjeto(userGithubInfo {})",
+        userGithubInfo);
+    GitHub github = userGithubInfo.get().getGitHub();
+    GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
+    if (!userGithubInfo.getUsername().equalsIgnoreCase(FormForTesting.GIT_USER_FOR_TESTING)) {
+      repo.private_(true);
+    }
+    repo.create();
   }
 }

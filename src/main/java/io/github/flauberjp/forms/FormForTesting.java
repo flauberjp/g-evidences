@@ -28,13 +28,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
-import javax.swing.JScrollPane;
 
 public class FormForTesting extends JFrame {
 
@@ -84,8 +83,10 @@ public class FormForTesting extends JFrame {
     botaoGerarEvidencia();
 
     botaoGerarHook();
-    
+
     botaoVersao();
+
+    botaoVerificaExistenciaDoRepoRemoto();
 
     areaEscolherProjetos();
 
@@ -105,7 +106,7 @@ public class FormForTesting extends JFrame {
   private void geraPainelPrincipal() {
     LOGGER.debug("FormForTesting.geraPainelPrincipal()");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 865, 738);
+    setBounds(100, 100, 970, 738);
 
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -175,7 +176,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnGenerateEvidence.setBounds(156, 189, 300, 23);
+    btnGenerateEvidence.setBounds(156, 189, 395, 23);
     contentPane.add(btnGenerateEvidence);
   }
 
@@ -199,7 +200,7 @@ public class FormForTesting extends JFrame {
 
       }
     });
-    btnCreateProject.setBounds(156, 216, 300, 23);
+    btnCreateProject.setBounds(156, 216, 395, 23);
     contentPane.add(btnCreateProject);
   }
 
@@ -229,7 +230,7 @@ public class FormForTesting extends JFrame {
         JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
       }
     });
-    btnLerArq.setBounds(156, 243, 300, 23);
+    btnLerArq.setBounds(156, 243, 395, 23);
     contentPane.add(btnLerArq);
   }
 
@@ -239,14 +240,14 @@ public class FormForTesting extends JFrame {
 
     JCheckBox ckbConsiderarGatilho = new JCheckBox("Considerar tipo de gatilho");
     ckbConsiderarGatilho.setSelected(false);
-    ckbConsiderarGatilho.setBounds(462, 270, 183, 23);
+    ckbConsiderarGatilho.setBounds(571, 270, 183, 23);
     contentPane.add(ckbConsiderarGatilho);
 
     JCheckBox ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
     ckbConsiderarNomeRepo.setSelected(false);
     ckbConsiderarNomeRepo
         .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
-    ckbConsiderarNomeRepo.setBounds(647, 270, 192, 23);
+    ckbConsiderarNomeRepo.setBounds(756, 270, 192, 23);
     contentPane.add(ckbConsiderarNomeRepo);
 
     JButton btnConfirm = new JButton("Salvar Dados em " + UserGithubInfo.PROPERTIES_FILE);
@@ -289,7 +290,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnConfirm.setBounds(156, 270, 300, 23);
+    btnConfirm.setBounds(156, 270, 395, 23);
     contentPane.add(btnConfirm);
   }
 
@@ -323,7 +324,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnValidacao.setBounds(156, 304, 300, 23);
+    btnValidacao.setBounds(156, 304, 395, 23);
     contentPane.add(btnValidacao);
   }
 
@@ -341,37 +342,53 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btn.setBounds(156, 331, 300, 23);
+    btn.setBounds(156, 331, 395, 23);
     contentPane.add(btn);
   }
-  
+
   private void botaoVersao() {
-	LOGGER.debug("FormForTesting.botaoVersao()");
-	JButton btnVersao = new JButton("Versão");
-	btnVersao.addActionListener(new ActionListener() {
-	  public void actionPerformed(ActionEvent e) {
-		LOGGER.info("Botão \"Versão...\" pressionado");
-	    JOptionPane.showMessageDialog(contentPane, Version.getVersionFromPom());
-	  }
-	});
-	btnVersao.setBounds(156, 362, 300, 23);
-	contentPane.add(btnVersao);
+    LOGGER.debug("FormForTesting.botaoVersao()");
+    JButton btnVersao = new JButton("Versão");
+    btnVersao.addActionListener(new ActionListener() {
+      @SneakyThrows
+      public void actionPerformed(ActionEvent e) {
+        LOGGER.info("Botão \"Versão...\" pressionado");
+        JOptionPane.showMessageDialog(contentPane, Version.getVersionFromPom());
+      }
+    });
+    btnVersao.setBounds(156, 362, 395, 23);
+    contentPane.add(btnVersao);
+  }
+
+  private void botaoVerificaExistenciaDoRepoRemoto() {
+    JButton btnRepoRemoto = new JButton("Verifica existência do repo no repositório remoto");
+    btnRepoRemoto.addActionListener(new ActionListener() {
+      @SneakyThrows
+      public void actionPerformed(ActionEvent e) {
+        LOGGER.info("Botão \"Versão...\" pressionado");
+        JOptionPane.showMessageDialog(contentPane,
+            "Repo \"" + UserGithubInfo.MY_GIT_USAGE_EVIDENCES_REPO
+                + "\" já existe no repositório remoto?" + UserGithubInfo.get().isRepoExistent());
+      }
+    });
+    btnRepoRemoto.setBounds(156, 396, 395, 23);
+    contentPane.add(btnRepoRemoto);
   }
 
   private void areaEscolherProjetos() {
     JLabel lblEscolherProjetos = new JLabel("Escolher Projetos");
     lblEscolherProjetos.setHorizontalAlignment(SwingConstants.LEFT);
-    lblEscolherProjetos.setBounds(35, 396, 134, 14);
+    lblEscolherProjetos.setBounds(35, 493, 134, 14);
     contentPane.add(lblEscolherProjetos);
 
     JLabel lblPastaPai = new JLabel("Caminho da Pasta Pai");
-    lblPastaPai.setBounds(174, 396, 388, 14);
+    lblPastaPai.setBounds(174, 493, 388, 14);
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
-    
+
     JScrollPane scrollPane = new JScrollPane(list);
-    scrollPane.setBounds(156, 421, 559, 170);
+    scrollPane.setBounds(156, 518, 559, 170);
     contentPane.add(scrollPane);
 
     JButton btnSelect = new JButton("Selecionar");
@@ -404,13 +421,13 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnSelect.setBounds(609, 392, 96, 23);
+    btnSelect.setBounds(609, 489, 96, 23);
     contentPane.add(btnSelect);
 
     JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para após:");
     lblHookType.setBounds(35, 82, 260, 14);
     contentPane.add(lblHookType);
-    
+
     // Add a mouse listener to handle changing selection
     list.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent event) {
