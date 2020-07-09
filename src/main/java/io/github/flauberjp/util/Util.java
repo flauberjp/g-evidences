@@ -117,7 +117,8 @@ public class Util {
 
 
   public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
-    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})", Util.camuflaPasswordDeUmProperties(properties),
+    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})",
+        Util.camuflaPasswordDeUmProperties(properties),
         propertiesFileName);
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
@@ -302,7 +303,7 @@ public class Util {
 
   public static Properties camuflaPasswordDeUmProperties(Properties properties) {
     Properties modifiedProperties = (Properties) properties.clone();
-    if(modifiedProperties.containsKey("password")) {
+    if (modifiedProperties.containsKey("password")) {
       modifiedProperties.setProperty("password", "XXX");
     }
     return modifiedProperties;

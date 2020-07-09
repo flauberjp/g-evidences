@@ -154,11 +154,11 @@ public class UserGithubInfo implements Serializable {
 
   public GitHub getGitHub() {
     LOGGER.debug("UserGithubInfo.getGitHub()");
-    if(gitHub == null) {
+    if (gitHub == null) {
       throw new Error("Chamada indevida ao objeto " + UserGithubInfo.class.getSimpleName());
     }
     return gitHub;
-  };
+  }
 
   public boolean isRepoExistent() {
     LOGGER.debug("UserGithubInfo.isRepoExistent()");
@@ -169,7 +169,8 @@ public class UserGithubInfo implements Serializable {
     PagedSearchIterable res = s.list();
 
     for (Object ghRepository : res) {
-      if ((username + "/" + MY_GIT_USAGE_EVIDENCES_REPO).equalsIgnoreCase(((GHRepository)ghRepository).getFullName())) {
+      if ((username + "/" + MY_GIT_USAGE_EVIDENCES_REPO)
+          .equalsIgnoreCase(((GHRepository) ghRepository).getFullName())) {
         result = true;
         break;
       }

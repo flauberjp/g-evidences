@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -35,7 +34,7 @@ public class UserGithubProjectCreator {
     try {
       repositorioExistente = UserGithubInfo.get().isRepoExistent();
 
-      if(!repositorioExistente) {
+      if (!repositorioExistente) {
         criaProjeto(userGithubInfo);
       }
 
@@ -56,7 +55,7 @@ public class UserGithubProjectCreator {
       config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
       config.save();
 
-      if(!repositorioExistente) {
+      if (!repositorioExistente) {
         // Copia arquivos iniciais usando templates
         Util.convertResourceToFile("templates/initialGithubProject/template_index.html",
             dir + "/index.html");
@@ -65,7 +64,7 @@ public class UserGithubProjectCreator {
       }
 
       String evidencesFilePath = dir + "/evidences.txt";
-      if(!Util.isFileExist(evidencesFilePath)) {
+      if (!Util.isFileExist(evidencesFilePath)) {
         Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt",
             dir + "/evidences.txt");
         git.add().addFilepattern(".").call();

@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.Map;
+import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -34,7 +35,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
-import java.util.Properties;
 
 public class FormMain extends JFrame {
 
@@ -60,7 +60,7 @@ public class FormMain extends JFrame {
 
   private void inicializaForm() {
     LOGGER.debug("FormMain.inicializaForm()");
-    if(Util.isPropertiesFileExist(UserGithubInfo.PROPERTIES_FILE)) {
+    if (Util.isPropertiesFileExist(UserGithubInfo.PROPERTIES_FILE)) {
       Properties properties = Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE);
       txtUsername.setText(properties.getProperty("login"));
       passwordField.setText(properties.getProperty("password"));
@@ -187,12 +187,11 @@ public class FormMain extends JFrame {
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
-    
+
     JScrollPane scrollPane = new JScrollPane(list);
     scrollPane.setBounds(36, 243, 447, 141);
     contentPane.add(scrollPane);
-    
-    
+
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.setToolTipText(label);
     btnSelect.addActionListener(new ActionListener() {
@@ -233,7 +232,7 @@ public class FormMain extends JFrame {
     JSeparator separator = new JSeparator();
     separator.setBounds(35, 82, 396, 2);
     contentPane.add(separator);
-   
+
     // Add a mouse listener to handle changing selection
     list.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent event) {
