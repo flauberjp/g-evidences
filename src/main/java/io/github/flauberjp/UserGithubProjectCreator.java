@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import org.eclipse.jgit.api.AddCommand;
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -63,20 +65,26 @@ public class UserGithubProjectCreator {
             dir + "/README.md");
       }
 
-      String evidencesFilePath = dir + "/evidences.txt";
-      if (!Util.isFileExist(evidencesFilePath)) {
-        Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt",
-            dir + "/evidences.txt");
-        git.add().addFilepattern(".").call();
-        git.commit().setMessage("Initial setup").call();
-        git.push().setCredentialsProvider(credentialsProvider).call();
-      }
+      createEvidencesFileIfNotExist(dir + "/evidences.txt");
+
+      AddCommand addCommand = git.add().addFilepattern(".");
+      addCommand.call();
+      CommitCommand commitCommand = git.commit();
+      commitCommand.setMessage("Initial setup").call();
+      git.push().setCredentialsProvider(credentialsProvider).call();
 
       result = true;
     } catch (Exception ex) {
       LOGGER.error(ex.getMessage(), ex);
     }
     return result;
+  }
+
+  public static void createEvidencesFileIfNotExist(String evidencesFilePath) throws IOException {
+    if (!Util.isFileExist(evidencesFilePath)) {
+      Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt",
+          evidencesFilePath);
+    }
   }
 
   private static void criaProjeto(UserGithubInfo userGithubInfo) throws IOException {
