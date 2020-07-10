@@ -46,18 +46,19 @@ public class Util {
   public static Properties getProperties(String propertiesFileName) throws IOException {
     LOGGER.debug("Util.getProperties(propertiesFileName = {})", propertiesFileName);
     Properties properties = new Properties();
-
+    String filePath = "";
     InputStream inputStream;
+
     if (isRunningFromJar()) {
-      String filePath = getCurrentJarDirectory() + "/" + propertiesFileName;
-      File file = new File(filePath);
-      if (!file.exists()) {
-        throw new RuntimeException("Arquivo " + filePath + " esperado não existe. ");
-      }
-      inputStream = new FileInputStream(file);
+      filePath = getCurrentJarDirectory() + "/" + propertiesFileName;
     } else {
-      inputStream = UserGithubProjectCreator.class.getResourceAsStream(propertiesFileName);
+      filePath = getCurrentDirectory() + "/" + propertiesFileName;
     }
+    File file = new File(filePath);
+    if (!file.exists()) {
+      throw new RuntimeException("Arquivo " + filePath + " esperado não existe. ");
+    }
+    inputStream = new FileInputStream(file);
     properties.load(inputStream);
 
     return properties;

@@ -45,6 +45,8 @@ public class FormForTesting extends JFrame {
   private String hookType;
   private JRadioButton rdbtnPreCommit;
   private JRadioButton rdbtnPrePush;
+  private JCheckBox ckbConsiderarGatilho;
+  private JCheckBox ckbConsiderarNomeRepo;  
 
   /**
    * Launch the application.
@@ -69,9 +71,11 @@ public class FormForTesting extends JFrame {
   public FormForTesting() {
     LOGGER.debug("FormForTesting.FormForTesting()");
     geraPainelPrincipal();
+    
+    criarHooks();
 
-    geraRadioButtons();
-
+    criarRepo();
+    
     botaoValidacao();
 
     botaoSalvarDados();
@@ -92,15 +96,35 @@ public class FormForTesting extends JFrame {
 
   }
 
-  private void geraRadioButtons() {
+  private void criarRepo() {
+	txtRepoName = new JTextField();
+	txtRepoName.setText("my-git-usage-evidences-repo");
+	txtRepoName.setColumns(10);
+	txtRepoName.setBounds(156, 158, 293, 20);
+	contentPane.add(txtRepoName);
+	    
+	ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
+	ckbConsiderarNomeRepo.setSelected(false);
+	ckbConsiderarNomeRepo
+	  .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
+	ckbConsiderarNomeRepo.setBounds(474, 157, 192, 23);
+	contentPane.add(ckbConsiderarNomeRepo);
+  }
+
+  private void criarHooks() {
     rdbtnPreCommit = new JRadioButton("Commit");
     rdbtnPreCommit.setSelected(true);
     rdbtnPreCommit.setBounds(301, 78, 81, 23);
     contentPane.add(rdbtnPreCommit);
 
     rdbtnPrePush = new JRadioButton("Push");
-    rdbtnPrePush.setBounds(411, 78, 74, 23);
+    rdbtnPrePush.setBounds(398, 78, 74, 23);
     contentPane.add(rdbtnPrePush);
+    
+    ckbConsiderarGatilho = new JCheckBox("Considerar tipo de gatilho");
+	ckbConsiderarGatilho.setSelected(false);
+	ckbConsiderarGatilho.setBounds(474, 78, 218, 23);
+	contentPane.add(ckbConsiderarGatilho);
   }
 
   private void geraPainelPrincipal() {
@@ -146,12 +170,6 @@ public class FormForTesting extends JFrame {
     lblRepoName.setToolTipText("Nome do Repositório");
     lblRepoName.setBounds(35, 161, 111, 14);
     contentPane.add(lblRepoName);
-
-    txtRepoName = new JTextField();
-    txtRepoName.setText("my-git-usage-evidences-repo");
-    txtRepoName.setColumns(10);
-    txtRepoName.setBounds(156, 158, 293, 20);
-    contentPane.add(txtRepoName);
   }
 
   private void botaoGerarEvidencia() {
@@ -163,7 +181,9 @@ public class FormForTesting extends JFrame {
         LOGGER.info("Botão \"Gerar evidência\" pressionado");
         try {
           UserGithubInfo userGithubInfo = UserGithubInfo.get();
-          userGithubInfo.setRepoName(txtRepoName.getText());
+          if(ckbConsiderarNomeRepo.isSelected()) {
+            userGithubInfo.setRepoName(txtRepoName.getText());
+          }
           if (EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo)) {
             JOptionPane.showMessageDialog(contentPane, "Evidência gerada.");
           } else {
@@ -237,18 +257,7 @@ public class FormForTesting extends JFrame {
   private void botaoSalvarDados() {
     LOGGER
         .debug("FormForTesting.botaoSalvarDados()");
-
-    JCheckBox ckbConsiderarGatilho = new JCheckBox("Considerar tipo de gatilho");
-    ckbConsiderarGatilho.setSelected(false);
-    ckbConsiderarGatilho.setBounds(571, 270, 183, 23);
-    contentPane.add(ckbConsiderarGatilho);
-
-    JCheckBox ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
-    ckbConsiderarNomeRepo.setSelected(false);
-    ckbConsiderarNomeRepo
-        .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
-    ckbConsiderarNomeRepo.setBounds(756, 270, 192, 23);
-    contentPane.add(ckbConsiderarNomeRepo);
+    
 
     JButton btnConfirm = new JButton("Salvar Dados em " + UserGithubInfo.PROPERTIES_FILE);
     btnConfirm.addActionListener(new ActionListener() {
