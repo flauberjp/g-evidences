@@ -6,6 +6,7 @@ import io.github.flauberjp.EvidenceGenerator;
 import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
+import io.github.flauberjp.Version;
 import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
@@ -27,10 +28,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
 
@@ -44,6 +45,8 @@ public class FormForTesting extends JFrame {
   private String hookType;
   private JRadioButton rdbtnPreCommit;
   private JRadioButton rdbtnPrePush;
+  private JCheckBox ckbConsiderarGatilho;
+  private JCheckBox ckbConsiderarNomeRepo;  
 
   /**
    * Launch the application.
@@ -68,9 +71,11 @@ public class FormForTesting extends JFrame {
   public FormForTesting() {
     LOGGER.debug("FormForTesting.FormForTesting()");
     geraPainelPrincipal();
+    
+    criarHooks();
 
-    geraRadioButtons();
-
+    criarRepo();
+    
     botaoValidacao();
 
     botaoSalvarDados();
@@ -83,25 +88,49 @@ public class FormForTesting extends JFrame {
 
     botaoGerarHook();
 
+    botaoVersao();
+
+    botaoVerificaExistenciaDoRepoRemoto();
+
     areaEscolherProjetos();
 
   }
 
-  private void geraRadioButtons() {
+  private void criarRepo() {
+	txtRepoName = new JTextField();
+	txtRepoName.setText("my-git-usage-evidences-repo");
+	txtRepoName.setColumns(10);
+	txtRepoName.setBounds(156, 158, 293, 20);
+	contentPane.add(txtRepoName);
+	    
+	ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
+	ckbConsiderarNomeRepo.setSelected(false);
+	ckbConsiderarNomeRepo
+	  .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
+	ckbConsiderarNomeRepo.setBounds(474, 157, 192, 23);
+	contentPane.add(ckbConsiderarNomeRepo);
+  }
+
+  private void criarHooks() {
     rdbtnPreCommit = new JRadioButton("Commit");
     rdbtnPreCommit.setSelected(true);
     rdbtnPreCommit.setBounds(301, 78, 81, 23);
     contentPane.add(rdbtnPreCommit);
 
     rdbtnPrePush = new JRadioButton("Push");
-    rdbtnPrePush.setBounds(411, 78, 74, 23);
+    rdbtnPrePush.setBounds(398, 78, 74, 23);
     contentPane.add(rdbtnPrePush);
+    
+    ckbConsiderarGatilho = new JCheckBox("Considerar tipo de gatilho");
+	ckbConsiderarGatilho.setSelected(false);
+	ckbConsiderarGatilho.setBounds(474, 78, 218, 23);
+	contentPane.add(ckbConsiderarGatilho);
   }
 
   private void geraPainelPrincipal() {
     LOGGER.debug("FormForTesting.geraPainelPrincipal()");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 865, 738);
+    setBounds(100, 100, 970, 738);
 
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -141,12 +170,6 @@ public class FormForTesting extends JFrame {
     lblRepoName.setToolTipText("Nome do Repositório");
     lblRepoName.setBounds(35, 161, 111, 14);
     contentPane.add(lblRepoName);
-
-    txtRepoName = new JTextField();
-    txtRepoName.setText("my-git-usage-evidences-repo");
-    txtRepoName.setColumns(10);
-    txtRepoName.setBounds(156, 158, 293, 20);
-    contentPane.add(txtRepoName);
   }
 
   private void botaoGerarEvidencia() {
@@ -158,7 +181,9 @@ public class FormForTesting extends JFrame {
         LOGGER.info("Botão \"Gerar evidência\" pressionado");
         try {
           UserGithubInfo userGithubInfo = UserGithubInfo.get();
-          userGithubInfo.setRepoName(txtRepoName.getText());
+          if(ckbConsiderarNomeRepo.isSelected()) {
+            userGithubInfo.setRepoName(txtRepoName.getText());
+          }
           if (EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo)) {
             JOptionPane.showMessageDialog(contentPane, "Evidência gerada.");
           } else {
@@ -171,7 +196,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnGenerateEvidence.setBounds(156, 189, 300, 23);
+    btnGenerateEvidence.setBounds(156, 189, 395, 23);
     contentPane.add(btnGenerateEvidence);
   }
 
@@ -195,7 +220,7 @@ public class FormForTesting extends JFrame {
 
       }
     });
-    btnCreateProject.setBounds(156, 216, 300, 23);
+    btnCreateProject.setBounds(156, 216, 395, 23);
     contentPane.add(btnCreateProject);
   }
 
@@ -225,25 +250,14 @@ public class FormForTesting extends JFrame {
         JOptionPane.showMessageDialog(contentPane, "Credenciais válidas!\n\n" + output);
       }
     });
-    btnLerArq.setBounds(156, 243, 300, 23);
+    btnLerArq.setBounds(156, 243, 395, 23);
     contentPane.add(btnLerArq);
   }
 
   private void botaoSalvarDados() {
     LOGGER
         .debug("FormForTesting.botaoSalvarDados()");
-
-    JCheckBox ckbConsiderarGatilho = new JCheckBox("Considerar tipo de gatilho");
-    ckbConsiderarGatilho.setSelected(false);
-    ckbConsiderarGatilho.setBounds(462, 270, 183, 23);
-    contentPane.add(ckbConsiderarGatilho);
-
-    JCheckBox ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
-    ckbConsiderarNomeRepo.setSelected(false);
-    ckbConsiderarNomeRepo
-        .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
-    ckbConsiderarNomeRepo.setBounds(647, 270, 192, 23);
-    contentPane.add(ckbConsiderarNomeRepo);
+    
 
     JButton btnConfirm = new JButton("Salvar Dados em " + UserGithubInfo.PROPERTIES_FILE);
     btnConfirm.addActionListener(new ActionListener() {
@@ -285,7 +299,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnConfirm.setBounds(156, 270, 300, 23);
+    btnConfirm.setBounds(156, 270, 395, 23);
     contentPane.add(btnConfirm);
   }
 
@@ -319,7 +333,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnValidacao.setBounds(156, 304, 300, 23);
+    btnValidacao.setBounds(156, 304, 395, 23);
     contentPane.add(btnValidacao);
   }
 
@@ -337,24 +351,54 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btn.setBounds(156, 331, 300, 23);
+    btn.setBounds(156, 331, 395, 23);
     contentPane.add(btn);
+  }
+
+  private void botaoVersao() {
+    LOGGER.debug("FormForTesting.botaoVersao()");
+    JButton btnVersao = new JButton("Versão");
+    btnVersao.addActionListener(new ActionListener() {
+      @SneakyThrows
+      public void actionPerformed(ActionEvent e) {
+        LOGGER.info("Botão \"Versão...\" pressionado");
+        JOptionPane.showMessageDialog(contentPane, Version.getVersionFromPom());
+      }
+    });
+    btnVersao.setBounds(156, 362, 395, 23);
+    contentPane.add(btnVersao);
+  }
+
+  private void botaoVerificaExistenciaDoRepoRemoto() {
+    JButton btnRepoRemoto = new JButton("Verifica existência do repo no repositório remoto");
+    btnRepoRemoto.addActionListener(new ActionListener() {
+      @SneakyThrows
+      public void actionPerformed(ActionEvent e) {
+        LOGGER.info("Botão \"Versão...\" pressionado");
+        JOptionPane.showMessageDialog(contentPane,
+            "Repo \"" + UserGithubInfo.MY_GIT_USAGE_EVIDENCES_REPO
+                + "\" já existe no repositório remoto?" + UserGithubInfo.get().isRepoExistent());
+      }
+    });
+    btnRepoRemoto.setBounds(156, 396, 395, 23);
+    contentPane.add(btnRepoRemoto);
   }
 
   private void areaEscolherProjetos() {
     JLabel lblEscolherProjetos = new JLabel("Escolher Projetos");
     lblEscolherProjetos.setHorizontalAlignment(SwingConstants.LEFT);
-    lblEscolherProjetos.setBounds(35, 361, 134, 14);
+    lblEscolherProjetos.setBounds(35, 493, 134, 14);
     contentPane.add(lblEscolherProjetos);
 
     JLabel lblPastaPai = new JLabel("Caminho da Pasta Pai");
-    lblPastaPai.setBounds(174, 361, 388, 14);
+    lblPastaPai.setBounds(174, 493, 388, 14);
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
-    contentPane.add(list);
-    list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-    list.setBounds(156, 386, 559, 204);
+
+    JScrollPane scrollPane = new JScrollPane(list);
+    scrollPane.setBounds(156, 518, 559, 170);
+    contentPane.add(scrollPane);
 
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.addActionListener(new ActionListener() {
@@ -386,7 +430,7 @@ public class FormForTesting extends JFrame {
         }
       }
     });
-    btnSelect.setBounds(609, 357, 96, 23);
+    btnSelect.setBounds(609, 489, 96, 23);
     contentPane.add(btnSelect);
 
     JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para após:");

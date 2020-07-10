@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.Map;
+import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -53,6 +54,17 @@ public class FormMain extends JFrame {
     adicionarLblProgramName();
 
     selecionadorDeProjetosGit();
+
+    inicializaForm();
+  }
+
+  private void inicializaForm() {
+    LOGGER.debug("FormMain.inicializaForm()");
+    if (Util.isPropertiesFileExist(UserGithubInfo.PROPERTIES_FILE)) {
+      Properties properties = Util.readPropertiesFromFile(UserGithubInfo.PROPERTIES_FILE);
+      txtUsername.setText(properties.getProperty("login"));
+      passwordField.setText(properties.getProperty("password"));
+    }
   }
 
   /**
@@ -100,7 +112,8 @@ public class FormMain extends JFrame {
     ButtonGroup G = new ButtonGroup();
 
     txtUsername = new JTextField();
-    txtUsername.setText("mygitusageevicencesapp");
+    txtUsername.setToolTipText("Username do seu usuário no Github, ex: passw0rd");
+    txtUsername.setText("");
     txtUsername.setColumns(10);
     txtUsername.setBounds(160, 97, 325, 20);
     contentPane.add(txtUsername);
@@ -110,8 +123,8 @@ public class FormMain extends JFrame {
     contentPane.add(lblPassword);
 
     passwordField = new JPasswordField();
-    passwordField.setToolTipText("e.g. passw0rd");
-    passwordField.setText("44dbb46ec17d03c3545a4301370565c45e870ce3");
+    passwordField.setToolTipText("Password do seu usuário no Github, ex: passw0rd");
+    passwordField.setText("");
     passwordField.setBounds(160, 122, 325, 20);
     contentPane.add(passwordField);
 
@@ -174,9 +187,11 @@ public class FormMain extends JFrame {
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
-    list.setBounds(36, 243, 447, 141);
-    contentPane.add(list);
-    
+
+    JScrollPane scrollPane = new JScrollPane(list);
+    scrollPane.setBounds(36, 243, 447, 141);
+    contentPane.add(scrollPane);
+
     JButton btnSelect = new JButton("Selecionar");
     btnSelect.setToolTipText(label);
     btnSelect.addActionListener(new ActionListener() {
@@ -217,10 +232,6 @@ public class FormMain extends JFrame {
     JSeparator separator = new JSeparator();
     separator.setBounds(35, 82, 396, 2);
     contentPane.add(separator);
-
-    JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(35, 241, 450, 144);
-    contentPane.add(scrollPane);
 
     // Add a mouse listener to handle changing selection
     list.addMouseListener(new MouseAdapter() {

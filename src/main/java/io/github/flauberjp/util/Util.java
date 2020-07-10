@@ -46,21 +46,35 @@ public class Util {
   public static Properties getProperties(String propertiesFileName) throws IOException {
     LOGGER.debug("Util.getProperties(propertiesFileName = {})", propertiesFileName);
     Properties properties = new Properties();
-
+    String filePath = "";
     InputStream inputStream;
+
     if (isRunningFromJar()) {
-      String filePath = getCurrentJarDirectory() + "/" + propertiesFileName;
-      File file = new File(filePath);
-      if (!file.exists()) {
-        throw new RuntimeException("Arquivo " + filePath + " esperado não existe. ");
-      }
-      inputStream = new FileInputStream(file);
+      filePath = getCurrentJarDirectory() + "/" + propertiesFileName;
     } else {
-      inputStream = UserGithubProjectCreator.class.getResourceAsStream(propertiesFileName);
+      filePath = getCurrentDirectory() + "/" + propertiesFileName;
     }
+    File file = new File(filePath);
+    if (!file.exists()) {
+      throw new RuntimeException("Arquivo " + filePath + " esperado não existe. ");
+    }
+    inputStream = new FileInputStream(file);
     properties.load(inputStream);
 
     return properties;
+  }
+
+  public static boolean isPropertiesFileExist(String propertiesFileName) {
+    LOGGER.debug("Util.isPropertiesFileExist(propertiesFileName = {})", propertiesFileName);
+    String filePath = getCurrentDirectory() + "/" + propertiesFileName;
+    return isFileExist(filePath);
+  }
+
+  public static boolean isFileExist(String fileName) {
+    LOGGER.debug("Util.isFileExist(fileName = {})", fileName);
+    String filePath = fileName;
+    File file = new File(filePath);
+    return file.exists();
   }
 
   private static String getCurrentJarDirectory() {
@@ -104,7 +118,8 @@ public class Util {
 
 
   public static void savePropertiesToFile(Properties properties, String propertiesFileName) {
-    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})", Util.camuflaPasswordDeUmProperties(properties),
+    LOGGER.debug("Util.savePropertiesToFile(properties = {}, propertiesFileName = {})",
+        Util.camuflaPasswordDeUmProperties(properties),
         propertiesFileName);
     try (
         FileOutputStream fileOut = new FileOutputStream(propertiesFileName);
@@ -304,7 +319,7 @@ public class Util {
 
   public static Properties camuflaPasswordDeUmProperties(Properties properties) {
     Properties modifiedProperties = (Properties) properties.clone();
-    if(modifiedProperties.containsKey("password")) {
+    if (modifiedProperties.containsKey("password")) {
       modifiedProperties.setProperty("password", "XXX");
     }
     return modifiedProperties;
