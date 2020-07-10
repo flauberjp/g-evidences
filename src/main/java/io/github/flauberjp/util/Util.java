@@ -175,9 +175,24 @@ public class Util {
   //Build ListModel containing gitDir's
   public static DefaultListModel<GitDir> buildDefaultListModel() {
     LOGGER.debug("Util.buildDefaultListModel()");
-    gitDirList.forEach(gitDir -> listModel.addElement(gitDir));
-
+    gitDirList.forEach(gitDir ->
+        listModel.addElement(setSelectionIfHookExists(gitDir, gitDir.getPath()))
+    );
     return listModel;
+  }
+
+  public static GitDir setSelectionIfHookExists(GitDir gitDir, String path) {
+    File dir = new File(path);
+    File[] files = dir.listFiles();
+    for (File file : files) {
+      if (file.isDirectory()) {
+        setSelectionIfHookExists(gitDir, file.getPath());
+      }
+      if (file.getName().equals("pre-commit") || file.getName().equals("pre-push")) {
+        gitDir.setSelected(true);
+      }
+    }
+    return gitDir;
   }
 
   public static DefaultListModel<GitDir> getListModel() {

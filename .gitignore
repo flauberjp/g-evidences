@@ -7,3 +7,5 @@ pre-commit
 mgue.exe
 extras/Output/**/*
 log.txt
+/contributions-cal.iml
+/contributions-cal.eml
