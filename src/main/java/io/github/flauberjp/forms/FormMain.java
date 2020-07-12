@@ -2,12 +2,11 @@ package io.github.flauberjp.forms;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
-import io.github.flauberjp.GenerateHook;
+import io.github.flauberjp.ApplyConfigurationThread;
+import io.github.flauberjp.GitProjectManipulatorThread;
 import io.github.flauberjp.UserGithubInfo;
-import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.Version;
 import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -28,10 +27,10 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
@@ -41,6 +40,7 @@ public class FormMain extends JFrame {
   private JPanel contentPane;
   private JTextField txtUsername;
   private JPasswordField passwordField;
+  private JProgressBar progressBar;
 
   /**
    * Create the frame.
@@ -54,6 +54,8 @@ public class FormMain extends JFrame {
     adicionarLblProgramName();
 
     selecionadorDeProjetosGit();
+    
+    configuraProgressBar();    
 
     inicializaForm();
   }
@@ -152,12 +154,9 @@ public class FormMain extends JFrame {
           LOGGER.info("Botão \"Aplicar configurações\" pressionando");
           LOGGER.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList()
               .toString());
-          UserGithubInfo userGithubInfo = UserGithubInfo.get(txtUsername.getText(),
-              String.valueOf(passwordField.getPassword()));
-          Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
-          UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
-          GenerateHook.generateHook(Util.getSelectedGitDirStringList());
-          JOptionPane.showMessageDialog(contentPane, "Configurações aplicadas!");
+          ApplyConfigurationThread.executaProcessamento(progressBar, contentPane, 
+              txtUsername.getText(),
+        	  String.valueOf(passwordField.getPassword()));
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);
           JOptionPane.showMessageDialog(contentPane,
@@ -177,6 +176,15 @@ public class FormMain extends JFrame {
     lblProgramName.setHorizontalAlignment(SwingConstants.CENTER);
     lblProgramName.setBounds(35, 11, 450, 23);
     contentPane.add(lblProgramName);
+  }
+  
+  private void configuraProgressBar() {
+    progressBar = new JProgressBar();
+    progressBar.setString("");
+    progressBar.setStringPainted(true);
+    progressBar.setBounds(111, 169, 308, 14);
+    progressBar.setVisible(false);
+    contentPane.add(progressBar);
   }
 
   private void selecionadorDeProjetosGit() {
@@ -204,22 +212,9 @@ public class FormMain extends JFrame {
         int option = fileChooser.showOpenDialog(null);
         if (option == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
-
-          Util.addGitFiles(file);
-          // Build the model from previous Git Path using GitDir Class
-          Util.buildDefaultListModel();
-
-          // Set a JList containing GitDir's
-          list.setModel(Util.getListModel());
-
-          LOGGER.info(Util.getListModel().toString()); //
-
-          // Use a GitDirListRenderer to renderer list cells
-          list.setCellRenderer(new GitDirListRenderer());
-          list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
           lblPastaPai.setToolTipText("Selecionado: " + file.getCanonicalPath());
           lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
+          GitProjectManipulatorThread.executaProcessamento(progressBar, contentPane, file, list);
         } else {
           lblPastaPai.setText(label);
         }
