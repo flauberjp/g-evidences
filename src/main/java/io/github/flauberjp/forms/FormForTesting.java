@@ -4,11 +4,11 @@ import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.EvidenceGenerator;
 import io.github.flauberjp.GenerateHook;
+import io.github.flauberjp.GitProjectManipulatorThread;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.Version;
 import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -27,10 +27,10 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
@@ -46,7 +46,11 @@ public class FormForTesting extends JFrame {
   private JRadioButton rdbtnPreCommit;
   private JRadioButton rdbtnPrePush;
   private JCheckBox ckbConsiderarGatilho;
-  private JCheckBox ckbConsiderarNomeRepo;  
+  private JCheckBox ckbConsiderarNomeRepo;
+  private JButton btnSelect;
+  private JProgressBar progressBar;
+  private JList<GitDir> list;
+  private JLabel lblPastaPai;
 
   /**
    * Launch the application.
@@ -71,11 +75,11 @@ public class FormForTesting extends JFrame {
   public FormForTesting() {
     LOGGER.debug("FormForTesting.FormForTesting()");
     geraPainelPrincipal();
-    
+
     criarHooks();
 
     criarRepo();
-    
+
     botaoValidacao();
 
     botaoSalvarDados();
@@ -92,23 +96,25 @@ public class FormForTesting extends JFrame {
 
     botaoVerificaExistenciaDoRepoRemoto();
 
+    configuraProgressBar();
+
     areaEscolherProjetos();
 
   }
 
   private void criarRepo() {
-	txtRepoName = new JTextField();
-	txtRepoName.setText("my-git-usage-evidences-repo");
-	txtRepoName.setColumns(10);
-	txtRepoName.setBounds(156, 158, 293, 20);
-	contentPane.add(txtRepoName);
-	    
-	ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
-	ckbConsiderarNomeRepo.setSelected(false);
-	ckbConsiderarNomeRepo
-	  .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
-	ckbConsiderarNomeRepo.setBounds(474, 157, 192, 23);
-	contentPane.add(ckbConsiderarNomeRepo);
+    txtRepoName = new JTextField();
+    txtRepoName.setText("my-git-usage-evidences-repo");
+    txtRepoName.setColumns(10);
+    txtRepoName.setBounds(156, 158, 293, 20);
+    contentPane.add(txtRepoName);
+
+    ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
+    ckbConsiderarNomeRepo.setSelected(false);
+    ckbConsiderarNomeRepo
+        .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
+    ckbConsiderarNomeRepo.setBounds(474, 157, 192, 23);
+    contentPane.add(ckbConsiderarNomeRepo);
   }
 
   private void criarHooks() {
@@ -120,17 +126,17 @@ public class FormForTesting extends JFrame {
     rdbtnPrePush = new JRadioButton("Push");
     rdbtnPrePush.setBounds(398, 78, 74, 23);
     contentPane.add(rdbtnPrePush);
-    
+
     ckbConsiderarGatilho = new JCheckBox("Considerar tipo de gatilho");
-	ckbConsiderarGatilho.setSelected(false);
-	ckbConsiderarGatilho.setBounds(474, 78, 218, 23);
-	contentPane.add(ckbConsiderarGatilho);
+    ckbConsiderarGatilho.setSelected(false);
+    ckbConsiderarGatilho.setBounds(474, 78, 218, 23);
+    contentPane.add(ckbConsiderarGatilho);
   }
 
   private void geraPainelPrincipal() {
     LOGGER.debug("FormForTesting.geraPainelPrincipal()");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 970, 738);
+    setBounds(100, 100, 1068, 738);
 
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -181,7 +187,7 @@ public class FormForTesting extends JFrame {
         LOGGER.info("Botão \"Gerar evidência\" pressionado");
         try {
           UserGithubInfo userGithubInfo = UserGithubInfo.get();
-          if(ckbConsiderarNomeRepo.isSelected()) {
+          if (ckbConsiderarNomeRepo.isSelected()) {
             userGithubInfo.setRepoName(txtRepoName.getText());
           }
           if (EvidenceGenerator.geraEvidenciaDeUsoDoGit(userGithubInfo)) {
@@ -257,7 +263,6 @@ public class FormForTesting extends JFrame {
   private void botaoSalvarDados() {
     LOGGER
         .debug("FormForTesting.botaoSalvarDados()");
-    
 
     JButton btnConfirm = new JButton("Salvar Dados em " + UserGithubInfo.PROPERTIES_FILE);
     btnConfirm.addActionListener(new ActionListener() {
@@ -384,47 +389,42 @@ public class FormForTesting extends JFrame {
     contentPane.add(btnRepoRemoto);
   }
 
+  private void configuraProgressBar() {
+    progressBar = new JProgressBar();
+    progressBar.setString("");
+    progressBar.setStringPainted(true);
+    progressBar.setBounds(725, 495, 146, 14);
+    progressBar.setVisible(false);
+    contentPane.add(progressBar);
+  }
+
   private void areaEscolherProjetos() {
     JLabel lblEscolherProjetos = new JLabel("Escolher Projetos");
     lblEscolherProjetos.setHorizontalAlignment(SwingConstants.LEFT);
     lblEscolherProjetos.setBounds(35, 493, 134, 14);
     contentPane.add(lblEscolherProjetos);
 
-    JLabel lblPastaPai = new JLabel("Caminho da Pasta Pai");
+    lblPastaPai = new JLabel("Caminho da Pasta Pai");
     lblPastaPai.setBounds(174, 493, 388, 14);
     contentPane.add(lblPastaPai);
 
-    JList<GitDir> list = new JList<GitDir>();
+    list = new JList<GitDir>();
 
     JScrollPane scrollPane = new JScrollPane(list);
     scrollPane.setBounds(156, 518, 559, 170);
     contentPane.add(scrollPane);
 
-    JButton btnSelect = new JButton("Selecionar");
+    btnSelect = new JButton("Selecionar");
     btnSelect.addActionListener(new ActionListener() {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
         int option = fileChooser.showOpenDialog(null);
         if (option == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
-
-          Util.addGitFiles(file);
-          // Build the model from previous Git Path using GitDir Class
-          Util.buildDefaultListModel();
-
-          // Set a JList containing GitDir's
-          list.setModel(Util.getListModel());
-
-          LOGGER.info(Util.getListModel().toString()); //
-
-          // Use a GitDirListRenderer to renderer list cells
-          list.setCellRenderer(new GitDirListRenderer());
-          list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
           lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
+          GitProjectManipulatorThread.executaProcessamento(progressBar, contentPane, file, list);
         } else {
           lblPastaPai.setText("Erro");
         }
@@ -458,4 +458,5 @@ public class FormForTesting extends JFrame {
       }
     });
   }
+
 }

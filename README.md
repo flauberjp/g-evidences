@@ -69,6 +69,8 @@ Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRI
 10. [How to Run .JAR Files on Windows 10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
 11. [Get Maven artifact version at runtime](https://stackoverflow.com/a/2713013/6771132)
 12. [How do I add scroll bars to my JList?](http://helpdesk.objects.com.au/java/how-do-i-add-scroll-bars-to-my-jlist)
+13. [How to Use Progress Bars](https://docs.oracle.com/javase/tutorial/uiswing/components/progress.html#bars)
+14. [How to disable all components in a JPanel](https://stackoverflow.com/a/39909519/6771132)
 
 
 ## License
