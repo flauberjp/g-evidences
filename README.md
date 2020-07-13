@@ -13,15 +13,12 @@ todo commit que você executa nos seus projetos Git configurados por ele.
 
 Veja na imagem abaixo um exemplo. Em (A) você tem o que o Github refletiu de uso por você em um 
 determinado mês. Em (B) existe a realidade que o Github não reflete, que é o fato de que
-você executa vários diversos diariamente, só que em um outro repositório central, por exemplo,
+você também realiza diversas atividades diariamente só que em um outro repositório central, por exemplo,
 no Bitbucket ou Gitlab ou mesmo em um projeto Git local apenas. (A) + (B) é o resultado desse programa
 aqui, ele reflete no Calendário de contribuições do Github o que você fez nos seus outros repositórios 
 centrais também.   
 
 ![Resultado do uso desse programa](static/exemploGraficoDeUso.png "Resultado do uso desse programa")
-
-## Ajuda Voluntária
-Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
 
 ## Como usar esse programa
 
@@ -56,6 +53,12 @@ Testando a solução
 5. Verifique que o número de commits foi incrementado. 
 Repita a operação para vê-lo aumentar mais uma vez se preciso. 
 Isso é a evidência de no Github de que você acabou de usar o git localmente.
+
+## Ajuda Voluntária
+Amamos voluntários! Venha tornar esse programa ainda mais incrivél! 
+
+Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
+
 
 ## License
 [MIT](https://pt.wikipedia.org/wiki/Licen%C3%A7a_MIT)
