@@ -1,79 +1,63 @@
 [![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master)
 # my-git-usage-evidences
 
-## github user for testing
+O [Calendário de contribuições do Github](https://help.github.com/pt/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
+reflete suas várias atividades de contribuição no Github, mas só as do Github, e isso é um problema!
 
-Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no github para auxiliar nos testes, para mais informções sobre como utiliza-la, pode contatar @flauberjp
+Muitas vezes nossos projetos estão no Bitbucket, no Gitlab ou mesmo são projetos 
+Git versionados localmente apenas, e nada das atividades que você realiza nesses projetos é 
+refletido no Github.
+
+Esse programa resolve esse problema refletindo no Calendário de contribuições do Github 
+todo commit que você executa nos seus projetos Git configurados por ele.
+
+Veja na imagem abaixo um exemplo. Em (A) você tem o que o Github refletiu de uso por você em um 
+determinado mês. Em (B) existe a realidade que o Github não reflete, que é o fato de que
+você executa vários diversos diariamente, só que em um outro repositório central, por exemplo,
+no Bitbucket ou Gitlab ou mesmo em um projeto Git local apenas. (A) + (B) é o resultado desse programa
+aqui, ele reflete no Calendário de contribuições do Github o que você fez nos seus outros repositórios 
+centrais também.   
+
+![Resultado do uso desse programa](static/exemploGraficoDeUso.png "Resultado do uso desse programa")
 
 ## Ajuda Voluntária
 Amamos voluntários! Por favor leia as instruções em [Seja Voluntário](CONTRIBUTING.md) para verificar como você pode começar a ajudar.
 
-## Como usar
+## Como usar esse programa
 
-1. [Faça o download do _fat jar_ da nossa 2a release](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.1-SNAPSHOT)
+1. [Baixe o instalador](https://github.com/flauberjp/my-git-usage-evidences/releases/tag/1.3-SNAPSHOT)
 
-2. Crie um diretório para armazenar os arquivos deste programa
-    * Crie o diretório _C:\Program Files\my-git-usage-evidences_
-      * Se a língua do seu SO não é inglês, o caminho _C:\Programa Files_ é diferene, 
-       por exemplo, quando a língua for português brasileiro, o caminho seria _c:\Arquivos de Programas_
-    * Copie o _fat jar_ para esse diretório
+2. Inicie o programa
 
-3. Inicie o programa
-    * Primeiramente, configure o programa java.exe para ser executado como administrador, 
-    veja como em [10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
-    * Abra o prompt de comando 
-    na pasta _C:\Program Files\my-git-usage-evidences_
-    * A partir desse caminho, digite o seguinte comando e tecle _Enter_, o que iniciará o programa. 
-    Comando: 
-      > _java -jar my-git-usage-evidences-jar-with-dependencies.jar_
-
-4. Configure o programa
+3. Configure o programa
     * No programa, digite suas credenciais do Github 
     (username e password)
-    * Configure o nome do repositório no seu github que será usado
-    para registrar o seu uso do git em projetos que não são projetos 
-    do tipo Github
     * Selecione os projetos que não são projetos Github que você quer
     monitorar o uso do git neles
       * Para isso, selecione uma pasta que contém a maioria dos seus
       projetos git, clicando no botão "_Selecionar_" e escolhendo a pasta.
       Essa pasta será analisada, e apenas projetos git que não são projetos
       Github serão listados. 
-      **Essa analise demora um certo tempo, por favor aguarde**
+      **Essa analise pode demorar um pouco, por favor aguarde**
       * Marque os projetos que você quer monitorar
 
-5. Aplique a configuração
+4. Aplique a configuração
     * Clique no botão "_Aplicar configurações_", e aguarde a mensagem
-    de confirmação de que tudo foi configurado corretamente. 
+    de confirmação de que tudo foi configurado corretamente.
+    **A aplicação das configurações pode demorar um pouco, por favor aguarde** 
 
-6. Testando a solução
-    * Abra seu projeto git onde você acabou de configurar esta solução
-    * Faça uma alteração em qualquer arquivo, então realize um commit 
-    e em seguida execute um push, o que disparará nossa solução
-    * Verifique no seu github o repo criado no passo 3. _my-git-usage-evidences-repo_
-    * Verifique que o número de commits foi incrementado. 
-    Repita a operação para ve-lo aumentar mais uma vez se preciso.
-    E com isso seu [Calendário de contribuições do Github](https://help.github.com/pt/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
-    foi marcado, evidenciando no Github de que você acabou de usar o git localmente
+## Testando o programa
 
-## Referências
-1. [GitHub API for Java](https://github-api.kohsuke.org/)
-2. [Reading from config.properties file Maven project](https://stackoverflow.com/questions/35008377/reading-from-config-properties-file-maven-project)
-3. [How to load an external properties file from a maven java project](https://stackoverflow.com/questions/34712885/how-to-load-an-external-properties-file-from-a-maven-java-project)
-4. [Can you tell on runtime if you're running java from within a jar?](https://stackoverflow.com/questions/482560/can-you-tell-on-runtime-if-youre-running-java-from-within-a-jar)
-5. [How to get the real path of Java application at runtime?](https://stackoverflow.com/questions/4032957/how-to-get-the-real-path-of-java-application-at-runtime)
-6. [File loading by getClass().getResource](https://stackoverflow.com/questions/14089146/file-loading-by-getclass-getresource)
-7. [JUnit 5 Tutorial: Running Unit Tests With Maven](https://www.petrikainulainen.net/programming/testing/junit-5-tutorial-running-unit-tests-with-maven/)
-8. [Creating a personal access token for the command line](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line)
-9. [How to get the real path of Java application at runtime?](https://stackoverflow.com/a/43553093/6771132)
-10. [How to Run .JAR Files on Windows 10](https://appuals.com/how-to-run-jar-files-on-windows-10/)
-11. [Get Maven artifact version at runtime](https://stackoverflow.com/a/2713013/6771132)
-12. [How do I add scroll bars to my JList?](http://helpdesk.objects.com.au/java/how-do-i-add-scroll-bars-to-my-jlist)
-13. [How to Use Progress Bars](https://docs.oracle.com/javase/tutorial/uiswing/components/progress.html#bars)
-14. [How to disable all components in a JPanel](https://stackoverflow.com/a/39909519/6771132)
-
+Testando a solução
+1. Abra um dos seus projetos git que você acabou de configurar esta solução
+2. Faça uma alteração em qualquer arquivo, então realize um commit, 
+3. que disparará nossa solução
+4. Verifique no seu github o repo criado no passo _my-git-usage-evidences-repo_
+5. Verifique que o número de commits foi incrementado. 
+Repita a operação para vê-lo aumentar mais uma vez se preciso. 
+Isso é a evidência de no Github de que você acabou de usar o git localmente.
 
 ## License
-The MIT License (MIT)
+[MIT](https://pt.wikipedia.org/wiki/Licen%C3%A7a_MIT)
 
-Prove your coding activity throughout any cv (Gitlab, Bitbucket etc.)  using this Tool. 
+
