@@ -1,3 +1,3 @@
 #!/bin/sh
-start /MIN "cmd /C <solution_directory>/mgue gerarevidencia"
+<main_command>
 exit 0
