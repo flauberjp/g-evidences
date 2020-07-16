@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -349,11 +350,10 @@ public class FormForTesting extends JFrame {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
         LOGGER.info("Botão \"Gerar hook...\" pressionado");
-        if (GenerateHook.generateHook()) {
-          JOptionPane.showMessageDialog(contentPane, "Arquivo gerado.");
-        } else {
-          JOptionPane.showMessageDialog(contentPane, "Problemas na geração do hook.");
-        }
+        GenerateHook.generateHook(new ArrayList<String>());
+        JOptionPane.showMessageDialog(contentPane,
+            Util.isFileExist(GenerateHook.HOOK_NAME) ?
+                "Arquivo gerado." : "Problemas na geração do hook.");
       }
     });
     btn.setBounds(156, 331, 395, 23);

@@ -17,7 +17,7 @@ class GenerateHookTest {
     file.mkdirs();
     gitProject = dirGeradoNaWorkspace;
     GenerateHook.convertHookTemplateInHookFinal(".");
-    GenerateHook.copyLocalHookToAGitProject(gitProject);
+    GenerateHook.copyHookFinalToAGitProject(gitProject);
   }
 
   @Test

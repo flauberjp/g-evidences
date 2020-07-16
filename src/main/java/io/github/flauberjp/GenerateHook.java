@@ -14,40 +14,50 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GenerateHook {
+
   public static final String HOOK_NAME = "pre-commit";
   public static final String MAIN_COMMAND = "start /MIN \"cmd /C <solution_directory>/mgue gerarevidencia\"";
 
   public static void main(String[] args) throws IOException, URISyntaxException {
     LOGGER.info("Programa iniciado às: " + LocalDateTime.now());
 
-    LOGGER.info("Geração do hook funcionou? " + generateHook());
+    generateHook(new ArrayList<String>());
 
     LOGGER.info("Programa finalizado às: " + LocalDateTime.now());
   }
 
-  public static boolean generateHook() {
-    LOGGER.debug("GenerateHook.generateHook()");
-    return generateHook(new ArrayList<String>());
-  }
-
-  public static boolean generateHook(List<String> gitDirProjects) {
-    boolean result = false;
+  public static String generateHook(List<String> gitDirProjects) {
+    String gitProjectsNaoConfigurados = "";
     LOGGER.debug("GenerateHook.generateHook(gitDirProjects = {})", gitDirProjects);
     try {
       convertHookTemplateInHookFinal();
       for (String gitDirProjectPath : gitDirProjects) {
-        copyLocalHookToAGitProject(gitDirProjectPath);
+        // Se o hook não existe no git project, fazemos a copia
+        if (!isHookExistAtGitProject(gitDirProjectPath)) {
+          copyHookFinalToAGitProject(gitDirProjectPath);
+        }
+        // Se o hook git project for diferente do hook local
+        // ou se o hook do git project nã conter o comando que gerará evidencia
+        else if (!isGitProjectHookEqualsToLocalOne(gitDirProjectPath)
+            && !isGitProjectHookContainMainCommand(gitDirProjectPath)) {
+          // Notificamos ao usuário que esse hook ele terá que manipular manualmente mesmo
+          gitProjectsNaoConfigurados += gitDirProjectPath.toString() + "\n";
+        }
       }
-      result = true;
     } catch (IOException e) {
       LOGGER.error(e.getMessage(), e);
     }
-    return result;
+    return gitProjectsNaoConfigurados;
+  }
+
+  public static boolean isHookExistAtGitProject(String gitDirProjectPath) {
+    return Files.exists(Paths.get(gitDirProjectPath + "/.git/hooks/" + HOOK_NAME));
   }
 
   /**
    * Converte o template de hook gerarEvidencias.bat localizado em resources/io.github.flauberjp.templates
    * no hook final armazenando-o no diretório de onde o programa esta sendo executado.
+   *
    * @throws IOException
    */
   private static void convertHookTemplateInHookFinal() throws IOException {
@@ -58,6 +68,7 @@ public class GenerateHook {
   /**
    * Converte o template de hook gerarEvidencias.bat localizado em resources/io.github.flauberjp.templates
    * no hook final armazenando-o no diretório passado por parametro.
+   *
    * @param path Diretório onde a versão final do hook será gerada.
    * @throws IOException
    */
@@ -69,25 +80,26 @@ public class GenerateHook {
   }
 
   /**
-   * Retorna a linha de comando principal que iniciará a geração de evidência.
-   * É utilizada na geração do hook final.
-   * Pode ser utilizado também para detectar se um hook existente contém o comando
-   * para geração de evidência ou não.
+   * Retorna a linha de comando principal que iniciará a geração de evidência. É utilizada na
+   * geração do hook final. Pode ser utilizado também para detectar se um hook existente contém o
+   * comando para geração de evidência ou não.
+   *
    * @return Ex. de retorno: start /MIN "cmd /C C:\my-git-usage-evidences/mgue gerarevidencia"
    * @throws IOException
    */
-  public static String getMainCommand() throws IOException {
+  public static String getMainCommand() {
     LOGGER.debug("GenerateHook.generateMainCommand()");
-    return MAIN_COMMAND.replace("<solution_directory>", Util.getSolutionDirectoryIn83Format()) ;
+    return MAIN_COMMAND.replace("<solution_directory>", Util.getSolutionDirectoryIn83Format());
   }
 
   /**
    * Copia o hook gerado para um diretório especificado no parâmetro.
+   *
    * @param gitDirProjectPath
    * @throws IOException
    */
-  public static void copyLocalHookToAGitProject(String gitDirProjectPath) throws IOException {
-    LOGGER.debug("GenerateHook.copyLocalHookToAGitProject(gitDirProjectPath = {})",
+  public static void copyHookFinalToAGitProject(String gitDirProjectPath) throws IOException {
+    LOGGER.debug("GenerateHook.copyHookFinalToAGitProject(gitDirProjectPath = {})",
         gitDirProjectPath);
     Files.copy(Paths.get(HOOK_NAME), Paths.get(gitDirProjectPath + "/.git/hooks/" + HOOK_NAME),
         StandardCopyOption.REPLACE_EXISTING);
@@ -95,18 +107,26 @@ public class GenerateHook {
 
   /**
    * Verifica se o arquivo passado por parametro contém o mesmo conteúdo que o hook.
+   *
    * @param gitDirProjectPath
    * @return
    * @throws IOException
    */
-  public boolean isGitProjectHookEqualsToLocalOne(String gitDirProjectPath) throws IOException {
-    byte[] f1 = Files.readAllBytes(Paths.get(HOOK_NAME));
-    byte[] f2 = Files.readAllBytes(Paths.get(gitDirProjectPath + "/.git/hooks/" + HOOK_NAME));
-    return Arrays.equals(f1, f2);
+  public static boolean isGitProjectHookEqualsToLocalOne(String gitDirProjectPath)
+      throws IOException {
+    boolean result = false;
+    String hookPath = gitDirProjectPath + "/.git/hooks/" + HOOK_NAME;
+    if (isHookExistAtGitProject(".") && isHookExistAtGitProject(hookPath)) {
+      byte[] f1 = Files.readAllBytes(Paths.get(HOOK_NAME));
+      byte[] f2 = Files.readAllBytes(Paths.get(hookPath));
+      result = Arrays.equals(f1, f2);
+    }
+    return result;
   }
 
   /**
    * Verifica se o arquivo passado por parametro contém o comando que gerará a evidência.
+   *
    * @param fileNameWithItsPath
    * @return True: contém o comando que gera evidência; Falso: caso contrário.
    * @throws IOException
@@ -114,12 +134,24 @@ public class GenerateHook {
   public static boolean isFileContainMainCommand(String fileNameWithItsPath) throws IOException {
     boolean result = false;
     List<String> lines = Util.readFileContent(fileNameWithItsPath);
-    for(String line: lines) {
-      if(line.equalsIgnoreCase(getMainCommand())) {
+    for (String line : lines) {
+      if (line.equalsIgnoreCase(getMainCommand())) {
         result = true;
         break;
       }
     }
     return result;
+  }
+
+  /**
+   * Verifica se o arquivo passado por parametro contém o comando que gerará a evidência.
+   *
+   * @param gitDirProjectPath
+   * @return True: contém o comando que gera evidência; Falso: caso contrário.
+   * @throws IOException
+   */
+  public static boolean isGitProjectHookContainMainCommand(String gitDirProjectPath)
+      throws IOException {
+    return isFileContainMainCommand(gitDirProjectPath + "/.git/hooks/" + HOOK_NAME);
   }
 }

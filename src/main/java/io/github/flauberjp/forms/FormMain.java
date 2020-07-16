@@ -36,7 +36,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
 
 public class FormMain extends JFrame {
-
+  private static FormMain frame;
   private JPanel contentPane;
   private JTextField txtUsername;
   private JPasswordField passwordField;
@@ -47,6 +47,9 @@ public class FormMain extends JFrame {
    */
   public FormMain() {
     LOGGER.debug("FormMain.FormMain()");
+    setTitle("My git usage evidences");
+    setResizable(false);
+
     geraPainelPrincipal();
 
     botaoConfigurar();
@@ -82,7 +85,7 @@ public class FormMain extends JFrame {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          FormMain frame = new FormMain();
+          frame = new FormMain();
           frame.setVisible(true);
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);
@@ -154,7 +157,7 @@ public class FormMain extends JFrame {
           LOGGER.info("Botão \"Aplicar configurações\" pressionando");
           LOGGER.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList()
               .toString());
-          ApplyConfigurationThread.executaProcessamento(progressBar, contentPane, 
+          ApplyConfigurationThread.executaProcessamento(frame, progressBar, contentPane,
               txtUsername.getText(),
         	  String.valueOf(passwordField.getPassword()));
         } catch (Exception ex) {
