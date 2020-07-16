@@ -2,6 +2,7 @@ package io.github.flauberjp;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
+import io.github.flauberjp.forms.FormAplicacaoConfiguracoesResult;
 import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
@@ -11,6 +12,7 @@ import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.Random;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,11 +21,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 
 public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
+  private static JFrame parentFrame;
   private JProgressBar progressBar;
   private JPanel panel;
   private PropertyChangeListener propertyChangeListener;
   private String username;
   private String password;
+  private FormAplicacaoConfiguracoesResult form;
 
   void setContentPanelEnabled(Boolean isEnabled) {
     if(panel == null) {
@@ -54,12 +58,14 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
         password);
     Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
     UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
-    GenerateHook.generateHook(Util.getSelectedGitDirStringList());
+    String gitProjectsNaoConfigurados = GenerateHook.generateHook(Util.getSelectedGitDirStringList());
 
     configureProgressBar(false, false);
     setProgress(100);
     setCursor(null);
-    JOptionPane.showMessageDialog(panel, "Configurações aplicadas!");
+
+    form = new FormAplicacaoConfiguracoesResult(parentFrame, gitProjectsNaoConfigurados);
+    form.setVisible(true);
 
     return null;
   }
@@ -90,12 +96,13 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
     panel.setCursor(cursor);
   }
 
-  public static void executaProcessamento(JProgressBar progressBar, JPanel panel, String username, String password) {
+  public static void executaProcessamento(JFrame frame, JProgressBar progressBar, JPanel panel, String username, String password) {
     LOGGER.debug("ApplyConfigurationThread.executaProcessamento("
         + "progressBar = {}, panel = {}, username = {}, password = XXX)",
         progressBar, panel, username
     );
     ApplyConfigurationThread gitProjectManipulator = new ApplyConfigurationThread();
+    parentFrame = frame;
     gitProjectManipulator.panel = panel;
     gitProjectManipulator.progressBar = progressBar;
     gitProjectManipulator.username = username;
