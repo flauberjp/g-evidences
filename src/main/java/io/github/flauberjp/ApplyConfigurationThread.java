@@ -11,6 +11,8 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -49,6 +51,7 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
     LOGGER.debug("ApplyConfigurationThread.doInBackground()");
     Random random = new Random();
     int progress = 0;
+    List deletedProjects = new ArrayList<GitDir>();
     configureProgressBar(true, true);
     setContentPanelEnabled(false);
     addPropertyChangeListener(propertyChangeListener);
@@ -58,6 +61,8 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
         password);
     Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
     UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
+    deletedProjects = GenerateHook.destroyHook(Util.getNotSelectedGitDirList());
+    System.out.println(deletedProjects);
     String gitProjectsNaoConfigurados = GenerateHook.generateHook(Util.getSelectedGitDirStringList());
 
     configureProgressBar(false, false);

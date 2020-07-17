@@ -178,6 +178,17 @@ public class Util {
     return result;
   }
 
+  public static List<GitDir> getNotSelectedGitDirList() {
+    LOGGER.debug("Util.getNotSelectedGitDirList()");
+    List result = new ArrayList<GitDir>();
+    for (GitDir gitDir : getGitDirList()) {
+      if (!gitDir.isSelected()) {
+        result.add(gitDir);
+      }
+    }
+    return result;
+  }
+
   public static List<String> getSelectedGitDirStringList() {
     LOGGER.debug("Util.getSelectedGitDirStringList()");
     List result = new ArrayList<String>();
