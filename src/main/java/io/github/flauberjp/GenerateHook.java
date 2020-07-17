@@ -2,7 +2,9 @@ package io.github.flauberjp;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
+import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.util.Util;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -37,7 +39,7 @@ public class GenerateHook {
           copyHookFinalToAGitProject(gitDirProjectPath);
         }
         // Se o hook git project for diferente do hook local
-        // ou se o hook do git project nã conter o comando que gerará evidencia
+        // e se o hook do git project nã conter o comando que gerará evidencia
         else if (!isGitProjectHookEqualsToLocalOne(gitDirProjectPath)
             && !isGitProjectHookContainMainCommand(gitDirProjectPath)) {
           // Notificamos ao usuário que esse hook ele terá que manipular manualmente mesmo
@@ -48,6 +50,24 @@ public class GenerateHook {
       LOGGER.error(e.getMessage(), e);
     }
     return gitProjectsNaoConfigurados;
+  }
+
+  // Recebe como parametro Util.getNotSelectedGitDirList
+  public static List<GitDir> destroyHook(List<GitDir> notSelectedGitDirProjectList) {
+    List deletedProjects = new ArrayList<GitDir>();
+    LOGGER.debug("GenerateHook.destroyHook(notSelectedGitDirProjectList = {})", notSelectedGitDirProjectList);
+    try {
+      for (GitDir notSelectedGitDirProject : notSelectedGitDirProjectList) {
+        if (isHookExistAtGitProject(notSelectedGitDirProject.getPath())){
+          File file = new File(notSelectedGitDirProject.getPath()+ "/.git/hooks/" + HOOK_NAME);
+          deletedProjects.add(notSelectedGitDirProject);
+          file.delete();
+        }
+      }
+    } catch (Exception e) {
+    LOGGER.error(e.getMessage(), e);
+    }
+    return deletedProjects;
   }
 
   public static boolean isHookExistAtGitProject(String gitDirProjectPath) {
