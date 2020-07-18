@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"io.github.flauberjp"},{"l":"io.github.flauberjp.forms"},{"l":"io.github.flauberjp.forms.model"},{"l":"io.github.flauberjp.util"}]
