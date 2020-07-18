@@ -2,7 +2,8 @@
 # my-git-usage-evidences
 
 O [Calendário de contribuições do Github](https://help.github.com/pt/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
-reflete suas várias atividades de contribuição no Github, mas só as do Github, e isso é um problema!
+reflete suas várias atividades de contribuição no Github, mas só as do Github,
+quem vê-lo parece que você nem esta programando, e isso é um problema!
 
 Muitas vezes nossos projetos estão no Bitbucket, no Gitlab ou mesmo são projetos 
 Git versionados localmente apenas, e nada das atividades que você realiza nesses projetos é 
