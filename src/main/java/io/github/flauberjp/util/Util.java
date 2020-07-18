@@ -267,6 +267,26 @@ public class Util {
     return String.format("%4s", new Random().nextInt(10000)).replace(' ', '0');
   }
 
+  /**
+   * Verifica se o arquivo passado por parametro contém uma determinada string
+   *
+   * @param fileNameWithItsPath
+   * @param umaString
+   * @return True: contém a string; Falso: caso contrário.
+   * @throws IOException
+   */
+  public static boolean isFileContainAString(String fileNameWithItsPath, String umaString) throws IOException {
+    boolean result = false;
+    List<String> lines = Util.readFileContent(fileNameWithItsPath);
+    for (String line : lines) {
+      if (line.equalsIgnoreCase(umaString)) {
+        result = true;
+        break;
+      }
+    }
+    return result;
+  }
+
   public static void replaceStringOfAFile(String fileNameWithItsPath, String originalString,
       String newString) {
     LOGGER.debug(
@@ -287,7 +307,14 @@ public class Util {
     }
   }
 
+  public static void removeStringOfAFile(String fileNameWithItsPath, String stringToRemove) {
+    LOGGER.debug("Util.removeStringOfAFile(fileNameWithItsPath = {}, stringToRemove = {})", fileNameWithItsPath, stringToRemove);
+    replaceStringOfAFile(fileNameWithItsPath, stringToRemove,
+        "");
+  }
+
   public static ArrayList<String> readFileContent(String fileNameWithItsPath) throws IOException {
+    LOGGER.debug("Util.readFileContent(fileNameWithItsPath = {})", fileNameWithItsPath);
     Path filePath = Paths.get(fileNameWithItsPath);
     Stream<String> linesStream = Files.lines(filePath, Charset.forName("UTF-8"));
     ArrayList<String> linesArrayList = new ArrayList<String>(linesStream

@@ -113,6 +113,18 @@ public class GenerateHook {
   }
 
   /**
+   * Remove o main command de um arquivo, ideal quando se esta desconfigurando
+   * um Git Project.
+   *
+   * @param fileNameWithItsPath
+   */
+  public static void removeMainCommandFromAFile(String fileNameWithItsPath) {
+    LOGGER.debug("GenerateHook.removeMainCommandFromAFile(fileNameWithItsPath = {})",
+        fileNameWithItsPath);
+    Util.removeStringOfAFile(fileNameWithItsPath, getMainCommand());
+  }
+
+  /**
    * Copia o hook gerado para um diretório especificado no parâmetro.
    *
    * @param gitDirProjectPath
@@ -152,15 +164,7 @@ public class GenerateHook {
    * @throws IOException
    */
   public static boolean isFileContainMainCommand(String fileNameWithItsPath) throws IOException {
-    boolean result = false;
-    List<String> lines = Util.readFileContent(fileNameWithItsPath);
-    for (String line : lines) {
-      if (line.equalsIgnoreCase(getMainCommand())) {
-        result = true;
-        break;
-      }
-    }
-    return result;
+    return Util.isFileContainAString(fileNameWithItsPath, getMainCommand());
   }
 
   /**

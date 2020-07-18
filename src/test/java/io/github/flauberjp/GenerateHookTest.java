@@ -5,28 +5,38 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class GenerateHookTest {
   static String gitProject;
+  static String hook;
 
-  @BeforeAll
-  static void setUp() throws IOException {
+  @BeforeEach
+  void setUp() throws IOException {
     String dirGeradoNaWorkspace = EvidenceGenerator.geraDirAleatorioNaWorkspace();
     File file = new File(dirGeradoNaWorkspace + "/.git/hooks");
     file.mkdirs();
     gitProject = dirGeradoNaWorkspace;
     GenerateHook.convertHookTemplateInHookFinal(".");
     GenerateHook.copyHookFinalToAGitProject(gitProject);
+    hook = gitProject + "/.git/hooks/" + GenerateHook.HOOK_NAME;
   }
 
   @Test
   void copyLocalHookToAGitProject() throws IOException {
-    assertTrue(new File(gitProject + "/.git/hooks/" + GenerateHook.HOOK_NAME).exists());
+    assertTrue(new File(hook).exists());
   }
 
   @Test
   void isFileContainMainCommand() throws IOException {
-    assertTrue(GenerateHook.isFileContainMainCommand(gitProject + "/.git/hooks/" + GenerateHook.HOOK_NAME));
+    assertTrue(GenerateHook.isFileContainMainCommand(hook));
+  }
+
+  @Test
+  void removeMainCommandFromAFile() throws IOException {
+    assertTrue(GenerateHook.isFileContainMainCommand(hook));
+    GenerateHook.removeMainCommandFromAFile(hook);
+    assertFalse(GenerateHook.isFileContainMainCommand(hook));
   }
 }

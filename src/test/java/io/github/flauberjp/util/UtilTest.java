@@ -73,4 +73,15 @@ class UtilTest {
     assertEquals(appendedString, lines.get(1));
   }
 
+  @Test
+  void removeStringOfAFile() throws IOException {
+    String stringToBeRemoved = "stringToBeRemoved";
+    String randomFilename = Files.createTempDirectory("tmp").toString() + "/" +
+        Util.getRandomStr();
+    Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt", randomFilename);
+    Util.appendStringToAFile(randomFilename, stringToBeRemoved);
+    assertTrue(Util.isFileContainAString(randomFilename, stringToBeRemoved));
+    Util.removeStringOfAFile(randomFilename, stringToBeRemoved);
+    assertFalse(Util.isFileContainAString(randomFilename, stringToBeRemoved));
+  }
 }
