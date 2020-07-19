@@ -37,6 +37,8 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
     addPropertyChangeListener(propertyChangeListener);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
+    Util.resetGitDirList();
+    Util.resetListModel();
     Util.addGitFiles(diretorioASerAnalisado);
     // Build the model from previous Git Path using GitDir Class
     Util.buildDefaultListModel();

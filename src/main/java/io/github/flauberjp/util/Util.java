@@ -170,6 +170,11 @@ public class Util {
     return gitDirList;
   }
 
+  public static void resetGitDirList() {
+    LOGGER.debug("Util.resetGitDirList()");
+    gitDirList.clear();
+  }
+
   public static List<GitDir> getSelectedGitDirList() {
     LOGGER.debug("Util.getSelectedGitDirList()");
     List result = new ArrayList<GitDir>();
@@ -210,7 +215,15 @@ public class Util {
     return listModel;
   }
 
+  public static void resetListModel() {
+    LOGGER.debug("Util.resetListModel()");
+    listModel.clear();
+  }
+
+
+
   public static GitDir setSelectionIfHookExists(GitDir gitDir, String path) {
+    LOGGER.debug("Util.setSelectionIfHookExists(gitDir = {}, path = {})", gitDir, path);
     File dir = new File(path);
     File[] files = dir.listFiles();
     for (File file : files) {
@@ -279,6 +292,7 @@ public class Util {
    * @throws IOException
    */
   public static boolean isFileContainAString(String fileNameWithItsPath, String umaString) throws IOException {
+    LOGGER.debug("Util.isFileContainAString(fileNameWithItsPath = {}, umaString = {})", fileNameWithItsPath, umaString);
     boolean result = false;
     List<String> lines = Util.readFileContent(fileNameWithItsPath);
     for (String line : lines) {
@@ -359,6 +373,7 @@ public class Util {
   }
 
   public static Properties camuflaPasswordDeUmProperties(Properties properties) {
+    LOGGER.debug("Util.camuflaPasswordDeUmProperties(properties = ---)");
     Properties modifiedProperties = (Properties) properties.clone();
     if (modifiedProperties.containsKey("password")) {
       modifiedProperties.setProperty("password", "XXX");
@@ -367,6 +382,7 @@ public class Util {
   }
 
   public static void enableComponents(JProgressBar progressBar, Container container, boolean enable) {
+    LOGGER.debug("Util.enableComponents(progressBar = {}, container = {}, enable = {})", progressBar, container, enable);
     Component[] components = container.getComponents();
     for (Component component : components) {
       if(component.equals(progressBar)) {

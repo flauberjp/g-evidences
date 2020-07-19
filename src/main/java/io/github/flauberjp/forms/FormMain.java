@@ -193,7 +193,7 @@ public class FormMain extends JFrame {
 
   private void selecionadorDeProjetosGit() {
     LOGGER.debug("FormMain.selecionadorDeProjetosGit()");
-    String label = "Selecione a Pasta Pai dos Projetos Github ";
+    String label = "Selecione a Pasta Pai dos Projetos Git";
     JLabel lblPastaPai = new JLabel(label);
     lblPastaPai.setBounds(35, 216, 323, 14);
     contentPane.add(lblPastaPai);
