@@ -5,7 +5,6 @@ import static io.github.flauberjp.util.MyLogger.LOGGER;
 import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
@@ -25,18 +24,6 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   private JPanel panel;
   private PropertyChangeListener propertyChangeListener;
 
-  void setContentPanelEnabled(Boolean isEnabled) {
-    if(panel == null) {
-      return;
-    }
-    panel.setEnabled(isEnabled);
-    for (Component cp : panel.getComponents()) {
-      if(cp.equals(progressBar)) {
-    	  continue;
-      }
-      cp.setEnabled(isEnabled);
-    }
-  }
   /*
    * Main task. Executed in background thread.
    */
@@ -46,7 +33,7 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
     Random random = new Random();
     int progress = 0;
     configureProgressBar(true, true);
-    setContentPanelEnabled(false);
+    Util.enableComponents(progressBar, panel, false);
     addPropertyChangeListener(propertyChangeListener);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -87,7 +74,7 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   @Override
   public void done() {
     Toolkit.getDefaultToolkit().beep();
-    setContentPanelEnabled(true);
+    Util.enableComponents(progressBar, panel, true);
     setCursor(null); //turn off the wait cursor
   }
 

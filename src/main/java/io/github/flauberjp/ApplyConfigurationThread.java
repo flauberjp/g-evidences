@@ -4,22 +4,16 @@ import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.forms.FormAplicacaoConfiguracoesResult;
 import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 
 public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
@@ -31,18 +25,6 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
   private String password;
   private FormAplicacaoConfiguracoesResult form;
 
-  void setContentPanelEnabled(Boolean isEnabled) {
-    if(panel == null) {
-      return;
-    }
-    panel.setEnabled(isEnabled);
-    for (Component cp : panel.getComponents()) {
-      if(cp.equals(progressBar)) {
-  	    continue;
-      }
-      cp.setEnabled(isEnabled);
-    }
-  }
   /*
    * Main task. Executed in background thread.
    */
@@ -53,7 +35,7 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
     int progress = 0;
     List deletedProjects = new ArrayList<GitDir>();
     configureProgressBar(true, true);
-    setContentPanelEnabled(false);
+    Util.enableComponents(progressBar, panel, false);
     addPropertyChangeListener(propertyChangeListener);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -70,6 +52,7 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
     setCursor(null);
 
     form = new FormAplicacaoConfiguracoesResult(parentFrame, gitProjectsNaoConfigurados);
+    form.setLocationRelativeTo(parentFrame);
     form.setVisible(true);
 
     return null;
@@ -90,7 +73,7 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
   @Override
   public void done() {
     Toolkit.getDefaultToolkit().beep();
-    setContentPanelEnabled(true);
+    Util.enableComponents(progressBar, panel, true);
     setCursor(null); //turn off the wait cursor
   }
 

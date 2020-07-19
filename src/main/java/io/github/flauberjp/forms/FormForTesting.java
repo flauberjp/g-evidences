@@ -62,6 +62,7 @@ public class FormForTesting extends JFrame {
       public void run() {
         try {
           FormForTesting frame = new FormForTesting();
+          frame.setLocationRelativeTo(null);
           frame.setVisible(true);
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);

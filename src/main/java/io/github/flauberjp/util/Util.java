@@ -4,6 +4,8 @@ import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.forms.model.GitDir;
+import java.awt.Component;
+import java.awt.Container;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,6 +25,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.swing.DefaultListModel;
+import javax.swing.JProgressBar;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 
@@ -361,5 +364,18 @@ public class Util {
       modifiedProperties.setProperty("password", "XXX");
     }
     return modifiedProperties;
+  }
+
+  public static void enableComponents(JProgressBar progressBar, Container container, boolean enable) {
+    Component[] components = container.getComponents();
+    for (Component component : components) {
+      if(component.equals(progressBar)) {
+        continue;
+      }
+      component.setEnabled(enable);
+      if (component instanceof Container) {
+        enableComponents(progressBar, (Container)component, enable);
+      }
+    }
   }
 }
