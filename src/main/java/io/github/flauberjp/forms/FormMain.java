@@ -86,6 +86,7 @@ public class FormMain extends JFrame {
       public void run() {
         try {
           frame = new FormMain();
+          frame.setLocationRelativeTo(null);
           frame.setVisible(true);
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);

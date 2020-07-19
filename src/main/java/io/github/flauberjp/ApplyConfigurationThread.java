@@ -52,6 +52,7 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
     setCursor(null);
 
     form = new FormAplicacaoConfiguracoesResult(parentFrame, gitProjectsNaoConfigurados);
+    form.setLocationRelativeTo(parentFrame);
     form.setVisible(true);
 
     return null;

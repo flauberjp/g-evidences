@@ -35,3 +35,5 @@ Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no gi
 14. [How to disable all components in a JPanel](https://stackoverflow.com/a/39909519/6771132)
 15. [Where can I specify my javadoc document charset?](https://stackoverflow.com/questions/13302881/where-can-i-specify-my-javadoc-document-charset)
 16. [Java Swing: Enabling/Disabling all components in JPanel](https://stackoverflow.com/a/10986504/6771132)
+17. [How to center a JFrame on screen](https://alvinalexander.com/blog/post/jfc-swing/how-center-jframe-java-swing/)
+18. [Center JDialog over parent](https://stackoverflow.com/questions/10030947/center-jdialog-over-parent)
