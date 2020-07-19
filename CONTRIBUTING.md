@@ -34,3 +34,4 @@ Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no gi
 13. [How to Use Progress Bars](https://docs.oracle.com/javase/tutorial/uiswing/components/progress.html#bars)
 14. [How to disable all components in a JPanel](https://stackoverflow.com/a/39909519/6771132)
 15. [Where can I specify my javadoc document charset?](https://stackoverflow.com/questions/13302881/where-can-i-specify-my-javadoc-document-charset)
+16. [Java Swing: Enabling/Disabling all components in JPanel](https://stackoverflow.com/a/10986504/6771132)
