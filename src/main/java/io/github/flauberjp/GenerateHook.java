@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GenerateHook {
@@ -55,17 +54,27 @@ public class GenerateHook {
   // Recebe como parametro Util.getNotSelectedGitDirList
   public static List<GitDir> destroyHook(List<GitDir> notSelectedGitDirProjectList) {
     List deletedProjects = new ArrayList<GitDir>();
-    LOGGER.debug("GenerateHook.destroyHook(notSelectedGitDirProjectList = {})", notSelectedGitDirProjectList);
+    LOGGER.debug("GenerateHook.destroyHook(notSelectedGitDirProjectList = {})",
+        notSelectedGitDirProjectList);
     try {
       for (GitDir notSelectedGitDirProject : notSelectedGitDirProjectList) {
-        if (isHookExistAtGitProject(notSelectedGitDirProject.getPath())){
-          File file = new File(notSelectedGitDirProject.getPath()+ "/.git/hooks/" + HOOK_NAME);
+        if (isHookExistAtGitProject(notSelectedGitDirProject.getPath())) {
+          File file = new File(notSelectedGitDirProject.getPath() + "/.git/hooks/" + HOOK_NAME);
           deletedProjects.add(notSelectedGitDirProject);
-          file.delete();
+
+          if (!isGitProjectHookEqualsToLocalOne(notSelectedGitDirProject.getPath())) {
+            if (isFileContainMainCommand(
+                notSelectedGitDirProject.getPath() + "/.git/hooks/" + HOOK_NAME)) {
+              removeMainCommandFromAFile(
+                  notSelectedGitDirProject.getPath() + "/.git/hooks/" + HOOK_NAME);
+            }
+          } else {
+            file.delete();
+          }
         }
       }
     } catch (Exception e) {
-    LOGGER.error(e.getMessage(), e);
+      LOGGER.error(e.getMessage(), e);
     }
     return deletedProjects;
   }
@@ -144,18 +153,20 @@ public class GenerateHook {
    * @return
    * @throws IOException
    */
+
   public static boolean isGitProjectHookEqualsToLocalOne(String gitDirProjectPath)
       throws IOException {
     boolean result = false;
-    String hookPath = gitDirProjectPath + "/.git/hooks/" + HOOK_NAME;
-    if (isHookExistAtGitProject(".") && isHookExistAtGitProject(hookPath)) {
-      byte[] f1 = Files.readAllBytes(Paths.get(HOOK_NAME));
-      byte[] f2 = Files.readAllBytes(Paths.get(hookPath));
-      result = Arrays.equals(f1, f2);
+    if (isLocalHookExists() && isHookExistAtGitProject(gitDirProjectPath)) {
+      String hookPath = gitDirProjectPath + "/.git/hooks/" + HOOK_NAME;
+      result = Util.compareContentFileByteToByte("./" + HOOK_NAME, hookPath);
     }
     return result;
   }
 
+  public static boolean isLocalHookExists(){
+    return Util.isFileExist(GenerateHook.HOOK_NAME);
+  }
   /**
    * Verifica se o arquivo passado por parametro contém o comando que gerará a evidência.
    *

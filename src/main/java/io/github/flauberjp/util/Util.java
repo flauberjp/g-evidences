@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -393,5 +394,19 @@ public class Util {
         enableComponents(progressBar, (Container)component, enable);
       }
     }
+  }
+
+  public static boolean compareContentFileByteToByte(String path1, String path2) {
+    boolean result = false;
+    try {
+      byte[] f1 = Files.readAllBytes(Paths.get(path1));
+      byte[] f2 = Files.readAllBytes(Paths.get(path2));
+      result = Arrays.equals(f1, f2);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+      result = false;
+    }
+  return result;
   }
 }

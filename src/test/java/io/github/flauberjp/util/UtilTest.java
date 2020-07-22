@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.github.flauberjp.EvidenceGenerator;
+import io.github.flauberjp.GenerateHook;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +15,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UtilTest {
+  static String gitProject;
+  static String gitProject2;
 
   @Test
   void checkContentOfTemplateEvidencesFile() throws IOException {
@@ -83,5 +87,23 @@ class UtilTest {
     assertTrue(Util.isFileContainAString(randomFilename, stringToBeRemoved));
     Util.removeStringOfAFile(randomFilename, stringToBeRemoved);
     assertFalse(Util.isFileContainAString(randomFilename, stringToBeRemoved));
+  }
+
+  @Test
+  void compareContentFileByteToByte() throws IOException {
+    String dirGeradoNaWorkspace = "./" + EvidenceGenerator.geraDirAleatorioNaWorkspace();
+    File file = new File(dirGeradoNaWorkspace + "/.git/hooks");
+    file.mkdirs();
+    gitProject = dirGeradoNaWorkspace;
+    GenerateHook.copyHookFinalToAGitProject(gitProject);
+    String dirGeradoNaWorkspace2 = "./" + EvidenceGenerator.geraDirAleatorioNaWorkspace();
+    File file2 = new File(dirGeradoNaWorkspace2 + "/.git/hooks");
+    file2.mkdirs();
+    gitProject2 = dirGeradoNaWorkspace2;
+    GenerateHook.copyHookFinalToAGitProject(gitProject2);
+
+    String path1 = gitProject + "/.git/hooks/" + GenerateHook.HOOK_NAME;
+    String path2 = gitProject2 + "/.git/hooks/" + GenerateHook.HOOK_NAME;
+    assertTrue(Util.compareContentFileByteToByte(path1, path2));
   }
 }
