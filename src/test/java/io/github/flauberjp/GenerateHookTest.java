@@ -2,6 +2,7 @@ package io.github.flauberjp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.github.flauberjp.util.Util;
 import java.io.File;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,5 +39,15 @@ class GenerateHookTest {
     assertTrue(GenerateHook.isFileContainMainCommand(hook));
     GenerateHook.removeMainCommandFromAFile(hook);
     assertFalse(GenerateHook.isFileContainMainCommand(hook));
+  }
+
+  @Test
+  void isGitProjectHookEqualsToLocalOne() throws IOException {
+    String dirGeradoNaWorkspace = EvidenceGenerator.geraDirAleatorioNaWorkspace();
+    File file = new File(dirGeradoNaWorkspace + "/.git/hooks");
+    file.mkdirs();
+    GenerateHook.copyHookFinalToAGitProject(dirGeradoNaWorkspace);
+    Boolean isTrue = GenerateHook.isGitProjectHookEqualsToLocalOne(dirGeradoNaWorkspace);
+    assertTrue(isTrue);
   }
 }
