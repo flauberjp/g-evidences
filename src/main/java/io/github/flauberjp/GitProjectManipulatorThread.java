@@ -48,7 +48,7 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
     configureProgressBar(false, false);
     setProgress(100);
     setCursor(null);
-    JOptionPane.showMessageDialog(panel, "Analise concluída!");
+    JOptionPane.showMessageDialog(panel, "Análise concluída!");
     return null;
   }
 
@@ -66,7 +66,7 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
       return;
     }
     progressBar.setIndeterminate(indeterminateMode);
-    progressBar.setString("Analisando diretórios...");
+    progressBar.setString("Analisando pastas...");
     progressBar.setVisible(visible);
   }
 
