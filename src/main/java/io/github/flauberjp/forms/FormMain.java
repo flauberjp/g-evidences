@@ -107,7 +107,6 @@ public class FormMain extends JFrame {
     contentPane.setLayout(null);
 
     JLabel lblTitle = new JLabel("Credenciais do Github");
-    setLabelUnderline(lblTitle);
     lblTitle.setBounds(35, 70, 203, 14);
     contentPane.add(lblTitle);
 
@@ -135,8 +134,7 @@ public class FormMain extends JFrame {
     contentPane.add(passwordField);
 
     JLabel lblProjects = new JLabel(
-        "Projetos que não são do Github que terão o uso local do git registrado no Github");
-    setLabelUnderline(lblProjects);
+        "Projetos Git (não Github) que terão o seu uso local do git registrado no Github");
     lblProjects.setBounds(35, 185, 450, 14);
     contentPane.add(lblProjects);
   }
@@ -152,6 +150,7 @@ public class FormMain extends JFrame {
   private void botaoConfigurar() {
     LOGGER.debug("FormMain.botaoConfigurar()");
     JButton btn = new JButton("Aplicar configurações");
+    btn.setToolTipText("Aplicar configurações nos projetos Git selecionados");
     btn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
@@ -189,22 +188,35 @@ public class FormMain extends JFrame {
     progressBar.setBounds(111, 169, 308, 14);
     progressBar.setVisible(false);
     contentPane.add(progressBar);
+    
+    JLabel lblPastaPai = new JLabel("Pasta Pai dos Projetos Git selecionada:");
+    lblPastaPai.setBounds(35, 235, 223, 14);
+    contentPane.add(lblPastaPai);
+    
+    JLabel lblProjetosGit = new JLabel("Projetos Git detectados:");
+    lblProjetosGit.setToolTipText("Lista de projetos Git para seleção");
+    lblProjetosGit.setBounds(35, 280, 323, 14);
+    contentPane.add(lblProjetosGit);
+    
+    JSeparator separator = new JSeparator();
+    separator.setBounds(35, 199, 396, 2);
+    contentPane.add(separator);
   }
 
   private void selecionadorDeProjetosGit() {
     LOGGER.debug("FormMain.selecionadorDeProjetosGit()");
     String label = "Selecione a Pasta Pai dos Projetos Git";
-    JLabel lblPastaPai = new JLabel(label);
-    lblPastaPai.setBounds(35, 216, 323, 14);
+    JLabel lblPastaPai = new JLabel("---");
+    lblPastaPai.setBounds(45, 255, 440, 14);
     contentPane.add(lblPastaPai);
 
     JList<GitDir> list = new JList<GitDir>();
 
     JScrollPane scrollPane = new JScrollPane(list);
-    scrollPane.setBounds(36, 243, 447, 141);
+    scrollPane.setBounds(36, 297, 447, 87);
     contentPane.add(scrollPane);
 
-    JButton btnSelect = new JButton("Selecionar");
+    JButton btnSelect = new JButton("Selecionar a Pasta Pai dos Projetos Git para análise");
     btnSelect.setToolTipText(label);
     btnSelect.addActionListener(new ActionListener() {
       @SneakyThrows
@@ -216,8 +228,8 @@ public class FormMain extends JFrame {
         int option = fileChooser.showOpenDialog(null);
         if (option == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
-          lblPastaPai.setToolTipText("Selecionado: " + file.getCanonicalPath());
-          lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
+          lblPastaPai.setToolTipText(file.getCanonicalPath());
+          lblPastaPai.setText(file.getCanonicalPath());
           GitProjectManipulatorThread.executaProcessamento(progressBar, contentPane, file, list);
         } else {
           lblPastaPai.setText(label);
@@ -225,11 +237,11 @@ public class FormMain extends JFrame {
 
       }
     });
-    btnSelect.setBounds(362, 210, 123, 23);
+    btnSelect.setBounds(35, 210, 450, 23);
     contentPane.add(btnSelect);
 
     JSeparator separator = new JSeparator();
-    separator.setBounds(35, 82, 396, 2);
+    separator.setBounds(35, 85, 396, 2);
     contentPane.add(separator);
 
     // Add a mouse listener to handle changing selection
