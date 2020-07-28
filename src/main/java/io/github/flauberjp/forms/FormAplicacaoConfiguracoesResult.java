@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
+import java.awt.Font;
 
 public class FormAplicacaoConfiguracoesResult extends JDialog {
 
@@ -33,10 +34,6 @@ public class FormAplicacaoConfiguracoesResult extends JDialog {
     setTitle("Resultado da aplicação das configurações");
     setModal(true);
     setResizable(false);
-    LOGGER.debug(
-        "FormAplicacaoConfiguracoesResult.FormAplicacaoConfiguracoesResult()");
-    geraPainelPrincipal("");
-    setResizable(false);
     setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
     geraPainelPrincipal(gitProjectsNaoConfigurados);
   }
@@ -46,7 +43,7 @@ public class FormAplicacaoConfiguracoesResult extends JDialog {
         "FormAplicacaoConfiguracoesResult.geraPainelPrincipal(gitProjectsNaoConfigurados = {})",
         gitProjectsNaoConfigurados);
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    setBounds(100, 100, 459, 272);
+    
     pnContent = new JPanel();
     pnContent.setToolTipText("");
     pnContent.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -56,23 +53,28 @@ public class FormAplicacaoConfiguracoesResult extends JDialog {
     JPanel pnMsg = new JPanel();
 
     pnMsg.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-    pnMsg.setBounds(20, 53, 404, 129);
+    pnMsg.setBounds(20, 53, 582, 129);
     pnContent.add(pnMsg);
     pnMsg.setLayout(new CardLayout(0, 0));
 
     JTextArea txtMsg = new JTextArea();
     txtMsg.setText(
-        "Lista de git projects que já continham o arquivo pre-commit. Por favor inclua esta linha de comando em cada um deles manualmente, caso deseje que o uso do git neles seja refletido no github também: \n"
+        "Os projetos Git listados mais abaixo já continham o arquivo pre-commit.\n"
+        + "Por favor inclua a linha de comando abaixo em cada um deles manualmente,\n"
+        + "caso deseje que o uso do git neles seja refletido no github também. \n"
+        + "Obs: o arquivo pre-commit em cada projeto Git desses localiza-se \n"
+        + "em <projeto Git>\\.git\\hooks \n"
+        + "Linha de comando: \n"
         + GenerateHook.getMainCommand());
     txtMsg.setText(txtMsg.getText() + "\n" + "Projetos:" + "\n" + gitProjectsNaoConfigurados);
     pnMsg.add(txtMsg, "name_26238090646100");
-
     JScrollPane scrollPne = new JScrollPane(txtMsg);
-    pnMsg.add(scrollPne);
+    pnMsg.add(scrollPne);    
 
     JLabel lblCfgAplicadas = new JLabel("Configurações aplicadas!");
+    lblCfgAplicadas.setFont(new Font("Tahoma", Font.PLAIN, 11));
     lblCfgAplicadas.setHorizontalAlignment(SwingConstants.CENTER);
-    lblCfgAplicadas.setBounds(10, 28, 414, 14);
+    lblCfgAplicadas.setBounds(20, 28, 582, 14);
     pnContent.add(lblCfgAplicadas);
 
     JButton btnOk = new JButton("OK");
@@ -81,9 +83,18 @@ public class FormAplicacaoConfiguracoesResult extends JDialog {
         dispose();
       }
     });
-    btnOk.setBounds(181, 199, 89, 23);
+    
+    btnOk.setBounds(260, 199, 89, 23);
+     
     pnContent.add(btnOk);
+    
+    setBounds(100, 100, 618, 272);
 
+    if(gitProjectsNaoConfigurados.isEmpty()) {
+      btnOk.setBounds(260, 45, 89, 23);
+      setBounds(100, 100, 618, 120);
+      pnMsg.setVisible(false);
+    }
   }
 
 
