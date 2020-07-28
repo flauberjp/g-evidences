@@ -46,14 +46,12 @@ centrais também.
 
 ## Testando o programa
 
-Testando a solução
 1. Abra um dos seus projetos git que você acabou de configurar esta solução
-2. Faça uma alteração em qualquer arquivo, então realize um commit, 
-3. que disparará nossa solução
-4. Verifique no seu github o repo criado no passo _my-git-usage-evidences-repo_
-5. Verifique que o número de commits foi incrementado. 
-Repita a operação para vê-lo aumentar mais uma vez se preciso. 
-Isso é a evidência de no Github de que você acabou de usar o git localmente.
+2. Faça uma alteração em qualquer arquivo, então realize um commit, que disparará nossa solução
+3. Verifique no seu github que repo _my-git-usage-evidences-repo_ teve o número de commits incrementado.
+4. Repita os passos anteriores para vê-lo aumentar mais uma vez se preciso, o que é uma 
+evidência no Github de que você acabou de usar o git localmente.
+
 
 ## Ajuda Voluntária
 Amamos voluntários! Venha tornar esse programa ainda mais incrivél! 
