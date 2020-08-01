@@ -153,12 +153,18 @@ public class Util {
       File[] files = dir.listFiles();
       for (File file : files) {
         if (file.isDirectory()) {
+          if (file.getName().equalsIgnoreCase("node_modules") && Files
+              .exists(Paths.get(file.getPath() + "/../package.json"))) {
+            LOGGER.info("Skipping directory: " + file.getPath());
+            continue;
+          }
           if (file.getName().equals(".git")) {
             if (!isThisGitProjectAGithubOne(file.getParentFile().getCanonicalPath())) {
               gitDirList.add(new GitDir(file.getParentFile().getCanonicalPath()));
             }
+          } else {
+            addGitFiles(file);
           }
-          addGitFiles(file);
         }
       }
     } catch (IOException ex) {
@@ -225,16 +231,7 @@ public class Util {
 
   public static GitDir setSelectionIfHookExists(GitDir gitDir, String path) {
     LOGGER.debug("Util.setSelectionIfHookExists(gitDir = {}, path = {})", gitDir, path);
-    File dir = new File(path);
-    File[] files = dir.listFiles();
-    for (File file : files) {
-      if (file.isDirectory()) {
-        setSelectionIfHookExists(gitDir, file.getPath());
-      }
-      if (file.getName().equals("pre-commit") || file.getName().equals("pre-push")) {
-        gitDir.setSelected(true);
-      }
-    }
+    gitDir.setSelected(Files.exists( Path.of(path + "/.git/hooks/pre-commit")));
     return gitDir;
   }
 

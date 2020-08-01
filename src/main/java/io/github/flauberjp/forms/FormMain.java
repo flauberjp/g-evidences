@@ -99,7 +99,7 @@ public class FormMain extends JFrame {
   private void geraPainelPrincipal() {
     LOGGER.debug("FormMain.geraPainelPrincipal()");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 538, 540);
+    setBounds(100, 100, 538, 725);
     contentPane = new JPanel();
     contentPane.setToolTipText("");
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -174,7 +174,7 @@ public class FormMain extends JFrame {
         }
       }
     });
-    btn.setBounds(184, 396, 170, 23);
+    btn.setBounds(188, 615, 170, 23);
     contentPane.add(btn);
   }
 
@@ -220,7 +220,7 @@ public class FormMain extends JFrame {
     JList<GitDir> list = new JList<GitDir>();
 
     JScrollPane scrollPane = new JScrollPane(list);
-    scrollPane.setBounds(36, 297, 447, 87);
+    scrollPane.setBounds(36, 297, 447, 307);
     contentPane.add(scrollPane);
 
     JButton btnSelect = new JButton("Selecionar a Pasta Pai dos Projetos Git para análise");
