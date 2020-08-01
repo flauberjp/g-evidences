@@ -7,7 +7,7 @@
     <groupId>io.github.flauberjp</groupId>
     <artifactId>my-git-usage-evidences</artifactId>
     <packaging>jar</packaging>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT-alpha.1</version>
     <name>my-git-usage-evidences</name>
     <url>https://github.com/flauberjp/my-git-usage-evidences</url>
 
