@@ -110,7 +110,7 @@ public class FormMain extends JFrame {
     lblTitle.setBounds(35, 70, 203, 14);
     contentPane.add(lblTitle);
 
-    JLabel lblUsername = new JLabel("Nome de Usu\u00E1rio:");
+    JLabel lblUsername = new JLabel("Usu\u00E1rio:");
     lblUsername.setBounds(35, 99, 111, 14);
     contentPane.add(lblUsername);
 
@@ -157,6 +157,13 @@ public class FormMain extends JFrame {
           LOGGER.info("Botão \"Aplicar configurações\" pressionando");
           LOGGER.debug("Lista de projetos git selecionados: " + Util.getSelectedGitDirStringList()
               .toString());
+          if (txtUsername.getText().isEmpty() || txtUsername.getText().isBlank() ||
+              String.valueOf(passwordField.getPassword()).isEmpty() || String
+              .valueOf(passwordField.getPassword()).isBlank()) {
+            JOptionPane.showMessageDialog(contentPane,
+                "Usuário e senha do Github devem estar definidos!");
+            return;
+          }
           ApplyConfigurationThread.executaProcessamento(frame, progressBar, contentPane,
               txtUsername.getText(),
         	  String.valueOf(passwordField.getPassword()));
