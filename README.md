@@ -23,7 +23,7 @@ centrais também.
 
 ## Como usar esse programa
 
-1. Instale o programa. Para isso use o instalador: [my-git-usage-evidences-inst-win64.exe](https://github.com/flauberjp/my-git-usage-evidences/releases/download/1.3-SNAPSHOT/my-git-usage-evidences-inst-win64.exe).
+1. Instale o programa. Para isso use o instalador: [my-git-usage-evidences-inst-win64.exe](https://github.com/flauberjp/my-git-usage-evidences/releases/download/1.4-SNAPSHOT-alpha.1/my-git-usage-evidences-inst-win64.exe).
 
 2. Inicie o programa.
 
