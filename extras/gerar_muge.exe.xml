@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
-  <headerType>console</headerType>
+  <headerType>gui</headerType>
   <jar>C:\my-git-usage-evidences\target\my-git-usage-evidences-jar-with-dependencies.jar</jar>
   <outfile>C:\my-git-usage-evidences\extras\output\mgue.exe</outfile>
   <errTitle></errTitle>
