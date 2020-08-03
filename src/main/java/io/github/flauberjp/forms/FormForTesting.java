@@ -53,7 +53,7 @@ public class FormForTesting extends JFrame {
   private JProgressBar progressBar;
   private JList<GitDir> list;
   private JLabel lblPastaPai;
-  private ProjetosGitDetectadosTableComponent tabelaPanel; 
+  private ProjetosGitDetectadosTableComponent tabelaPanel;
 
   /**
    * Launch the application.
@@ -103,7 +103,7 @@ public class FormForTesting extends JFrame {
     configuraProgressBar();
 
     areaEscolherProjetos();
-    
+
     tableUsage();
 
   }
@@ -429,7 +429,8 @@ public class FormForTesting extends JFrame {
         if (option == JFileChooser.APPROVE_OPTION) {
           File file = fileChooser.getSelectedFile();
           lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
-          GitProjectManipulatorThread.executaProcessamento(progressBar, contentPane, file, list, tabelaPanel);
+          GitProjectManipulatorThread
+              .executaProcessamento(progressBar, contentPane, file, list, tabelaPanel);
         } else {
           lblPastaPai.setText("Erro");
         }
@@ -441,7 +442,7 @@ public class FormForTesting extends JFrame {
     JLabel lblHookType = new JLabel("Selecione o gatilho do evidences para após:");
     lblHookType.setBounds(35, 82, 260, 14);
     contentPane.add(lblHookType);
-    
+
     // Add a mouse listener to handle changing selection
     list.addMouseListener(new MouseAdapter() {
       public void mouseClicked(MouseEvent event) {
@@ -463,9 +464,9 @@ public class FormForTesting extends JFrame {
       }
     });
   }
-  
+
   private void tableUsage() {
-    Object[][] data ={
+    Object[][] data = {
         {"Kathy", "Snowboarding", false},
         {"John", "Rowing", true},
         {"Sue", "Knitting", false},
@@ -489,7 +490,7 @@ public class FormForTesting extends JFrame {
         {"Joe", "Pool", false}
     };
     JPanel tablePanel = new JPanel();
-	tablePanel.setBackground(Color.RED);
+    tablePanel.setBackground(Color.RED);
     tablePanel.setBounds(156, 717, 559, 182);
     contentPane.add(tablePanel);
     tablePanel.setLayout(new GridLayout(0, 1, 0, 0));
@@ -497,23 +498,23 @@ public class FormForTesting extends JFrame {
     tabelaPanel = new ProjetosGitDetectadosTableComponent(data);
     tabelaPanel.setOpaque(true); //content panes must be opaque
     tablePanel.add(tabelaPanel);
-    
+
     JButton btgetTableData = new JButton("Exibir Valor da linha 1, coluna 2");
-	btgetTableData.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(contentPane, tabelaPanel.getData()[0][1].toString());			
-		}
-	});
-	btgetTableData.setBounds(725, 804, 260, 23);
-	contentPane.add(btgetTableData);
-	
-	JButton btgetTableData2 = new JButton("Exibir Valor da linha 1, coluna 3");
-	btgetTableData2.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(contentPane, tabelaPanel.getData()[0][2].toString());			
-		}
-	});
-	btgetTableData2.setBounds(725, 833, 260, 23);
-	contentPane.add(btgetTableData2);    
+    btgetTableData.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        JOptionPane.showMessageDialog(contentPane, tabelaPanel.getData()[0][1].toString());
+      }
+    });
+    btgetTableData.setBounds(725, 804, 260, 23);
+    contentPane.add(btgetTableData);
+
+    JButton btgetTableData2 = new JButton("Exibir Valor da linha 1, coluna 3");
+    btgetTableData2.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        JOptionPane.showMessageDialog(contentPane, tabelaPanel.getData()[0][2].toString());
+      }
+    });
+    btgetTableData2.setBounds(725, 833, 260, 23);
+    contentPane.add(btgetTableData2);
   }
 }

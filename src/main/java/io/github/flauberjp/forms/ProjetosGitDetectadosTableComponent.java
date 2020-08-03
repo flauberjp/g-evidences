@@ -40,7 +40,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -50,43 +49,42 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 /**
- * TableRenderDemo is just like TableDemo, except that it
- * explicitly initializes column sizes and it uses a combo box
- * as an editor for the Sport column.
+ * TableRenderDemo is just like TableDemo, except that it explicitly initializes column sizes and it
+ * uses a combo box as an editor for the Sport column.
  */
 public class ProjetosGitDetectadosTableComponent extends JPanel {
+
   private boolean DEBUG = true;
   JTable table;
-  JScrollPane scrollPane; 
+  JScrollPane scrollPane;
   Object[][] data;
 
   public ProjetosGitDetectadosTableComponent(Object[][] data) {
-    super(new GridLayout(1,0));
+    super(new GridLayout(1, 0));
     this.atualizarTabela(data);
   }
-  
+
   public void atualizarTabela(Object[][] data) {
     this.data = data;
-    if(scrollPane != null) {
+    if (scrollPane != null) {
       remove(scrollPane);
     }
     table = new JTable(new MyTableModel(this.data));
     table.setPreferredScrollableViewportSize(new Dimension(500, 70));
     table.setFillsViewportHeight(true);
 
-
     //Set up column sizes.
     initColumnSizes(table);
 
     //Fiddle with the Sport column's cell editors/renderers.
     setUpSportColumn(table, table.getColumnModel().getColumn(1));
-    
+
     scrollPane = new JScrollPane(table);
     add(scrollPane);
   }
-  
+
   public Object[][] getData() {
-	  return this.data;
+    return this.data;
   }
 
   /*
@@ -95,7 +93,7 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
    * contents, then you can just use column.sizeWidthToFit().
    */
   private void initColumnSizes(JTable table) {
-    MyTableModel model = (MyTableModel)table.getModel();
+    MyTableModel model = (MyTableModel) table.getModel();
     TableColumn column = null;
     Component comp = null;
     int headerWidth = 0;
@@ -164,12 +162,14 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     sportColumn.setCellRenderer(renderer);
   }
 
-  class MyTableModel extends AbstractTableModel {	
+  class MyTableModel extends AbstractTableModel {
+
     private String[] columnNames = {
         "Projeto Git",
         "Seu usuário",
         "Configurar?"};
     private Object[][] data;
+
     public MyTableModel(Object[][] data) {
       super();
       this.data = data;
@@ -250,9 +250,9 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
       int numRows = getRowCount();
       int numCols = getColumnCount();
 
-      for (int i=0; i < numRows; i++) {
+      for (int i = 0; i < numRows; i++) {
         System.out.print("    row " + i + ":");
-        for (int j=0; j < numCols; j++) {
+        for (int j = 0; j < numCols; j++) {
           System.out.print("  " + data[i][j]);
         }
         System.out.println();

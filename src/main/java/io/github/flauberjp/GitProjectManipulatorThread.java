@@ -19,6 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 
 public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
+
   private JList<GitDir> list = null;
   public File diretorioASerAnalisado = null;
   private JProgressBar progressBar;
@@ -46,7 +47,7 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
     Util.buildDefaultListModel();
 
     updateList();
-    
+
     atualizarTabela();
 
     configureProgressBar(false, false);
@@ -57,19 +58,19 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   }
 
   private void atualizarTabela() {
-	if(tabelaPanel == null) {
-		return;
-	}
-	Object[][] data ={
-	  {"Kathy", "Snowboarding", false},
-	  {"John", "Rowing", true},
-	  {"Sue", "Knitting", false}
-	};
-	this.tabelaPanel.atualizarTabela(data);	
+    if (tabelaPanel == null) {
+      return;
+    }
+    Object[][] data = {
+        {"Kathy", "Snowboarding", false},
+        {"John", "Rowing", true},
+        {"Sue", "Knitting", false}
+    };
+    this.tabelaPanel.atualizarTabela(data);
   }
 
   private void updateList() {
-    if(list == null) {
+    if (list == null) {
       return;
     }
     list.setModel(Util.getListModel());
@@ -78,7 +79,7 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   }
 
   private void configureProgressBar(boolean indeterminateMode, boolean visible) {
-    if(progressBar == null) {
+    if (progressBar == null) {
       return;
     }
     progressBar.setIndeterminate(indeterminateMode);
@@ -97,23 +98,26 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   }
 
   private void setCursor(Cursor cursor) {
-    if(panel == null) {
+    if (panel == null) {
       return;
     }
     panel.setCursor(cursor);
   }
 
-  public static void executaProcessamento(JProgressBar progressBar, JPanel panel, File diretorioASerAnalisado, JList<GitDir> list) {
+  public static void executaProcessamento(JProgressBar progressBar, JPanel panel,
+      File diretorioASerAnalisado, JList<GitDir> list) {
     LOGGER.debug("GitProjectManipulator.executaProcessamento("
-        + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {})",
+            + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {})",
         progressBar, panel, diretorioASerAnalisado, list
     );
     executaProcessamento(progressBar, panel, diretorioASerAnalisado, list, null);
   }
-  
-  public static void executaProcessamento(JProgressBar progressBar, JPanel panel, File diretorioASerAnalisado, JList<GitDir> list, ProjetosGitDetectadosTableComponent tabelaPanel) {
+
+  public static void executaProcessamento(JProgressBar progressBar, JPanel panel,
+      File diretorioASerAnalisado, JList<GitDir> list,
+      ProjetosGitDetectadosTableComponent tabelaPanel) {
     LOGGER.debug("GitProjectManipulator.executaProcessamento("
-        + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {}, tabelaPanel = {})",
+            + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {}, tabelaPanel = {})",
         progressBar, panel, diretorioASerAnalisado, list, tabelaPanel
     );
     GitProjectManipulatorThread gitProjectManipulator = new GitProjectManipulatorThread();
