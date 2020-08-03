@@ -2,6 +2,7 @@ package io.github.flauberjp;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
+import io.github.flauberjp.forms.ProjetosGitDetectadosTableComponent;
 import io.github.flauberjp.forms.model.GitDir;
 import io.github.flauberjp.forms.model.GitDirListRenderer;
 import io.github.flauberjp.util.Util;
@@ -23,6 +24,7 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   private JProgressBar progressBar;
   private JPanel panel;
   private PropertyChangeListener propertyChangeListener;
+  private ProjetosGitDetectadosTableComponent tabelaPanel;
 
   /*
    * Main task. Executed in background thread.
@@ -44,12 +46,26 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
     Util.buildDefaultListModel();
 
     updateList();
+    
+    atualizarTabela();
 
     configureProgressBar(false, false);
     setProgress(100);
     setCursor(null);
     JOptionPane.showMessageDialog(panel, "Análise concluída!");
     return null;
+  }
+
+  private void atualizarTabela() {
+	if(tabelaPanel == null) {
+		return;
+	}
+	Object[][] data ={
+	  {"Kathy", "Snowboarding", false},
+	  {"John", "Rowing", true},
+	  {"Sue", "Knitting", false}
+	};
+	this.tabelaPanel.atualizarTabela(data);	
   }
 
   private void updateList() {
@@ -92,11 +108,20 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
         + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {})",
         progressBar, panel, diretorioASerAnalisado, list
     );
+    executaProcessamento(progressBar, panel, diretorioASerAnalisado, list, null);
+  }
+  
+  public static void executaProcessamento(JProgressBar progressBar, JPanel panel, File diretorioASerAnalisado, JList<GitDir> list, ProjetosGitDetectadosTableComponent tabelaPanel) {
+    LOGGER.debug("GitProjectManipulator.executaProcessamento("
+        + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {}, tabelaPanel = {})",
+        progressBar, panel, diretorioASerAnalisado, list, tabelaPanel
+    );
     GitProjectManipulatorThread gitProjectManipulator = new GitProjectManipulatorThread();
     gitProjectManipulator.diretorioASerAnalisado = diretorioASerAnalisado;
     gitProjectManipulator.panel = panel;
     gitProjectManipulator.progressBar = progressBar;
     gitProjectManipulator.list = list;
+    gitProjectManipulator.tabelaPanel = tabelaPanel;
     gitProjectManipulator.execute();
   }
 }
