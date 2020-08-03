@@ -37,3 +37,4 @@ Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no gi
 16. [Java Swing: Enabling/Disabling all components in JPanel](https://stackoverflow.com/a/10986504/6771132)
 17. [How to center a JFrame on screen](https://alvinalexander.com/blog/post/jfc-swing/how-center-jframe-java-swing/)
 18. [Center JDialog over parent](https://stackoverflow.com/questions/10030947/center-jdialog-over-parent)
+19. [Using Swing Components: How to Use Tables](https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#combobox)
