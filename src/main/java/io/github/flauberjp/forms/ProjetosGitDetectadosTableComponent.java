@@ -35,9 +35,14 @@ package io.github.flauberjp.forms;
  * TableRenderDemo.java requires no other files.
  */
 
+import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.util.Util;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -54,18 +59,21 @@ import javax.swing.table.TableColumn;
  */
 public class ProjetosGitDetectadosTableComponent extends JPanel {
 
+  public static final String DESCONSIDERAR_HISTORICO = "<DESCONSIDERAR HISTÓRICO>";
   private boolean DEBUG = true;
   JTable table;
   JScrollPane scrollPane;
   Object[][] data;
+  String username = "";
+  private Point hintCell;
 
-  public ProjetosGitDetectadosTableComponent(Object[][] data) {
+  public ProjetosGitDetectadosTableComponent() {
     super(new GridLayout(1, 0));
-    this.atualizarTabela(data);
   }
 
-  public void atualizarTabela(Object[][] data) {
+  public void atualizarTabela(Object[][] data, String username) {
     this.data = data;
+    this.username = username;
     if (scrollPane != null) {
       remove(scrollPane);
     }
@@ -77,14 +85,52 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     initColumnSizes(table);
 
     //Fiddle with the Sport column's cell editors/renderers.
-    setUpSportColumn(table, table.getColumnModel().getColumn(1));
+    // setUpSportColumn(table, table.getColumnModel().getColumn(1), -1);
 
     scrollPane = new JScrollPane(table);
     add(scrollPane);
+    if (this.data == null) {
+      return;
+    }
+
+    initializaUsuarioColumn();
+
+    table.addMouseMotionListener(new MouseMotionAdapter() {
+      @Override
+      public void mouseMoved(MouseEvent e) {
+
+        Point p = e.getPoint();
+        int row = table.rowAtPoint(p);
+        int col = table.columnAtPoint(p);
+
+        if ((row > -1 && row < table.getRowCount()) && (col == 0)) {
+
+          if (hintCell == null || (hintCell.x != col || hintCell.y != row)) {
+
+            hintCell = new Point(col, row);
+            if(col == 0) {
+              table.isCellEditable(row, 0);
+            }
+          }
+
+        }
+
+      }
+    });
+  }
+
+  private void initializaUsuarioColumn() {
+    for (int i = 0; i < this.data.length; i++) {
+      table.isCellEditable(i, 1);
+    }
   }
 
   public Object[][] getData() {
     return this.data;
+  }
+
+  public String getUsername() {
+    return this.username;
   }
 
   /*
@@ -110,63 +156,71 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
           false, false, 0, 0);
       headerWidth = comp.getPreferredSize().width;
 
-      comp = table.getDefaultRenderer(model.getColumnClass(i)).
+      if (DEBUG) {
+        System.out.println("Initializing width of column "
+            + i + ". "
+            + "headerWidth = " + headerWidth);
+      }
+
+      if (model.data == null || model.data.length == 0) {
+        continue;
+      }
+      Class columnClass = model.getColumnClass(i);
+      TableCellRenderer tableCellRenderer = table.getDefaultRenderer(columnClass);
+      comp = tableCellRenderer.
           getTableCellRendererComponent(
               table, longValues[i],
               false, false, 0, i);
       cellWidth = comp.getPreferredSize().width;
 
       if (DEBUG) {
-        System.out.println("Initializing width of column "
-            + i + ". "
-            + "headerWidth = " + headerWidth
-            + "; cellWidth = " + cellWidth);
+        System.out.println("; cellWidth = " + cellWidth);
       }
 
       column.setPreferredWidth(Math.max(headerWidth, cellWidth));
     }
   }
 
-  public void setUpSportColumn(JTable table,
-      TableColumn sportColumn) {
-    //Set up the editor for the sport cells.
-    JComboBox comboBox = new JComboBox();
-    comboBox.addItem("Snowboarding");
-    comboBox.addItem("Rowing");
-    comboBox.addItem("Knitting");
-    comboBox.addItem("Speed reading");
-    comboBox.addItem("Pool");
-    comboBox.addItem("None of the above");
-    sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
-
-    //Set up tool tips for the sport cells.
+  public void setUpProjetoGitColumn(JTable table,
+      TableColumn projetoGitColumn, int rowIndex) {
+    if(rowIndex == -1 || Util.getGitDirList() == null ||
+        Util.getGitDirList().size() <= rowIndex) {
+      return;
+    }
     DefaultTableCellRenderer renderer =
         new DefaultTableCellRenderer();
-    renderer.setToolTipText("Click for combo box");
-    sportColumn.setCellRenderer(renderer);
+    renderer.setToolTipText(Util.getGitDirList().get(rowIndex).getPath());
+    projetoGitColumn.setCellRenderer(renderer);
   }
 
-  public void setUpSportColumn1(JTable table,
-      TableColumn sportColumn) {
+  public void setUpUsuarioColumn(JTable table,
+      TableColumn usuarioColumn, int rowIndex) {
+    if(rowIndex == -1 || Util.getGitDirList() == null ||
+      Util.getGitDirList().size() <= rowIndex) {
+      return;
+    }
     //Set up the editor for the sport cells.
     JComboBox comboBox = new JComboBox();
-    comboBox.addItem("yyyyyy");
-    comboBox.addItem("xxxxxx");
-    comboBox.addItem("zzzzzz");
-    sportColumn.setCellEditor(new DefaultCellEditor(comboBox));
+
+    String[] authors = Util.getGitDirList().get(rowIndex).getAuthors();
+    for (int i = 0; i < authors.length; i++) {
+      comboBox.addItem(authors[i]);
+    }
+    comboBox.addItem(DESCONSIDERAR_HISTORICO);
+    usuarioColumn.setCellEditor(new DefaultCellEditor(comboBox));
 
     //Set up tool tips for the sport cells.
     DefaultTableCellRenderer renderer =
         new DefaultTableCellRenderer();
-    renderer.setToolTipText("Click for combo box");
-    sportColumn.setCellRenderer(renderer);
+    renderer.setToolTipText("Qual destes e-mails é o seu nesse projeto? Escolha a opção <DESCONSIDERAR HISTÓRICO> caso não queira recuperar seu histórico.");
+    usuarioColumn.setCellRenderer(renderer);
   }
 
   class MyTableModel extends AbstractTableModel {
 
     private String[] columnNames = {
         "Projeto Git",
-        "Seu usuário",
+        "E-mail do seu usuário nesse projeto",
         "Configurar?"};
     private Object[][] data;
 
@@ -175,16 +229,16 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
       this.data = data;
     }
 
-    public final Object[] longValues = {"Jane",
-        "None of the above",
-        Boolean.TRUE};
+    public final Object[] longValues = {"C:\\Users\\Flaviano Flauber\\Documents\\Projetos\\youtube-carousel-bootstrap",
+        "E-mail do seu usuário nesse projeto",
+        Boolean.FALSE};
 
     public int getColumnCount() {
       return columnNames.length;
     }
 
     public int getRowCount() {
-      return data.length;
+      return data == null ? 0 : data.length;
     }
 
     public String getColumnName(int col) {
@@ -192,6 +246,17 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     }
 
     public Object getValueAt(int row, int col) {
+      if(col == 1 && ((String)data[row][col]).isEmpty()) {
+        data[row][col] = DESCONSIDERAR_HISTORICO;
+        GitDir gitDir = Util.getGitDirList().get(row);
+        for (String author: gitDir.getAuthors()
+        ) {
+          if(author.contains(getUsername())) {
+            data[row][col] = author;
+            break;
+          }
+        }
+      }
       return data[row][col];
     }
 
@@ -212,16 +277,14 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     public boolean isCellEditable(int row, int col) {
       //Note that the data/cell address is constant,
       //no matter where the cell appears onscreen.
-      if (col > 0) {
-        if (row == 1) {
-          setUpSportColumn(table, table.getColumnModel().getColumn(1));
-        } else {
-          setUpSportColumn1(table, table.getColumnModel().getColumn(1));
-        }
+      if (col == 0) {
+        setUpProjetoGitColumn(table, table.getColumnModel().getColumn(col), row);
+        return false;
+      } else if (col == 1) {
+        setUpUsuarioColumn(table, table.getColumnModel().getColumn(col), row);
         return true;
       } else {
-
-        return false;
+        return true;
       }
     }
 
@@ -234,10 +297,10 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
         System.out.println("Setting value at " + row + "," + col
             + " to " + value
             + " (an instance of "
-            + value.getClass() + ")");
+            + (value == null ? null : value.getClass()) + ")");
       }
 
-      data[row][col] = value;
+      data[row][col] = value == null ? "" : value;
       fireTableCellUpdated(row, col);
 
       if (DEBUG) {
@@ -260,4 +323,6 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
       System.out.println("--------------------------");
     }
   }
+
+
 }

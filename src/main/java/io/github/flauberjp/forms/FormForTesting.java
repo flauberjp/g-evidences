@@ -355,10 +355,10 @@ public class FormForTesting extends JFrame {
       @SneakyThrows
       public void actionPerformed(ActionEvent e) {
         LOGGER.info("Botão \"Gerar hook...\" pressionado");
-        GenerateHook.generateHook(new ArrayList<String>());
+        GenerateHook.generateHook(new ArrayList<>());
         JOptionPane.showMessageDialog(contentPane,
-            Util.isFileExist(GenerateHook.HOOK_NAME) ?
-                "Arquivo gerado." : "Problemas na geração do hook.");
+            Util.isFileExist(GenerateHook.HOOK_NAME) ? "Arquivo gerado." :
+                "Problemas na geração do hook.");
       }
     });
     btn.setBounds(156, 331, 395, 23);
@@ -430,7 +430,7 @@ public class FormForTesting extends JFrame {
           File file = fileChooser.getSelectedFile();
           lblPastaPai.setText("Selecionado: " + file.getCanonicalPath());
           GitProjectManipulatorThread
-              .executaProcessamento(progressBar, contentPane, file, list, tabelaPanel);
+              .executaProcessamento(progressBar, contentPane, file, list, tabelaPanel, txtUsername.getText());
         } else {
           lblPastaPai.setText("Erro");
         }
@@ -466,36 +466,14 @@ public class FormForTesting extends JFrame {
   }
 
   private void tableUsage() {
-    Object[][] data = {
-        {"Kathy", "Snowboarding", false},
-        {"John", "Rowing", true},
-        {"Sue", "Knitting", false},
-        {"Jane", "Speed reading", true},
-        {"Kathy", "Snowboarding", false},
-        {"John", "Rowing", true},
-        {"Sue", "Knitting", false},
-        {"Jane", "Speed reading", true},
-        {"Kathy", "Snowboarding", false},
-        {"John", "Rowing", true},
-        {"Sue", "Knitting", false},
-        {"Jane", "Speed reading", true},
-        {"Kathy", "Snowboarding", false},
-        {"John", "Rowing", true},
-        {"Sue", "Knitting", false},
-        {"Jane", "Speed reading", true},
-        {"Kathy", "Snowboarding", false},
-        {"John", "Rowing", true},
-        {"Sue", "Knitting", false},
-        {"Jane", "Speed reading", true},
-        {"Joe", "Pool", false}
-    };
     JPanel tablePanel = new JPanel();
     tablePanel.setBackground(Color.RED);
     tablePanel.setBounds(156, 717, 559, 182);
     contentPane.add(tablePanel);
     tablePanel.setLayout(new GridLayout(0, 1, 0, 0));
 
-    tabelaPanel = new ProjetosGitDetectadosTableComponent(data);
+    tabelaPanel = new ProjetosGitDetectadosTableComponent();
+    tabelaPanel.atualizarTabela(null, txtUsername.getText());
     tabelaPanel.setOpaque(true); //content panes must be opaque
     tablePanel.add(tabelaPanel);
 
@@ -516,5 +494,14 @@ public class FormForTesting extends JFrame {
     });
     btgetTableData2.setBounds(725, 833, 260, 23);
     contentPane.add(btgetTableData2);
+    
+    JButton btTableUsername = new JButton("Username usado pela tabela");
+    btTableUsername.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    		JOptionPane.showMessageDialog(contentPane, tabelaPanel.getUsername());	
+    	}
+    });
+    btTableUsername.setBounds(725, 770, 260, 23);
+    contentPane.add(btTableUsername);
   }
 }
