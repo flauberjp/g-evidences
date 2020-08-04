@@ -38,3 +38,5 @@ Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no gi
 17. [How to center a JFrame on screen](https://alvinalexander.com/blog/post/jfc-swing/how-center-jframe-java-swing/)
 18. [Center JDialog over parent](https://stackoverflow.com/questions/10030947/center-jdialog-over-parent)
 19. [Using Swing Components: How to Use Tables](https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#combobox)
+20. [Jgit Author last commit](https://stackoverflow.com/a/45954947/6771132)
+21. [Create info panel on mouseover in JTable? Tooltip might not be sufficient](https://stackoverflow.com/a/11532503/6771132)
