@@ -4,15 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.flauberjp.EvidenceGenerator;
-import io.github.flauberjp.GenerateHook;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+
 import org.junit.jupiter.api.Test;
+
+import io.github.flauberjp.EvidenceGenerator;
+import io.github.flauberjp.GenerateHook;
 
 class UtilTest {
   static String gitProject;
@@ -38,20 +38,6 @@ class UtilTest {
         Util.getRandomStr();
     Util.convertResourceToFile("templates/initialGithubProject/" + filename, randomFilename);
     assertTrue(new File(randomFilename).exists());
-  }
-
-  @Test
-  void isThisGitProjectAGithubOneTest_checkTrue() {
-    Path currentRelativePath = Paths.get("");
-    String s = currentRelativePath.toAbsolutePath().toString();
-    assertTrue(Util.isThisGitProjectAGithubOne(s));
-  }
-
-  @Test
-  void isThisGitProjectAGithubOneTest_checkFalse() {
-    Path currentRelativePath = Paths.get("/");
-    String s = currentRelativePath.toAbsolutePath().toString();
-    assertFalse(Util.isThisGitProjectAGithubOne(s));
   }
 
   @Test

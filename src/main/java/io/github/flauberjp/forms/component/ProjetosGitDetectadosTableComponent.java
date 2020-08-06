@@ -29,13 +29,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package io.github.flauberjp.forms;
+package io.github.flauberjp.forms.component;
 
 /*
  * TableRenderDemo.java requires no other files.
  */
 
 import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirList;
 import io.github.flauberjp.util.Util;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -43,8 +44,10 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -63,16 +66,28 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
   private boolean DEBUG = true;
   JTable table;
   JScrollPane scrollPane;
-  Object[][] data;
+  Object[][] data = null;
   String username = "";
   private Point hintCell;
+  private List<GitDir> gitDirList = null;
 
   public ProjetosGitDetectadosTableComponent() {
     super(new GridLayout(1, 0));
+    atualizarTabela(null, null);
   }
 
-  public void atualizarTabela(Object[][] data, String username) {
-    this.data = data;
+  public void atualizarTabela(List<GitDir> gitDirList, String username) {
+	if(gitDirList != null) {
+		this.gitDirList = gitDirList;
+	    this.data = new Object[gitDirList.size()][];
+	    List<GitDir> list = GitDirList.get();
+	    for (int i = 0; i < list.size(); i++) {
+	      GitDir gitDir = list.get(i);
+	      gitDir.setAuthor(DESCONSIDERAR_HISTORICO);
+	      data[i] = new Object[] {gitDir.getPath(), gitDir.getAuthor(), gitDir.isSelected()};
+	    }
+	}
+
     this.username = username;
     if (scrollPane != null) {
       remove(scrollPane);
@@ -123,10 +138,6 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     for (int i = 0; i < this.data.length; i++) {
       table.isCellEditable(i, 1);
     }
-  }
-
-  public Object[][] getData() {
-    return this.data;
   }
 
   public String getUsername() {
@@ -181,28 +192,28 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     }
   }
 
-  public void setUpProjetoGitColumn(JTable table,
+  private void setUpProjetoGitColumn(JTable table,
       TableColumn projetoGitColumn, int rowIndex) {
-    if(rowIndex == -1 || Util.getGitDirList() == null ||
-        Util.getGitDirList().size() <= rowIndex) {
+    if(rowIndex == -1 || GitDirList.get() == null ||
+    		GitDirList.get().size() <= rowIndex) {
       return;
     }
     DefaultTableCellRenderer renderer =
         new DefaultTableCellRenderer();
-    renderer.setToolTipText(Util.getGitDirList().get(rowIndex).getPath());
+    renderer.setToolTipText(GitDirList.get().get(rowIndex).getPath());
     projetoGitColumn.setCellRenderer(renderer);
   }
 
-  public void setUpUsuarioColumn(JTable table,
+  private void setUpUsuarioColumn(JTable table,
       TableColumn usuarioColumn, int rowIndex) {
-    if(rowIndex == -1 || Util.getGitDirList() == null ||
-      Util.getGitDirList().size() <= rowIndex) {
+    if(rowIndex == -1 || GitDirList.get() == null ||
+	  GitDirList.get().size() <= rowIndex) {
       return;
     }
     //Set up the editor for the sport cells.
     JComboBox comboBox = new JComboBox();
 
-    String[] authors = Util.getGitDirList().get(rowIndex).getAuthors();
+    String[] authors = GitDirList.get().get(rowIndex).getAuthors();
     for (int i = 0; i < authors.length; i++) {
       comboBox.addItem(authors[i]);
     }
@@ -246,12 +257,12 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     }
 
     public Object getValueAt(int row, int col) {
-      if(col == 1 && ((String)data[row][col]).isEmpty()) {
-        data[row][col] = DESCONSIDERAR_HISTORICO;
-        GitDir gitDir = Util.getGitDirList().get(row);
+      if(col == 1 && ((String)data[row][col]).equalsIgnoreCase(DESCONSIDERAR_HISTORICO)) {
+        GitDir gitDir = GitDirList.get().get(row);
         for (String author: gitDir.getAuthors()
         ) {
           if(author.contains(getUsername())) {
+        	gitDir.setAuthor(author);  
             data[row][col] = author;
             break;
           }
@@ -301,6 +312,10 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
       }
 
       data[row][col] = value == null ? "" : value;
+      
+      gitDirList.get(row).setAuthor((String)data[row][1]);
+      gitDirList.get(row).setSelected((boolean)data[row][2]);
+      
       fireTableCellUpdated(row, col);
 
       if (DEBUG) {
