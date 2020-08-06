@@ -4,6 +4,7 @@ import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.forms.FormAplicacaoConfiguracoesResult;
 import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirList;
 import io.github.flauberjp.util.Util;
 import java.awt.Cursor;
 import java.awt.Toolkit;
@@ -43,9 +44,9 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
         password);
     Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
     UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
-    deletedProjects = GenerateHook.destroyHook(Util.getNotSelectedGitDirList());
+    deletedProjects = GenerateHook.destroyHook(GitDirList.getNotSelectedGitDirList());
     System.out.println(deletedProjects);
-    String gitProjectsNaoConfigurados = GenerateHook.generateHook(Util.getSelectedGitDirStringList());
+    String gitProjectsNaoConfigurados = GenerateHook.generateHook(GitDirList.getSelectedGitDirStringList());
 
     configureProgressBar(false, false);
     setProgress(100);

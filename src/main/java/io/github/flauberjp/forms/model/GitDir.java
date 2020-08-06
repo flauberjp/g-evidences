@@ -1,10 +1,12 @@
 package io.github.flauberjp.forms.model;
 
-import com.jcraft.jsch.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -16,10 +18,11 @@ public class GitDir {
 
   private String path;
   private boolean isSelected = false;
+  private boolean isConfigured = false;
   private String author;
 
   public GitDir(String path) {
-    this.path = path;
+    this.setPath(path);
   }
 
   public String getPath() {
@@ -63,9 +66,19 @@ public class GitDir {
   public boolean isSelected() {
     return isSelected;
   }
+  
+  public boolean isConfigured() {
+    return isSelected;
+  }
 
   public void setSelected(boolean isSelected) {
     this.isSelected = isSelected;
+  }
+  
+  public void setPath(String path) {
+	this.path = path;	
+	this.isConfigured = Files.exists( Path.of(path + "/.git/hooks/pre-commit"));
+	this.isSelected = this.isConfigured;
   }
 
   public String toString() {

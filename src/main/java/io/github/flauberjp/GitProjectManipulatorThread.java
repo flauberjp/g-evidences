@@ -2,9 +2,9 @@ package io.github.flauberjp;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
-import io.github.flauberjp.forms.ProjetosGitDetectadosTableComponent;
+import io.github.flauberjp.forms.component.ProjetosGitDetectadosTableComponent;
 import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirListRenderer;
+import io.github.flauberjp.forms.model.GitDirList;
 import io.github.flauberjp.util.Util;
 import java.awt.Cursor;
 import java.awt.Toolkit;
@@ -16,12 +16,10 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 
 public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
 
-  private JList<GitDir> list = null;
   public File diretorioASerAnalisado = null;
   private JProgressBar progressBar;
   private JPanel panel;
@@ -42,13 +40,8 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
     addPropertyChangeListener(propertyChangeListener);
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-    Util.resetGitDirList();
-    Util.resetListModel();
-    Util.addGitFiles(diretorioASerAnalisado);
-    // Build the model from previous Git Path using GitDir Class
-    Util.buildDefaultListModel();
-
-    updateList();
+    GitDirList.reset();
+    GitDirList.addGitDirectories(diretorioASerAnalisado);
 
     atualizarTabela();
 
@@ -60,26 +53,9 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   }
 
   private void atualizarTabela() {
-    if (tabelaPanel == null) {
-      return;
+    if (tabelaPanel != null) {
+      this.tabelaPanel.atualizarTabela(GitDirList.get(), username);
     }
-
-    List<GitDir> list = Util.getGitDirList();
-    Object[][] data = new Object[list.size()][];
-    for (int i = 0; i < list.size(); i++) {
-      GitDir gitDir = list.get(i);
-      data[i] = new Object[] {gitDir.getPath(), "", gitDir.isSelected()};
-    }
-    this.tabelaPanel.atualizarTabela(data, username);
-  }
-
-  private void updateList() {
-    if (list == null) {
-      return;
-    }
-    list.setModel(Util.getListModel());
-    list.setCellRenderer(new GitDirListRenderer());
-    list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
   }
 
   private void configureProgressBar(boolean indeterminateMode, boolean visible) {
@@ -109,27 +85,17 @@ public class GitProjectManipulatorThread extends SwingWorker<Void, Void> {
   }
 
   public static void executaProcessamento(JProgressBar progressBar, JPanel panel,
-      File diretorioASerAnalisado, JList<GitDir> list) {
-    LOGGER.debug("GitProjectManipulator.executaProcessamento("
-            + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {})",
-        progressBar, panel, diretorioASerAnalisado, list
-    );
-    executaProcessamento(progressBar, panel, diretorioASerAnalisado, list, null, "");
-  }
-
-  public static void executaProcessamento(JProgressBar progressBar, JPanel panel,
-      File diretorioASerAnalisado, JList<GitDir> list,
+      File diretorioASerAnalisado,
       ProjetosGitDetectadosTableComponent tabelaPanel,
       String username) {
     LOGGER.debug("GitProjectManipulator.executaProcessamento("
             + "progressBar = {}, panel = {}, diretorioASerAnalisado = {}, list = {}, tabelaPanel = {}, username = {})",
-        progressBar, panel, diretorioASerAnalisado, list, tabelaPanel, username
+        progressBar, panel, diretorioASerAnalisado, tabelaPanel, username
     );
     GitProjectManipulatorThread gitProjectManipulator = new GitProjectManipulatorThread();
     gitProjectManipulator.diretorioASerAnalisado = diretorioASerAnalisado;
     gitProjectManipulator.panel = panel;
     gitProjectManipulator.progressBar = progressBar;
-    gitProjectManipulator.list = list;
     gitProjectManipulator.tabelaPanel = tabelaPanel;
     gitProjectManipulator.username = username;
     gitProjectManipulator.execute();

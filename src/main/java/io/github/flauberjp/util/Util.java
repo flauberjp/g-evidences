@@ -4,6 +4,8 @@ import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.forms.model.GitDirList;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.io.File;
@@ -31,9 +33,6 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 
 public class Util {
-
-  private static List<GitDir> gitDirList = new ArrayList<GitDir>();
-  private static DefaultListModel<GitDir> listModel = new DefaultListModel();
 
   private Util() {
   }
@@ -147,100 +146,6 @@ public class Util {
     return result;
   }
 
-  public static void addGitFiles(File dir) {
-    LOGGER.debug("Util.addGitFiles(dir = {})", dir);
-    try {
-      File[] files = dir.listFiles();
-      for (File file : files) {
-        if (file.isDirectory()) {
-          if (file.getName().equalsIgnoreCase("node_modules") && Files
-              .exists(Paths.get(file.getPath() + "/../package.json"))) {
-            LOGGER.info("Skipping directory: " + file.getPath());
-            continue;
-          }
-          if (file.getName().equals(".git")) {
-            if (!isThisGitProjectAGithubOne(file.getParentFile().getCanonicalPath())) {
-              gitDirList.add(new GitDir(file.getParentFile().getCanonicalPath()));
-            }
-          } else {
-            addGitFiles(file);
-          }
-        }
-      }
-    } catch (IOException ex) {
-      LOGGER.error(ex.getMessage(), ex);
-    }
-  }
-
-  public static List<GitDir> getGitDirList() {
-    LOGGER.debug("Util.getGitDirList()");
-    return gitDirList;
-  }
-
-  public static void resetGitDirList() {
-    LOGGER.debug("Util.resetGitDirList()");
-    gitDirList.clear();
-  }
-
-  public static List<GitDir> getSelectedGitDirList() {
-    LOGGER.debug("Util.getSelectedGitDirList()");
-    List result = new ArrayList<GitDir>();
-    for (GitDir gitDir : getGitDirList()) {
-      if (gitDir.isSelected()) {
-        result.add(gitDir);
-      }
-    }
-    return result;
-  }
-
-  public static List<GitDir> getNotSelectedGitDirList() {
-    LOGGER.debug("Util.getNotSelectedGitDirList()");
-    List result = new ArrayList<GitDir>();
-    for (GitDir gitDir : getGitDirList()) {
-      if (!gitDir.isSelected()) {
-        result.add(gitDir);
-      }
-    }
-    return result;
-  }
-
-  public static List<String> getSelectedGitDirStringList() {
-    LOGGER.debug("Util.getSelectedGitDirStringList()");
-    List result = new ArrayList<String>();
-    for (GitDir gitDir : getSelectedGitDirList()) {
-      result.add(gitDir.getPath());
-    }
-    return result;
-  }
-
-  //Build ListModel containing gitDir's
-  public static DefaultListModel<GitDir> buildDefaultListModel() {
-    LOGGER.debug("Util.buildDefaultListModel()");
-    gitDirList.forEach(gitDir ->
-        listModel.addElement(setSelectionIfHookExists(gitDir, gitDir.getPath()))
-    );
-    return listModel;
-  }
-
-  public static void resetListModel() {
-    LOGGER.debug("Util.resetListModel()");
-    listModel.clear();
-  }
-
-
-
-  public static GitDir setSelectionIfHookExists(GitDir gitDir, String path) {
-    LOGGER.debug("Util.setSelectionIfHookExists(gitDir = {}, path = {})", gitDir, path);
-    gitDir.setSelected(Files.exists( Path.of(path + "/.git/hooks/pre-commit")));
-    return gitDir;
-  }
-
-  public static DefaultListModel<GitDir> getListModel() {
-    LOGGER.debug("Util.getListModel()");
-    return listModel;
-  }
-
-
   /**
    * @param resource e.g.: "initialProjectTemplate/template_index.html"
    * @param file     e.g.: "C:\Users\FLAVIA~1\AppData\Local\Temp\index.html""
@@ -347,27 +252,6 @@ public class Util {
     } catch (IOException ex) {
       LOGGER.error(ex.getMessage(), ex);
     }
-  }
-
-  public static boolean isThisGitProjectAGithubOne(String fullPathDirectoryOfAGitProject) {
-    LOGGER.debug("Util.isThisGitProjectAGithubOne(fullPathDirectoryOfAGitProject = {})",
-        fullPathDirectoryOfAGitProject);
-    boolean result = false;
-    if (Paths.get(fullPathDirectoryOfAGitProject).toFile().exists()) {
-      if (Paths.get(fullPathDirectoryOfAGitProject + "/.git").toFile().exists()) {
-        try {
-          Git git = Git.open(new File(fullPathDirectoryOfAGitProject));
-          StoredConfig config = git.getRepository().getConfig();
-          String remoteOriginUrl = config.getString("remote", "origin", "url");
-          if (remoteOriginUrl != null) {
-            result = remoteOriginUrl.toLowerCase().contains("github.com");
-          }
-        } catch (Exception ex) {
-          LOGGER.error(ex.getMessage(), ex);
-        }
-      }
-    }
-    return result;
   }
 
   public static Properties camuflaPasswordDeUmProperties(Properties properties) {
