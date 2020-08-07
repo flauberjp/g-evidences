@@ -31,12 +31,8 @@
 
 package io.github.flauberjp.forms.component;
 
-/*
- * TableRenderDemo.java requires no other files.
- */
-
-import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirList;
+import io.github.flauberjp.model.GitDir;
+import io.github.flauberjp.model.GitDirList;
 import io.github.flauberjp.util.Util;
 import java.awt.Component;
 import java.awt.Dimension;

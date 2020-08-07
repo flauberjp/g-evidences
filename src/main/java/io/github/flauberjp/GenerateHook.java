@@ -2,7 +2,7 @@ package io.github.flauberjp;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
-import io.github.flauberjp.forms.model.GitDir;
+import io.github.flauberjp.model.GitDir;
 import io.github.flauberjp.util.Util;
 import java.io.File;
 import java.io.IOException;

@@ -5,12 +5,14 @@ import static io.github.flauberjp.util.MyLogger.LOGGER;
 import io.github.flauberjp.EvidenceGenerator;
 import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.GitProjectManipulatorThread;
+import io.github.flauberjp.HistoryReflector;
 import io.github.flauberjp.UserGithubInfo;
 import io.github.flauberjp.UserGithubProjectCreator;
 import io.github.flauberjp.Version;
 import io.github.flauberjp.forms.component.ProjetosGitDetectadosTableComponent;
-import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirList;
+import io.github.flauberjp.model.GitDir;
+import io.github.flauberjp.model.GitDirList;
+import io.github.flauberjp.util.GitUtil;
 import io.github.flauberjp.util.Util;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -34,6 +36,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+
 import lombok.SneakyThrows;
 
 public class FormForTesting extends JFrame {
@@ -115,6 +120,17 @@ public class FormForTesting extends JFrame {
     contentPane.add(txtRepoName);
 
     ckbConsiderarNomeRepo = new JCheckBox("Considerar nome do repo");
+    ckbConsiderarNomeRepo.addActionListener(new ActionListener() {
+    	@SneakyThrows
+    	public void actionPerformed(ActionEvent e) {
+    		txtRepoName.setEnabled(!ckbConsiderarNomeRepo.isSelected());
+    		if(ckbConsiderarNomeRepo.isSelected()) {
+    			UserGithubInfo.get().setRepoName(txtRepoName.getText());
+    		} else {
+    			UserGithubInfo.get().resetRepoName();
+    		}
+    	}
+    });
     ckbConsiderarNomeRepo.setSelected(false);
     ckbConsiderarNomeRepo
         .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
@@ -389,8 +405,8 @@ public class FormForTesting extends JFrame {
       public void actionPerformed(ActionEvent e) {
         LOGGER.info("Botão \"Versão...\" pressionado");
         JOptionPane.showMessageDialog(contentPane,
-            "Repo \"" + UserGithubInfo.MY_GIT_USAGE_EVIDENCES_REPO
-                + "\" já existe no repositório remoto?" + UserGithubInfo.get().isRepoExistent());
+            "Repo \"" + UserGithubInfo.get().getRepoName()
+                + "\" já existe no repositório remoto? " + UserGithubInfo.get().isRepoExistent());
       }
     });
     btnRepoRemoto.setBounds(156, 396, 395, 23);
@@ -453,19 +469,27 @@ public class FormForTesting extends JFrame {
     JButton btgetTableData = new JButton("Exibir Valor da linha 1, coluna 2");
     btgetTableData.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+    	if(GitDirList.get().size() == 0) {
+    	  JOptionPane.showMessageDialog(contentPane, "Registro inexistente!");
+    	  return;
+    	}
         JOptionPane.showMessageDialog(contentPane, GitDirList.get().get(0).getAuthor());
       }
     });
-    btgetTableData.setBounds(444, 713, 260, 23);
+    btgetTableData.setBounds(174, 747, 337, 23);
     contentPane.add(btgetTableData);
 
     JButton btgetTableData2 = new JButton("Exibir Valor da linha 1, coluna 3");
     btgetTableData2.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+      	if(GitDirList.get().size() == 0) {
+      	  JOptionPane.showMessageDialog(contentPane, "Registro inexistente!");
+      	  return;
+      	}    	  
         JOptionPane.showMessageDialog(contentPane, GitDirList.get().get(0).isSelected());
       }
     });
-    btgetTableData2.setBounds(725, 713, 260, 23);
+    btgetTableData2.setBounds(174, 781, 337, 23);
     contentPane.add(btgetTableData2);
     
     JButton btTableUsername = new JButton("Username usado pela tabela");
@@ -474,7 +498,21 @@ public class FormForTesting extends JFrame {
     		JOptionPane.showMessageDialog(contentPane, tabelaPanel.getUsername());	
     	}
     });
-    btTableUsername.setBounds(174, 713, 260, 23);
+    btTableUsername.setBounds(174, 713, 337, 23);
     contentPane.add(btTableUsername);
+    
+    JButton btnExibirCommits = new JButton("Refletir histórico");
+    btnExibirCommits.addActionListener(new ActionListener() {
+    	@SneakyThrows
+    	public void actionPerformed(ActionEvent e) {
+        	if(GitDirList.get().size() == 0) {
+          	  JOptionPane.showMessageDialog(contentPane, "Registro inexistente!");
+          	  return;
+          	}
+        	HistoryReflector.reflectHistory(GitDirList.get(), UserGithubInfo.get());
+    	}
+    });
+    btnExibirCommits.setBounds(174, 815, 337, 23);
+    contentPane.add(btnExibirCommits);
   }
 }

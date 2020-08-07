@@ -161,15 +161,15 @@ public class UserGithubInfo implements Serializable {
   }
 
   public boolean isRepoExistent() {
-    LOGGER.debug("UserGithubInfo.isRepoExistent()");
+    LOGGER.debug("UserGithubInfo.isRepoExistent(). Reponame atual: {}", getRepoName());
     boolean result = false;
     GHRepositorySearchBuilder search = getGitHub().searchRepositories();
-    GHRepositorySearchBuilder s = search.q(MY_GIT_USAGE_EVIDENCES_REPO);
+    GHRepositorySearchBuilder s = search.q(getRepoName());
 
     PagedSearchIterable res = s.list();
 
     for (Object ghRepository : res) {
-      if ((username + "/" + MY_GIT_USAGE_EVIDENCES_REPO)
+      if ((username + "/" + getRepoName())
           .equalsIgnoreCase(((GHRepository) ghRepository).getFullName())) {
         result = true;
         break;

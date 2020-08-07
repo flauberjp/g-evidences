@@ -92,9 +92,6 @@ public class UserGithubProjectCreator {
         userGithubInfo);
     GitHub github = userGithubInfo.get().getGitHub();
     GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
-    if (!userGithubInfo.getUsername().equalsIgnoreCase(FormForTesting.GIT_USER_FOR_TESTING)) {
-      repo.private_(true);
-    }
     repo.create();
   }
 }

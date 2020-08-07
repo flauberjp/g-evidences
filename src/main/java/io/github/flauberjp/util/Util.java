@@ -3,8 +3,8 @@ package io.github.flauberjp.util;
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.UserGithubProjectCreator;
-import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirList;
+import io.github.flauberjp.model.GitDir;
+import io.github.flauberjp.model.GitDirList;
 
 import java.awt.Component;
 import java.awt.Container;

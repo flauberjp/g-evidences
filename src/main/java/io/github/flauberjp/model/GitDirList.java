@@ -1,4 +1,4 @@
-package io.github.flauberjp.forms.model;
+package io.github.flauberjp.model;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 

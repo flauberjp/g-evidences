@@ -3,12 +3,13 @@ package io.github.flauberjp;
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.forms.FormAplicacaoConfiguracoesResult;
-import io.github.flauberjp.forms.model.GitDir;
-import io.github.flauberjp.forms.model.GitDirList;
+import io.github.flauberjp.model.GitDir;
+import io.github.flauberjp.model.GitDirList;
 import io.github.flauberjp.util.Util;
 import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,7 +31,7 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
    * Main task. Executed in background thread.
    */
   @Override
-  public Void doInBackground() {
+  public Void doInBackground() throws IOException {
     LOGGER.debug("ApplyConfigurationThread.doInBackground()");
     Random random = new Random();
     int progress = 0;
@@ -47,6 +48,8 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
     deletedProjects = GenerateHook.destroyHook(GitDirList.getNotSelectedGitDirList());
     System.out.println(deletedProjects);
     String gitProjectsNaoConfigurados = GenerateHook.generateHook(GitDirList.getSelectedGitDirStringList());
+    
+    HistoryReflector.reflectHistory(GitDirList.get(), UserGithubInfo.get());
 
     configureProgressBar(false, false);
     setProgress(100);

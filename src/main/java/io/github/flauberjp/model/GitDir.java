@@ -1,4 +1,4 @@
-package io.github.flauberjp.forms.model;
+package io.github.flauberjp.model;
 
 import java.io.File;
 import java.io.IOException;
