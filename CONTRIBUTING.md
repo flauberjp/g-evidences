@@ -40,3 +40,4 @@ Este projeto possui uma [conta](https://github.com/mygitusageevicencesapp) no gi
 19. [Using Swing Components: How to Use Tables](https://docs.oracle.com/javase/tutorial/uiswing/components/table.html#combobox)
 20. [Jgit Author last commit](https://stackoverflow.com/a/45954947/6771132)
 21. [Create info panel on mouseover in JTable? Tooltip might not be sufficient](https://stackoverflow.com/a/11532503/6771132)
+22. [Retrieving Commit Message Log from Git Using JGit](https://stackoverflow.com/a/24671762/6771132)
