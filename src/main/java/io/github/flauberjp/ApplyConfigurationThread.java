@@ -44,7 +44,7 @@ public class ApplyConfigurationThread extends SwingWorker<Void, Void> {
     UserGithubInfo userGithubInfo = UserGithubInfo.get(username,
         password);
     Util.savePropertiesToFile(userGithubInfo.toProperties(), UserGithubInfo.PROPERTIES_FILE);
-    UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
+    UserGithubProjectManipulator.criaProjetoInicialNoGithub(userGithubInfo);
     deletedProjects = GenerateHook.destroyHook(GitDirList.getNotSelectedGitDirList());
     System.out.println(deletedProjects);
     String gitProjectsNaoConfigurados = GenerateHook.generateHook(GitDirList.getSelectedGitDirStringList());

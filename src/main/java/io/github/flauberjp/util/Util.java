@@ -2,7 +2,7 @@ package io.github.flauberjp.util;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
-import io.github.flauberjp.UserGithubProjectCreator;
+import io.github.flauberjp.UserGithubProjectManipulator;
 import io.github.flauberjp.model.GitDir;
 import io.github.flauberjp.model.GitDirList;
 
@@ -154,7 +154,7 @@ public class Util {
   public static void convertResourceToFile(String resource, String file)
       throws IOException {
     LOGGER.debug("Util.convertResourceToFile(resource = {}, file = {})", resource, file);
-    InputStream resourceAsStream = UserGithubProjectCreator.class.getResourceAsStream(resource);
+    InputStream resourceAsStream = UserGithubProjectManipulator.class.getResourceAsStream(resource);
     byte[] buffer = new byte[resourceAsStream.available()];
     resourceAsStream.read(buffer);
     File targetFile = new File(file);

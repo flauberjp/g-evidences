@@ -64,7 +64,7 @@ public class EvidenceGenerator {
 
       // Gera evidencia em evidences.txt
       String fileNameWithItsPath = dir + "/evidences.txt";
-      UserGithubProjectCreator.createEvidencesFileIfNotExist(dir + "/evidences.txt");
+      UserGithubProjectManipulator.createEvidencesFileIfNotExist(dir + "/evidences.txt");
       updateEvidenceFile(fileNameWithItsPath, dataEHoraExecucao);
 
       git.add().addFilepattern(".").call();

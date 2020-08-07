@@ -2,7 +2,7 @@ package io.github.flauberjp.util;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
-import io.github.flauberjp.UserGithubProjectCreator;
+import io.github.flauberjp.UserGithubProjectManipulator;
 import io.github.flauberjp.model.GitDir;
 import io.github.flauberjp.model.GitDirList;
 
