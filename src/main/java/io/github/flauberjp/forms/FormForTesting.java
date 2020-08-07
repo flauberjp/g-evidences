@@ -7,7 +7,7 @@ import io.github.flauberjp.GenerateHook;
 import io.github.flauberjp.GitProjectManipulatorThread;
 import io.github.flauberjp.HistoryReflector;
 import io.github.flauberjp.UserGithubInfo;
-import io.github.flauberjp.UserGithubProjectCreator;
+import io.github.flauberjp.UserGithubProjectManipulator;
 import io.github.flauberjp.Version;
 import io.github.flauberjp.forms.component.ProjetosGitDetectadosTableComponent;
 import io.github.flauberjp.model.GitDir;
@@ -109,6 +109,8 @@ public class FormForTesting extends JFrame {
     areaEscolherProjetos();
 
     tableUsage();
+    
+    botaoDeletarRepoRemoto();
 
   }
 
@@ -241,7 +243,7 @@ public class FormForTesting extends JFrame {
         try {
           UserGithubInfo userGithubInfo = UserGithubInfo.get();
           userGithubInfo.setRepoName(txtRepoName.getText());
-          UserGithubProjectCreator.criaProjetoInicialNoGithub(userGithubInfo);
+          UserGithubProjectManipulator.criaProjetoInicialNoGithub(userGithubInfo);
           JOptionPane.showMessageDialog(contentPane, "Projeto criado.");
         } catch (Exception ex) {
           LOGGER.error(ex.getMessage(), ex);
@@ -397,6 +399,23 @@ public class FormForTesting extends JFrame {
     btnVersao.setBounds(156, 362, 395, 23);
     contentPane.add(btnVersao);
   }
+  
+  private void botaoDeletarRepoRemoto() {
+    JButton btnDeletarRepoNo = new JButton("Deletar repo no repositório remoto");
+    btnDeletarRepoNo.setEnabled(false);
+	btnDeletarRepoNo.addActionListener(new ActionListener() {
+		@SneakyThrows
+		public void actionPerformed(ActionEvent e) {
+			String msg = "Repo removido com sucesso!";
+			if(!UserGithubProjectManipulator.deletarProjetoInicialNoGithub(UserGithubInfo.get())) {
+				msg = "Repo não foi removido!";
+			}
+			JOptionPane.showMessageDialog(contentPane, msg);
+    	}
+	});
+	btnDeletarRepoNo.setBounds(156, 430, 395, 23);
+	contentPane.add(btnDeletarRepoNo);
+  }
 
   private void botaoVerificaExistenciaDoRepoRemoto() {
     JButton btnRepoRemoto = new JButton("Verifica existência do repo no repositório remoto");
@@ -514,5 +533,7 @@ public class FormForTesting extends JFrame {
     });
     btnExibirCommits.setBounds(174, 815, 337, 23);
     contentPane.add(btnExibirCommits);
+    
   }
+  
 }

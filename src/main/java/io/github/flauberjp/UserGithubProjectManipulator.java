@@ -15,9 +15,12 @@ import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHRepositorySearchBuilder;
 import org.kohsuke.github.GitHub;
+import org.kohsuke.github.PagedSearchIterable;
 
-public class UserGithubProjectCreator {
+public class UserGithubProjectManipulator {
 
   public static void main(String[] args) throws IOException, URISyntaxException {
     LOGGER.info("Programa iniciado às: " + LocalDateTime.now());
@@ -93,5 +96,37 @@ public class UserGithubProjectCreator {
     GitHub github = userGithubInfo.get().getGitHub();
     GHCreateRepositoryBuilder repo = github.createRepository(userGithubInfo.getRepoName());
     repo.create();
+  }
+  
+  private static void deletarProjeto(UserGithubInfo userGithubInfo) throws IOException {
+    GHRepositorySearchBuilder search = userGithubInfo.getGitHub().searchRepositories();
+    GHRepositorySearchBuilder s = search.q(userGithubInfo.getRepoName());
+
+    PagedSearchIterable res = s.list();
+
+    for (Object ghRepository : res) {
+      if ((userGithubInfo.getUsername() + "/" + userGithubInfo.getRepoName())
+          .equalsIgnoreCase(((GHRepository) ghRepository).getFullName())) {    	  
+    	GHRepository repo  = (GHRepository) ghRepository;
+    	repo.delete();
+        break;
+      }
+    }
+  }
+  
+  public static boolean deletarProjetoInicialNoGithub(UserGithubInfo userGithubInfo) {
+    boolean result = false;
+    boolean repositorioExistente = false;
+    try {
+      repositorioExistente = UserGithubInfo.get().isRepoExistent();
+
+      if (repositorioExistente) {
+    	  deletarProjeto(userGithubInfo);    	  
+      }
+      result = true;
+    } catch (Exception ex) {
+      LOGGER.error(ex.getMessage(), ex);
+    }
+    return result;
   }
 }
