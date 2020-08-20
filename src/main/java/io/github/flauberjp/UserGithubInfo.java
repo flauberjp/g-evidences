@@ -86,7 +86,8 @@ public class UserGithubInfo implements Serializable {
 
   public static UserGithubInfo get(String username, String password) {
     LOGGER.debug("UserGithubInfo.get(username = {}, password = XXX)", username);
-    if (userGithubInfo == null) {
+    if (userGithubInfo == null || !userGithubInfo.getUsername().equalsIgnoreCase(username) ||
+        !userGithubInfo.getPassword().equalsIgnoreCase(password)) {
       userGithubInfo = new UserGithubInfo(username, password);
     }
     return userGithubInfo;
