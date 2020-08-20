@@ -3,6 +3,7 @@ package io.github.flauberjp;
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
 import io.github.flauberjp.forms.FormMain;
+import io.github.flauberjp.util.TemplateUtil;
 import io.github.flauberjp.util.Util;
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class EvidenceGenerator {
 
       // Gera evidencia em evidences.txt
       String fileNameWithItsPath = dir + "/evidences.txt";
-      UserGithubProjectManipulator.createEvidencesFileIfNotExist(dir + "/evidences.txt");
+      TemplateUtil.createEvidencesFileFromTemplateIfNotExist(dir);
       updateEvidenceFile(fileNameWithItsPath, dataEHoraExecucao);
 
       git.add().addFilepattern(".").call();

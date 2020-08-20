@@ -2,8 +2,7 @@ package io.github.flauberjp;
 
 import static io.github.flauberjp.util.MyLogger.LOGGER;
 
-import io.github.flauberjp.forms.FormForTesting;
-import io.github.flauberjp.util.Util;
+import io.github.flauberjp.util.TemplateUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -48,10 +47,10 @@ public class UserGithubProjectManipulator {
 
       Git git;
 
-      String dir = EvidenceGenerator
+      String destinationDir = EvidenceGenerator
           .getDirOndeRepositorioRemotoSeraClonado(userGithubInfo.getRepoName());
 
-      git = Git.cloneRepository().setDirectory(new File(dir))
+      git = Git.cloneRepository().setDirectory(new File(destinationDir))
           .setCredentialsProvider(credentialsProvider).setURI(userGithubInfo.getRepoNameFullPath())
           .call();
 
@@ -60,21 +59,13 @@ public class UserGithubProjectManipulator {
       config.setString("user", null, "email", userGithubInfo.getGithubEmail()); //NOI18N
       config.save();
 
-      if (!repositorioExistente) {
-        // Copia arquivos iniciais usando templates
-        Util.convertResourceToFile("templates/initialGithubProject/template_index.html",
-            dir + "/index.html");
-        Util.convertResourceToFile("templates/initialGithubProject/template_README.md",
-            dir + "/README.md");
+      if(seAlgumArquivoTiverSidoCriadoParaOProjeto(destinationDir)) {
+        AddCommand addCommand = git.add().addFilepattern(".");
+        addCommand.call();
+        CommitCommand commitCommand = git.commit();
+        commitCommand.setMessage("Initial setup").call();
+        git.push().setCredentialsProvider(credentialsProvider).call();
       }
-
-      createEvidencesFileIfNotExist(dir + "/evidences.txt");
-
-      AddCommand addCommand = git.add().addFilepattern(".");
-      addCommand.call();
-      CommitCommand commitCommand = git.commit();
-      commitCommand.setMessage("Initial setup").call();
-      git.push().setCredentialsProvider(credentialsProvider).call();
 
       result = true;
     } catch (Exception ex) {
@@ -83,11 +74,10 @@ public class UserGithubProjectManipulator {
     return result;
   }
 
-  public static void createEvidencesFileIfNotExist(String evidencesFilePath) throws IOException {
-    if (!Util.isFileExist(evidencesFilePath)) {
-      Util.convertResourceToFile("templates/initialGithubProject/template_evidences.txt",
-          evidencesFilePath);
-    }
+  private static boolean seAlgumArquivoTiverSidoCriadoParaOProjeto(String destinationDir)
+      throws IOException {
+    return TemplateUtil.createIndexFileFromTemplateIfNotExist(destinationDir) |
+        TemplateUtil.createReadmeFileFromTemplateIfNotExist(destinationDir);
   }
 
   private static void criaProjeto(UserGithubInfo userGithubInfo) throws IOException {
