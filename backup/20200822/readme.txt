@@ -1,0 +1,1 @@
+Esses 3 PDFs contém informações sobre como gerar o programa de instalação junto com uma JRE, dispensando que o usuário final tenha a JRE previamente instalada para o programa rodar. Infelizmente houve problema de permissão que precisa ser investigado.
