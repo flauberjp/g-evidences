@@ -25,6 +25,7 @@ seus outros repositórios centrais, além de que registrará futuros usos també
 ## Como usar esse programa
 
 1. Instale o programa. Para isso use o instalador: [my-git-usage-evidences-inst-win64.exe](https://github.com/flauberjp/my-git-usage-evidences/releases/download/1.4-SNAPSHOT-alpha.1/my-git-usage-evidences-inst-win64.exe).
+    * ATENÇÃO: este programa tem como pre-requisito o Windos 10 e o Java 11.
 
 2. Inicie o programa.
 

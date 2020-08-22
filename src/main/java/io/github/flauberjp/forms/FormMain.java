@@ -38,9 +38,16 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.SneakyThrows;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import io.github.flauberjp.forms.component.ProjetosGitDetectadosTableComponent;
 import java.awt.Toolkit;
+import java.awt.Canvas;
+import javax.swing.ImageIcon;
+import java.net.URI;
 
 public class FormMain extends JFrame {
   private static FormMain frame;
@@ -55,9 +62,7 @@ public class FormMain extends JFrame {
    */
   public FormMain() throws MalformedURLException {
     LOGGER.debug("FormMain.FormMain()");
-    setTitle("My git usage evidences");
-    setResizable(false);
-  	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\my-git-usage-evidences\\src\\main\\resources\\images\\my-git-usage-evidences.png"));
+    configuraFormMain();
 
     geraPainelPrincipal();
 
@@ -65,9 +70,17 @@ public class FormMain extends JFrame {
 
     selecionadorDeProjetosGit();
     
-    configuraProgressBar();    
-
+    configuraProgressBar();
+    
+    geraGithubLink();
+    
     inicializaForm();
+  }
+
+  private void configuraFormMain() {
+	setTitle("My git usage evidences");
+    setResizable(false);
+  	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\my-git-usage-evidences\\src\\main\\resources\\images\\my-git-usage-evidences.png"));
   }
 
   private void inicializaForm() {
@@ -228,7 +241,7 @@ public class FormMain extends JFrame {
     contentPane.add(btnSelect);
 
     JSeparator separator = new JSeparator();
-    separator.setBounds(12, 25, 850, 2);
+    separator.setBounds(12, 25, 815, 2);
     contentPane.add(separator);
   }
   
@@ -256,5 +269,31 @@ public class FormMain extends JFrame {
     JSeparator separator_1 = new JSeparator();
     separator_1.setBounds(12, 154, 850, 2);
     contentPane.add(separator_1);
+  }
+
+  private void geraGithubLink() {
+	JLabel lblGithubLink = new JLabel("");
+	lblGithubLink.addMouseListener(new MouseAdapter() {
+		@Override
+		@SneakyThrows
+		public void mouseClicked(MouseEvent e) {
+			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+			    Desktop.getDesktop().browse(new URI("https://github.com/flauberjp/my-git-usage-evidences"));
+			}
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			setCursor(null);
+		}
+	});
+	lblGithubLink.setIcon(new ImageIcon("C:\\my-git-usage-evidences\\src\\main\\resources\\icon\\GitHub-Mark-32px.png"));
+	lblGithubLink.setFont(new Font("Tahoma", Font.BOLD, 11));
+	lblGithubLink.setToolTipText("Acesse o repositório do my-git-usage-evidences no Github. Se gostou do programa, não esqueça de deixar uma STAR.");
+	lblGithubLink.setBounds(833, 11, 32, 32);
+	contentPane.add(lblGithubLink);	
   }
 }
