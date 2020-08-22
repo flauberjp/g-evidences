@@ -3,7 +3,7 @@
 
 #define MyAppName "my-git-usage-evidences"
 #define MyAppVersion "1.0"
-#define MyAppPublisher "Equipe de voluntários my-git-usage-evidences "
+#define MyAppPublisher "Equipe de voluntï¿½rios my-git-usage-evidences "
 #define MyAppURL "https://flauberjp.github.io/my-git-usage-evidences/"
 #define MyAppExeName "mgue.exe"
 
@@ -40,9 +40,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Flaviano Flauber\AppData\Local\Programs\Inno Setup 6\Examples\MyProg.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\my-git-usage-evidences\extras\Output\mgue.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\my-git-usage-evidences\extras\Input\jre\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -55,4 +53,4 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 [Registry]
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; \
     ValueType: String; ValueName: "{app}\mgue.exe"; ValueData: "~ RUNASADMIN"; \
-    Flags: uninsdeletekeyifempty
+    Flags: uninsdeletekeyifempty	
