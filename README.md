@@ -10,14 +10,15 @@ Git versionados localmente apenas, e nada das atividades que você realiza nesse
 refletido no Github.
 
 Esse programa aqui resolve esse problema refletindo no Calendário de contribuições do Github 
-todo commit que você executa nos seus projetos Git configurados por ele.
+todo commit que você executa nos seus projetos Git configurados por ele, além de refletir 
+também o seu histórico de commits realizados até então. 
 
 Veja na imagem abaixo um exemplo. Em (A) você tem o que o Github refletiu de uso por você em um 
 determinado mês. Em (B) existe a realidade que o Github não reflete, que é o fato de que
 você também realiza diversas atividades diariamente só que em um outro repositório central, por exemplo,
-no Bitbucket ou Gitlab ou mesmo em um projeto Git local apenas. (A) + (B) é o resultado desse programa
-aqui, ele reflete no Calendário de contribuições do Github o que você fez nos seus outros repositórios 
-centrais também.   
+no Bitbucket ou Gitlab ou mesmo em um projeto Git local apenas. (A) + (B) é o resultado do uso desse programa
+aqui, ele reflete no Calendário de contribuições do Github tudo que você fez até então nos 
+seus outros repositórios centrais, além de que registrará futuros usos também.   
 
 ![Resultado do uso desse programa](static/exemploGraficoDeUso.png "Resultado do uso desse programa")
 
@@ -29,14 +30,17 @@ centrais também.
 
 3. Configure o programa. 
     * No programa, digite suas credenciais do Github 
-    (username e password).
+    (username e password).    
     * Selecione seus projetos Git que deseja monitorar o uso do git neles.
       * Para isso, selecione uma pasta que contém a maioria dos seus
       projetos git, clicando no botão "_Selecionar_" e escolhendo a pasta.
       Essa pasta será analisada, e apenas projetos git que não são projetos
       Github serão listados. 
-        * Os projetos Github não são listados pois o uso do Git neles já é realizado automaticamente pelo próprio Github;
-      * Marque os projetos que você quer monitorar.
+        * Os **projetos Github não são listados** pois o uso do Git neles já é registrado automaticamente pelo próprio Github;
+    * Marque a coluna _Configurar?_ os projetos que você quer monitorar o uso futuro.
+    * Na coluna _E-mail do seu usuário nesse projeto_ escolha o seu e-mail entre a lista de e-mails
+    dos contribuidores naquele projeto. Caso não queira refletir também o seu histórico de 
+    commits realizados até então escolha a opção "<DESCONSIDERAR HISTÓRICO>", que é a opção selecionada por padrão.
 
 4. Aplique a configuração.
     * Clique no botão "_Aplicar configurações_", e aguarde a mensagem
@@ -49,6 +53,9 @@ centrais também.
 3. Verifique no seu github que o repo _my-git-usage-evidences-repo_ teve o número de commits incrementado.
 4. Repita os passos anteriores para vê-lo aumentar mais uma vez se preciso, o que é uma 
 evidência de que você acabou de usar o git localmente refletida no Github.
+5. Para confirmar que o histórico de commits foi restaurado também, consulte o seu 
+_Calendário de contribuições do Github_. Caso você não tenha notado uma diferença
+esperada, faça logout no Github e se logue novamente, isso fará ele atualizar-se.
 
 ## Ajuda Voluntária
 Amamos voluntários! Venha tornar esse programa ainda mais incrível! 
