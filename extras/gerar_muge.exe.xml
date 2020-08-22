@@ -2,7 +2,7 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\my-git-usage-evidences\target\my-git-usage-evidences-jar-with-dependencies.jar</jar>
+  <jar>C:\my-git-usage-evidences\extras\Input\my-git-usage-evidences-jar-with-dependencies.jar</jar>
   <outfile>C:\my-git-usage-evidences\extras\output\mgue.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
@@ -13,14 +13,14 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon></icon>
+  <icon>C:\my-git-usage-evidences\extras\Input\my-git-usage-evidences.ico</icon>
   <jre>
-    <path></path>
-    <bundledJre64Bit>false</bundledJre64Bit>
+    <path>jre</path>
+    <bundledJre64Bit>true</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>11</minVersion>
     <maxVersion></maxVersion>
-    <jdkPreference>preferJre</jdkPreference>
-    <runtimeBits>64/32</runtimeBits>
+    <jdkPreference>jdkOnly</jdkPreference>
+    <runtimeBits>64</runtimeBits>
   </jre>
 </launch4jConfig>

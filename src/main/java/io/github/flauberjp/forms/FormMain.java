@@ -17,6 +17,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
@@ -38,6 +40,7 @@ import lombok.SneakyThrows;
 import java.awt.Color;
 import java.awt.GridLayout;
 import io.github.flauberjp.forms.component.ProjetosGitDetectadosTableComponent;
+import java.awt.Toolkit;
 
 public class FormMain extends JFrame {
   private static FormMain frame;
@@ -48,11 +51,13 @@ public class FormMain extends JFrame {
 
   /**
    * Create the frame.
+   * @throws MalformedURLException 
    */
-  public FormMain() {
+  public FormMain() throws MalformedURLException {
     LOGGER.debug("FormMain.FormMain()");
     setTitle("My git usage evidences");
     setResizable(false);
+  	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\my-git-usage-evidences\\src\\main\\resources\\images\\my-git-usage-evidences.png"));
 
     geraPainelPrincipal();
 
