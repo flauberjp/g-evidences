@@ -78,9 +78,9 @@ public class FormMain extends JFrame {
   }
 
   private void configuraFormMain() {
-	setTitle("My git usage evidences");
+	setTitle("g-evidences");
     setResizable(false);
-  	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\my-git-usage-evidences\\src\\main\\resources\\images\\my-git-usage-evidences.png"));
+  	setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\g-evidences\\src\\main\\resources\\images\\g-evidences.png"));
   }
 
   private void inicializaForm() {
@@ -178,9 +178,9 @@ public class FormMain extends JFrame {
           LOGGER.info("Botão \"Aplicar configurações\" pressionando");
           LOGGER.debug("Lista de projetos git selecionados: " + GitDirList.getSelectedGitDirStringList()
               .toString());
-          if (txtUsername.getText().isEmpty() || txtUsername.getText().isBlank() ||
+          if (txtUsername.getText().isEmpty() || txtUsername.getText().trim().isEmpty() ||
               String.valueOf(passwordField.getPassword()).isEmpty() || String
-              .valueOf(passwordField.getPassword()).isBlank()) {
+              .valueOf(passwordField.getPassword()).trim().isEmpty()) {
             JOptionPane.showMessageDialog(contentPane,
                 "Usuário e senha do Github devem estar definidos!");
             return;
@@ -278,7 +278,7 @@ public class FormMain extends JFrame {
 		@SneakyThrows
 		public void mouseClicked(MouseEvent e) {
 			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-			    Desktop.getDesktop().browse(new URI("https://github.com/flauberjp/my-git-usage-evidences"));
+			    Desktop.getDesktop().browse(new URI("https://github.com/flauberjp/g-evidences"));
 			}
 		}
 		@Override
@@ -290,9 +290,9 @@ public class FormMain extends JFrame {
 			setCursor(null);
 		}
 	});
-	lblGithubLink.setIcon(new ImageIcon("C:\\my-git-usage-evidences\\src\\main\\resources\\icon\\GitHub-Mark-32px.png"));
+	lblGithubLink.setIcon(new ImageIcon("C:\\g-evidences\\src\\main\\resources\\icon\\GitHub-Mark-32px.png"));
 	lblGithubLink.setFont(new Font("Tahoma", Font.BOLD, 11));
-	lblGithubLink.setToolTipText("Acesse o repositório do my-git-usage-evidences no Github. Se gostou do programa, não esqueça de deixar uma STAR.");
+	lblGithubLink.setToolTipText("Acesse o repositório do g-evidences no Github. Se gostou do programa, não esqueça de deixar uma STAR.");
 	lblGithubLink.setBounds(833, 11, 32, 32);
 	contentPane.add(lblGithubLink);	
   }

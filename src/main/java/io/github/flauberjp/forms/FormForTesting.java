@@ -116,7 +116,7 @@ public class FormForTesting extends JFrame {
 
   private void criarRepo() {
     txtRepoName = new JTextField();
-    txtRepoName.setText("my-git-usage-evidences-repo");
+    txtRepoName.setText(UserGithubInfo.MY_GIT_USAGE_EVIDENCES_REPO);
     txtRepoName.setColumns(10);
     txtRepoName.setBounds(156, 158, 293, 20);
     contentPane.add(txtRepoName);
@@ -135,7 +135,7 @@ public class FormForTesting extends JFrame {
     });
     ckbConsiderarNomeRepo.setSelected(false);
     ckbConsiderarNomeRepo
-        .setToolTipText("Caso desmarcado, usa o valor padrão my-git-usage-evidences-repo");
+        .setToolTipText("Caso desmarcado, usa o valor padrão " + UserGithubInfo.MY_GIT_USAGE_EVIDENCES_REPO);
     ckbConsiderarNomeRepo.setBounds(474, 157, 192, 23);
     contentPane.add(ckbConsiderarNomeRepo);
   }

@@ -113,7 +113,7 @@ public class GenerateHook {
    * geração do hook final. Pode ser utilizado também para detectar se um hook existente contém o
    * comando para geração de evidência ou não.
    *
-   * @return Ex. de retorno: start /MIN "cmd /C C:\my-git-usage-evidences/mgue gerarevidencia"
+   * @return Ex. de retorno: start /MIN "cmd /C C:\g-evidences/mgue gerarevidencia"
    * @throws IOException
    */
   public static String getMainCommand() {

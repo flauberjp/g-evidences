@@ -18,7 +18,7 @@ import org.kohsuke.github.PagedSearchIterable;
 @ToString
 public class UserGithubInfo implements Serializable {
 
-  public static final String MY_GIT_USAGE_EVIDENCES_REPO = "my-git-usage-evidences-repo";
+  public static final String MY_GIT_USAGE_EVIDENCES_REPO = "g-evidences-repo";
   public static final String PROPERTIES_FILE = "propriedades.txt";
   private static UserGithubInfo userGithubInfo;
   // default serialVersion id

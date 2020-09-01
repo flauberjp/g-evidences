@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.jgit.api.Git;
@@ -86,7 +87,7 @@ public class GitDir {
   
   public void setPath(String path) {
 	this.path = path;	
-	this.isConfigured = Files.exists( Path.of(path + "/.git/hooks/pre-commit"));
+	this.isConfigured = Files.exists( Paths.get(path + "/.git/hooks/pre-commit"));
 	this.isSelected = this.isConfigured;
   }
 
