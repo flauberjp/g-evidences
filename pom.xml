@@ -7,7 +7,7 @@
     <groupId>io.github.flauberjp</groupId>
     <artifactId>g-evidences</artifactId>
     <packaging>jar</packaging>
-    <version>1.7-SNAPSHOT-beta.1</version>
+    <version>0.0.1</version>
     <name>g-evidences</name>
     <url>https://github.com/flauberjp/g-evidences</url>
 
