@@ -1,9 +1,9 @@
 [![flauberjp](https://circleci.com/gh/flauberjp/my-git-usage-evidences.svg?style=shield)](https://circleci.com/gh/flauberjp/my-git-usage-evidences/tree/master)
-# my-git-usage-evidences
+# g-evidences
 
 O [Calendário de contribuições do Github](https://help.github.com/pt/github/setting-up-and-managing-your-github-profile/viewing-contributions-on-your-profile#contributions-calendar) 
 reflete suas várias atividades de contribuição no Github, mas só as do Github,
-quem vê-lo talvez conclua que você não anda codando muito, e isso pode ser um problema!
+quem o vê talvez conclua que você não anda codando muito, e isso pode ser um problema!
 
 Muitas vezes nossos projetos estão no Bitbucket, no Gitlab ou mesmo são projetos 
 Git versionados localmente apenas, e nada das atividades que você realiza nesses projetos é 
@@ -51,7 +51,7 @@ seus outros repositórios centrais, além de que registrará futuros usos també
 
 1. Abra um dos seus projetos git que você acabou de configurar com esta solução.
 2. Faça uma alteração em qualquer arquivo, então realize um commit, que disparará nossa solução.
-3. Verifique no seu github que o repo _my-git-usage-evidences-repo_ teve o número de commits incrementado.
+3. Verifique no seu github que o repo _g-evidences-repo_ teve o número de commits incrementado.
 4. Repita os passos anteriores para vê-lo aumentar mais uma vez se preciso, o que é uma 
 evidência de que você acabou de usar o git localmente refletida no Github.
 5. Para confirmar que o histórico de commits foi restaurado também, consulte o seu 
