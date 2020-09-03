@@ -73,16 +73,16 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
   }
 
   public void atualizarTabela(List<GitDir> gitDirList, String username) {
-	if(gitDirList != null) {
-		this.gitDirList = gitDirList;
-	    this.data = new Object[gitDirList.size()][];
-	    List<GitDir> list = GitDirList.get();
-	    for (int i = 0; i < list.size(); i++) {
-	      GitDir gitDir = list.get(i);
-	      gitDir.setAuthor(DESCONSIDERAR_HISTORICO);
-	      data[i] = new Object[] {gitDir.getPath(), gitDir.getAuthor(), gitDir.isSelected()};
-	    }
-	}
+    if(gitDirList != null) {
+      this.gitDirList = gitDirList;
+        this.data = new Object[gitDirList.size()][];
+        List<GitDir> list = GitDirList.get();
+        for (int i = 0; i < list.size(); i++) {
+          GitDir gitDir = list.get(i);
+          gitDir.setAuthor(DESCONSIDERAR_HISTORICO);
+          data[i] = new Object[] {gitDir.getPath(), gitDir.getActualBranch(), gitDir.getAuthor(), gitDir.isSelected()};
+        }
+    }
 
     this.username = username;
     if (scrollPane != null) {
@@ -114,14 +114,12 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
         int row = table.rowAtPoint(p);
         int col = table.columnAtPoint(p);
 
-        if ((row > -1 && row < table.getRowCount()) && (col == 0)) {
+        if ((row > -1 && row < table.getRowCount()) && (col == 0 || col == 1)) {
 
           if (hintCell == null || (hintCell.x != col || hintCell.y != row)) {
 
             hintCell = new Point(col, row);
-            if(col == 0) {
-              table.isCellEditable(row, 0);
-            }
+            table.isCellEditable(row, col);
           }
 
         }
@@ -200,6 +198,18 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     projetoGitColumn.setCellRenderer(renderer);
   }
 
+  private void setUpBranchAtualColumn(JTable table,
+      TableColumn branchAtualColumn, int rowIndex) {
+    if(rowIndex == -1 || GitDirList.get() == null ||
+        GitDirList.get().size() <= rowIndex) {
+      return;
+    }
+    DefaultTableCellRenderer renderer =
+        new DefaultTableCellRenderer();
+    renderer.setToolTipText(GitDirList.get().get(rowIndex).getActualBranch());
+    branchAtualColumn.setCellRenderer(renderer);
+  }
+
   private void setUpUsuarioColumn(JTable table,
       TableColumn usuarioColumn, int rowIndex) {
     if(rowIndex == -1 || GitDirList.get() == null ||
@@ -227,6 +237,7 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
 
     private String[] columnNames = {
         "Projeto Git",
+        "Branch atual",
         "E-mail do seu usuário nesse projeto",
         "Configurar?"};
     private Object[][] data;
@@ -237,6 +248,7 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
     }
 
     public final Object[] longValues = {"C:\\Users\\Flaviano Flauber\\Documents\\Projetos\\youtube-carousel-bootstrap",
+        "master",
         "E-mail do seu usuário nesse projeto",
         Boolean.FALSE};
 
@@ -288,6 +300,9 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
         setUpProjetoGitColumn(table, table.getColumnModel().getColumn(col), row);
         return false;
       } else if (col == 1) {
+        setUpBranchAtualColumn(table, table.getColumnModel().getColumn(col), row);
+        return false;
+      } else if (col == 2) {
         setUpUsuarioColumn(table, table.getColumnModel().getColumn(col), row);
         return true;
       } else {
@@ -309,8 +324,8 @@ public class ProjetosGitDetectadosTableComponent extends JPanel {
 
       data[row][col] = value == null ? "" : value;
       
-      gitDirList.get(row).setAuthor((String)data[row][1]);
-      gitDirList.get(row).setSelected((boolean)data[row][2]);
+      gitDirList.get(row).setAuthor((String)data[row][2]);
+      gitDirList.get(row).setSelected((boolean)data[row][3]);
       
       fireTableCellUpdated(row, col);
 

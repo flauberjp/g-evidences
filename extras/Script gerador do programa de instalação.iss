@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "g-evidences"
-#define MyAppVersion "1.0"
-#define MyAppPublisher "Equipe de voluntï¿½rios g-evidences "
+#define MyAppVersion "0.0.1"
+#define MyAppPublisher "Equipe de voluntários g-evidences "
 #define MyAppURL "https://flauberjp.github.io/g-evidences/"
 #define MyAppExeName "g-evidences.exe"
 

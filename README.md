@@ -24,8 +24,8 @@ seus outros repositórios centrais, além de que registrará futuros usos també
 
 ## Como usar esse programa
 
-1. Instale o programa. Para isso use o instalador: [my-git-usage-evidences-inst-win64.exe](https://github.com/flauberjp/my-git-usage-evidences/releases/download/1.7-SNAPSHOT-beta.1/my-git-usage-evidences-inst-win64.exe).
-    * ATENÇÃO: este programa tem como pre-requisito o Windos 10 e o Java 11.
+1. Instale o programa. Para isso use o instalador: [g-evidences-inst-win64.exe](https://github.com/flauberjp/my-git-usage-evidences/releases/download/0.0.1/g-evidences-inst-win64.exe).
+    * ATENÇÃO: este programa tem como pre-requisito o Windos 10 e o Java 8.
 
 2. Inicie o programa.
 
@@ -42,6 +42,7 @@ seus outros repositórios centrais, além de que registrará futuros usos també
     * Na coluna _E-mail do seu usuário nesse projeto_ escolha o seu e-mail entre a lista de e-mails
     dos contribuidores naquele projeto. Caso não queira refletir também o seu histórico de 
     commits realizados até então escolha a opção "<DESCONSIDERAR HISTÓRICO>", que é a opção selecionada por padrão.
+      * O histórico de commits restaurado é em função da branch atual.
 
 4. Aplique a configuração.
     * Clique no botão "_Aplicar configurações_", e aguarde a mensagem

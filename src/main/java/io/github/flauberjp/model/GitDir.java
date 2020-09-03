@@ -24,6 +24,7 @@ public class GitDir {
   private boolean isConfigured = false;
   private String author;
   private String[] authors;
+  private String actualBranch;
 
   public GitDir(String path) {
     this.setPath(path);
@@ -31,6 +32,19 @@ public class GitDir {
 
   public String getPath() {
     return path;
+  }
+
+  public String getActualBranch() {
+    if(actualBranch == null) {
+      try {
+        Repository repo = new FileRepository(getPath() + "/.git");
+        Git git = Git.open(new File(getPath()));
+        actualBranch = git.getRepository().getBranch();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    return actualBranch;
   }
 
   public String getAuthor() {
@@ -86,9 +100,9 @@ public class GitDir {
   }
   
   public void setPath(String path) {
-	this.path = path;	
-	this.isConfigured = Files.exists( Paths.get(path + "/.git/hooks/pre-commit"));
-	this.isSelected = this.isConfigured;
+	  this.path = path;
+	  this.isConfigured = Files.exists( Paths.get(path + "/.git/hooks/pre-commit"));
+	  this.isSelected = this.isConfigured;
   }
 
   public String toString() {

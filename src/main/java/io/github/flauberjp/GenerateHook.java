@@ -17,7 +17,7 @@ import java.util.List;
 public class GenerateHook {
 
   public static final String HOOK_NAME = "pre-commit";
-  public static final String MAIN_COMMAND = "start /MIN \"cmd /C <solution_directory>/mgue gerarevidencia\"";
+  public static final String MAIN_COMMAND = "start /MIN \"cmd /C <solution_directory>/g-evidences gerarevidencia\"";
 
   public static void main(String[] args) throws IOException, URISyntaxException {
     LOGGER.info("Programa iniciado às: " + LocalDateTime.now());
@@ -113,7 +113,7 @@ public class GenerateHook {
    * geração do hook final. Pode ser utilizado também para detectar se um hook existente contém o
    * comando para geração de evidência ou não.
    *
-   * @return Ex. de retorno: start /MIN "cmd /C C:\g-evidences/mgue gerarevidencia"
+   * @return Ex. de retorno: start /MIN "cmd /C C:\g-evidences/g-evidences gerarevidencia"
    * @throws IOException
    */
   public static String getMainCommand() {
