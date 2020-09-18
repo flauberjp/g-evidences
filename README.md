@@ -22,6 +22,8 @@ seus outros repositórios centrais, além de que registrará futuros usos també
 
 ![Resultado do uso desse programa](static/exemploGraficoDeUso.png "Resultado do uso desse programa")
 
+No link seguinte temos um video onde é exibido a recomendação do uso desse programa por dois usuários dessa solução, e na sequência é feita uma demonstração rápida da sua instalação e uso:  [g-evidences](https://youtu.be/ohkm4S6PIL0).
+
 ## Como usar esse programa
 
 1. Instale o programa. Para isso use o instalador: [g-evidences-inst-win64.exe](https://github.com/flauberjp/my-git-usage-evidences/releases/download/0.0.1/g-evidences-inst-win64.exe).
