@@ -61,6 +61,10 @@ evidência de que você acabou de usar o git localmente refletida no Github.
 _Calendário de contribuições do Github_. Caso você não tenha notado uma diferença
 esperada, faça logout no Github e se logue novamente, isso fará ele atualizar-se.
 
+## FAQ
+1. O que fazer caso o erro _ERROR - E-mail address of PersonIdent must not be null._ ocorra?
+  Normalmente isso é um problema no _settings_ do Git do seu usuário no projeto atual. Verifique se o user.name e user.email estão definidos com o comando _git config --list_, e caso não estejam os defina com os comandos seguintes adaptando para o uso com seus dados: _git config user.name "<seu_nome_aqui>"_ e _git config user.email "<seu_email_aqui>"_.
+
 ## Ajuda Voluntária
 Amamos voluntários! Venha tornar esse programa ainda mais incrível! 
 
