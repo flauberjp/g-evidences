@@ -22,7 +22,9 @@ seus outros repositórios centrais, além de que registrará futuros usos també
 
 ![Resultado do uso desse programa](static/exemploGraficoDeUso.png "Resultado do uso desse programa")
 
-No link seguinte temos um video onde é exibido a recomendação do uso desse programa por dois usuários dessa solução, e na sequência é feita uma demonstração rápida da sua instalação e uso:  [g-evidences](https://youtu.be/ohkm4S6PIL0).
+Demonstração:
+
+[![Demonstração](https://i9.ytimg.com/vi/ohkm4S6PIL0/mq3.jpg?sqp=CMS6xvwF&rs=AOn4CLBbUZLmqud44pXPmSavyRAheB9DkQ)](https://youtu.be/ohkm4S6PIL0)
 
 ## Como usar esse programa
 
