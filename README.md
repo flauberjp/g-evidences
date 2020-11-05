@@ -24,7 +24,7 @@ seus outros repositórios centrais, além de que registrará futuros usos també
 
 Demonstração:
 
-[![Demonstração](https://i9.ytimg.com/vi/ohkm4S6PIL0/mq3.jpg?sqp=CMS6xvwF&rs=AOn4CLBbUZLmqud44pXPmSavyRAheB9DkQ)](https://youtu.be/ohkm4S6PIL0)
+[![Demonstração](https://i9.ytimg.com/vi/ohkm4S6PIL0/mq3.jpg?sqp=CPCQj_0F&rs=AOn4CLCKjBug8z3CAGyb5GkCZw1C3SCHKg)](https://youtu.be/ohkm4S6PIL0)
 
 ## Como usar esse programa
 
