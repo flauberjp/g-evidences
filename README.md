@@ -19,7 +19,7 @@ você também realiza diversas atividades diariamente só que em um outro reposi
 no Bitbucket ou Gitlab ou mesmo em um projeto Git local apenas. (A) + (B) é o resultado do uso desse programa
 aqui, ele reflete no Calendário de contribuições do Github tudo que você fez até então nos 
 seus outros repositórios centrais, além de que registrará futuros usos também.   
-
+a
 ![Resultado do uso desse programa](static/exemploGraficoDeUso.png "Resultado do uso desse programa")
 
 Demonstração:
